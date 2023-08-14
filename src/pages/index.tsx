@@ -10,8 +10,7 @@ export default function HomePage() {
       <Seo />
 
       <main>
-        <div className='layout relative flex min-h-screen flex-col items-center py-12'>
-        </div>
+        <div className='layout relative flex min-h-screen flex-col items-center py-12'></div>
       </main>
     </Layout>
   );

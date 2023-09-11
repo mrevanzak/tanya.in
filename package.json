@@ -1,5 +1,5 @@
 {
-  "name": "ts-nextjs-tailwind-starter",
+  "name": "tanya.in",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,6 +20,10 @@
   "dependencies": {
     "@clerk/nextjs": "^4.23.1",
     "@clerk/themes": "^1.7.5",
+    "@nextui-org/button": "^2.0.20",
+    "@nextui-org/spinner": "^2.0.18",
+    "@nextui-org/system": "^2.0.9",
+    "@nextui-org/theme": "^2.1.8",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
@@ -32,6 +36,8 @@
     "axios": "^1.4.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "framer-motion": "^10.16.4",
+    "lodash.get": "^4.4.2",
     "lucide-react": "^0.263.1",
     "next": "^13.4.6",
     "react": "^18.2.0",
@@ -53,6 +59,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
+    "@types/lodash.get": "^4.4.7",
     "@types/react": "^18.2.12",
     "@types/react-datepicker": "^4.15.0",
     "@typescript-eslint/eslint-plugin": "^5.59.11",

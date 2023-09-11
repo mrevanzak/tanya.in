@@ -1,5 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { neobrutalism } from '@clerk/themes';
+import { NextUIProvider } from '@nextui-org/system';
 import { AppProps } from 'next/app';
 
 import '@/styles/globals.css';
@@ -15,15 +16,17 @@ import { api } from '@/utils/api';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ClerkProvider
-      {...pageProps}
-      appearance={{
-        baseTheme: neobrutalism,
-      }}
-    >
-      <Component {...pageProps} />
-      <Toaster />
-    </ClerkProvider>
+    <NextUIProvider>
+      <ClerkProvider
+        {...pageProps}
+        appearance={{
+          baseTheme: neobrutalism,
+        }}
+      >
+        <Component {...pageProps} />
+        <Toaster />
+      </ClerkProvider>
+    </NextUIProvider>
   );
 }
 

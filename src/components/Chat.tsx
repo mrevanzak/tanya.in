@@ -77,7 +77,7 @@ export default function Chat() {
             color='primary'
             type='submit'
             isIconOnly
-            className='absolute right-1 top-7 h-8 w-8'
+            className='absolute right-1 top-2 h-8 w-8'
             isLoading={isLoading}
           >
             {!isLoading && <IoSend />}

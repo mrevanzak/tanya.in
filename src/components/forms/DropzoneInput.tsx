@@ -107,7 +107,7 @@ export default function DropzoneInput({
         shouldTouch: true,
       });
     } else {
-      setValue(id, null, {
+      setValue(id, '', {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,

@@ -12,6 +12,18 @@ import { api } from '@/utils/api';
 export default function Chat() {
   const [chat, setChat] = React.useState<string[]>([]);
 
+  const chatContainerRef = React.useRef<HTMLDivElement>(null);
+  function scrollToBottom() {
+    const lastBubbleChat = chatContainerRef?.current?.lastElementChild;
+    lastBubbleChat?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  }
+
+  React.useEffect(() => {
+    scrollToBottom();
+  }, [chat]);
+
   const { mutate, isLoading } = api.chat.send.useMutation({
     onMutate: async (newChat) => {
       reset();
@@ -35,7 +47,7 @@ export default function Chat() {
   });
   //#region  //*=========== Form ===========
   const methods = useForm({
-    mode: 'onTouched',
+    mode: 'onSubmit',
   });
   const { handleSubmit, reset, watch } = methods;
   //#endregion  //*======== Form ===========
@@ -46,16 +58,29 @@ export default function Chat() {
 
   return (
     <div className='flex flex-col space-y-2'>
-      <div className='space-y-2 overflow-y-auto'>
+      <div
+        className='max-h-unit-8xl space-y-3 overflow-y-auto'
+        ref={chatContainerRef}
+      >
         {chat?.map((item, index) => (
           <div
             key={index}
             className={cn(
-              'bg-secondary rounded-md p-2 text-sm',
-              index % 2 === 0 && 'text-right'
+              'flex justify-between',
+              index % 2 === 0 ? 'flex-row-reverse' : 'flex-row',
+              'space-x-2'
             )}
           >
-            {item}
+            <div
+              className={cn(
+                'rounded-lg px-3 py-2 text-sm',
+                index % 2 === 0
+                  ? 'bg-primary text-white'
+                  : 'bg-secondary text-black'
+              )}
+            >
+              {item}
+            </div>
           </div>
         ))}
       </div>
@@ -72,6 +97,7 @@ export default function Chat() {
                 onSubmit();
               }
             }}
+            disabled={isLoading}
           />
           <Button
             color='primary'

@@ -1,3 +1,5 @@
+import { chatRouter } from '@/server/api/routers/chat';
+import { documentRouter } from '@/server/api/routers/document';
 import { createTRPCRouter } from '@/server/api/trpc';
 
 /**
@@ -6,7 +8,8 @@ import { createTRPCRouter } from '@/server/api/trpc';
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  // playlist: playlistRouter,
+  document: documentRouter,
+  chat: chatRouter,
 });
 
 // export type definition of API

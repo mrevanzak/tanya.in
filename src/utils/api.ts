@@ -101,6 +101,12 @@ export type RouterOutputs = inferRouterOutputs<AppRouter>;
  */
 import axios from 'axios';
 
+import { env } from '@/env.mjs';
+
 export const httpClient = axios.create({
-  baseURL: 'https://api.spotify.com/v1',
+  baseURL: env.NEXT_PUBLIC_BACKEND_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
+  },
 });

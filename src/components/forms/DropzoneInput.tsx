@@ -31,11 +31,11 @@ export default function DropzoneInput({
 }: DropzoneInputProps) {
   const {
     control,
-    getValues,
     setValue,
     setError,
     clearErrors,
     formState: { errors },
+    watch,
   } = useFormContext();
   const error = get(errors, id);
 
@@ -47,9 +47,11 @@ export default function DropzoneInput({
   }, [error]);
   //#endregion  //*======== Error Focus ===========
 
-  const [files, setFiles] = React.useState<FileWithPreview[]>(
-    getValues(id) || []
-  );
+  const files = watch(id) as FileWithPreview[];
+
+  // const [files, setFiles] = React.useState<FileWithPreview[]>(
+  //   getValues(id) || []
+  // );
 
   const onDrop = React.useCallback(
     <T extends File>(acceptedFiles: T[], rejectedFiles: FileRejection[]) => {
@@ -66,17 +68,11 @@ export default function DropzoneInput({
           })
         );
 
-        setFiles(
-          files
-            ? [...files, ...acceptedFilesPreview].slice(0, maxFiles)
-            : acceptedFilesPreview
-        );
-
         setValue(
           id,
           files
-            ? [...files, ...acceptedFiles].slice(0, maxFiles)
-            : acceptedFiles,
+            ? [...files, ...acceptedFilesPreview].slice(0, maxFiles)
+            : acceptedFilesPreview,
           {
             shouldValidate: true,
           }
@@ -105,14 +101,12 @@ export default function DropzoneInput({
     newFiles.splice(newFiles.indexOf(file), 1);
 
     if (newFiles.length > 0) {
-      setFiles(newFiles);
       setValue(id, newFiles, {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,
       });
     } else {
-      setFiles([]);
       setValue(id, null, {
         shouldValidate: true,
         shouldDirty: true,

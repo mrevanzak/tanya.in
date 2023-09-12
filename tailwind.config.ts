@@ -8,7 +8,7 @@ export default {
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-    './node_modules/@nextui-org/theme/dist/components/(button|code).js',
+    './node_modules/@nextui-org/theme/dist/components/(button|spinner).js',
   ],
   theme: {
     container: {

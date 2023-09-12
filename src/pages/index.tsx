@@ -4,6 +4,8 @@ import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { HiOutlinePaperClip, HiX } from 'react-icons/hi';
 
+import cn from '@/lib/cn';
+
 import Chat from '@/components/Chat';
 import DropzoneInput from '@/components/forms/DropzoneInput';
 import Layout from '@/components/layout/Layout';
@@ -27,7 +29,7 @@ export default function HomePage() {
   const { handleSubmit, reset } = methods;
   //#endregion  //*======== Form ===========
 
-  const { mutate, isLoading } = useMutation({
+  const uploadDocument = useMutation({
     mutationKey: ['upload'],
     mutationFn: async (file) => {
       await httpClient.postForm('/save_document', {
@@ -41,7 +43,7 @@ export default function HomePage() {
   });
 
   const onSubmit = handleSubmit((data) => {
-    mutate(data.file[0]);
+    uploadDocument.mutate(data.file[0]);
   });
 
   return (
@@ -50,9 +52,14 @@ export default function HomePage() {
       <Seo />
 
       <main>
-        <div className='layout relative flex min-h-screen flex-row flex-wrap space-x-4 space-y-4 py-12'>
-          <div className='w-1/3 min-w-[288px] flex-initial'>
-            <ul className='mt-1 w-full divide-y divide-gray-300 rounded-md border border-gray-300'>
+        <div className='layout min-h-main relative flex flex-row flex-wrap gap-4 py-12'>
+          <div className='w-1/3 min-w-[288px] flex-initial space-y-4'>
+            <ul
+              className={cn(
+                'mt-1 w-full divide-y divide-gray-200 rounded-md',
+                data?.files?.length && 'border border-gray-300'
+              )}
+            >
               {data?.files?.map((item) => (
                 <li
                   key={item}
@@ -66,13 +73,25 @@ export default function HomePage() {
                     <span className='ml-2 w-0 flex-1 truncate'>{item}</span>
                   </div>
                   <div className='ml-4 flex flex-shrink-0 items-center space-x-2'>
-                    <button
-                      className='cursor-pointer rounded text-red-500 hover:text-red-700 focus:outline-none focus:ring focus:ring-red-500'
-                      type='button'
-                      onClick={() => deleteDocument.mutate({ filename: item })}
+                    <Button
+                      color='danger'
+                      variant='light'
+                      type='submit'
+                      isIconOnly
+                      size='sm'
+                      isLoading={
+                        deleteDocument.isLoading &&
+                        deleteDocument.variables?.filename === item
+                      }
+                      onClick={() => {
+                        deleteDocument.mutate({ filename: item });
+                      }}
                     >
-                      <HiX size={24} />
-                    </button>
+                      {!(
+                        deleteDocument.isLoading &&
+                        deleteDocument.variables?.filename === item
+                      ) && <HiX size={20} />}
+                    </Button>
                   </div>
                 </li>
               ))}
@@ -81,7 +100,7 @@ export default function HomePage() {
               <form onSubmit={onSubmit} className='w-full max-w-sm space-y-3'>
                 <DropzoneInput
                   id='file'
-                  label='File'
+                  label=''
                   validation={{ required: 'Photo must be filled' }}
                   accept={{ 'application/pdf': ['.pdf'] }}
                   helperText='You can upload file with .pdf extension'
@@ -91,9 +110,9 @@ export default function HomePage() {
                   color='primary'
                   type='submit'
                   className='w-full'
-                  isLoading={isLoading}
+                  isLoading={uploadDocument.isLoading}
                 >
-                  {isLoading ? 'Uploading...' : 'Upload'}
+                  {uploadDocument.isLoading ? 'Uploading...' : 'Upload'}
                 </Button>
               </form>
             </FormProvider>

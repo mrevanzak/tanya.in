@@ -1,3 +1,4 @@
+import { Button } from '@nextui-org/button';
 import * as React from 'react';
 import {
   HiOutlineExternalLink,
@@ -119,13 +120,16 @@ export default function FilePreview({
           <HiOutlineExternalLink size={20} />
         </UnstyledLink>
         {!readOnly && (
-          <button
-            className='cursor-pointer rounded text-red-500 hover:text-red-700 focus:outline-none focus:ring focus:ring-red-500'
-            type='button'
+          <Button
+            color='danger'
+            variant='light'
+            type='submit'
+            isIconOnly
+            size='sm'
             onClick={(e) => deleteFile?.(e, file)}
           >
-            <HiX size={24} />
-          </button>
+            <HiX size={20} />
+          </Button>
         )}
       </div>
     </li>

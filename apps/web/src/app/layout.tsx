@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
+
 import { cn } from "@tanya.in/ui";
 import { ThemeProvider, ThemeToggle } from "@tanya.in/ui/theme";
 import { Toaster } from "@tanya.in/ui/toast";
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
 
 import "@/styles/globals.css";
 

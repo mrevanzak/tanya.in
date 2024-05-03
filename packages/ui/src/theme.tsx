@@ -16,7 +16,7 @@ function ThemeToggle() {
   const { setTheme } = useTheme();
 
   return (
-    <Dropdown>
+    <Dropdown classNames={{ content: "min-w-24" }}>
       <DropdownTrigger>
         <Button variant="bordered" isIconOnly>
           <SunIcon className="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />

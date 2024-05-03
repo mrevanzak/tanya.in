@@ -6,7 +6,7 @@ export default {
   darkMode: ["class"],
   content: [
     "src/**/*.{ts,tsx}",
-    "../../node_modules/@nextui-org/theme/dist/components/(button|table).js",
+    "../../node_modules/@nextui-org/theme/dist/components/(button|dropdown).js",
   ],
   theme: {
     container: {
@@ -76,10 +76,5 @@ export default {
       },
     },
   },
-  plugins: [
-    animate,
-    nextui({
-      prefix: "nextui-",
-    }),
-  ],
+  plugins: [animate, nextui()],
 } satisfies Config;

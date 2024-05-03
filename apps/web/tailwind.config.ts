@@ -1,13 +1,13 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
-import baseConfig from "@tanya.in/tailwind-config/web";
+import uiConfig from "@tanya.in/ui/config";
 
 export default {
   // We need to append the path to the UI package to the content array so that
   // those classes are included correctly.
-  content: [...baseConfig.content, "../../packages/ui/**/*.{ts,tsx}"],
-  presets: [baseConfig],
+  content: [...uiConfig.content, "../../packages/ui/**/*.{ts,tsx}"],
+  presets: [uiConfig],
   theme: {
     extend: {
       fontFamily: {

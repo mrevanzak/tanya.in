@@ -28,7 +28,6 @@
   "devDependencies": {
     "@tanya.in/eslint-config": "*",
     "@tanya.in/prettier-config": "*",
-    "@tanya.in/tailwind-config": "*",
     "@tanya.in/tsconfig": "*",
     "@types/node": "^20.12.5",
     "@types/react": "^18.3.1",

@@ -2,7 +2,7 @@
   "name": "tanya.in",
   "private": true,
   "engines": {
-    "node": ">=20.12.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "build": "turbo build",
@@ -16,7 +16,8 @@
     "lint:ws": "bun x sherif@latest",
     "postinstall": "bun lint:ws",
     "typecheck": "turbo typecheck",
-    "ui-add": "bun -F ui ui-add"
+    "ui-add:shadcn": "turbo shadcn:add",
+    "ui-add:nextui": "turbo nextui:add"
   },
   "devDependencies": {
     "@tanya.in/prettier-config": "*",

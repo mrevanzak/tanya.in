@@ -1,6 +1,9 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
+import { signInFormSchema } from "@/lib/validation/sign-in";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { Button } from "@tanya.in/ui/button";
 import {
@@ -10,10 +13,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@tanya.in/ui/card";
-import { Input } from "@tanya.in/ui/input";
-import { Label } from "@tanya.in/ui/label";
+import { Form, FormInput, useForm } from "@tanya.in/ui/form";
 
 export function SigninForm() {
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  const methods = useForm({
+    schema: signInFormSchema,
+    mode: "onTouched",
+  });
+  const { handleSubmit, control } = methods;
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
@@ -23,32 +33,41 @@ export function SigninForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              required
+        <Form {...methods}>
+          <form
+            className="space-y-4"
+            onSubmit={handleSubmit((data) => {
+              console.log(data);
+            })}
+          >
+            <FormInput name="email" type="email" control={control} />
+            <FormInput
+              name="password"
+              control={control}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => setIsVisible(!isVisible)}
+                >
+                  {isVisible ? (
+                    <FaEyeSlash className="pointer-events-none text-2xl text-default-400" />
+                  ) : (
+                    <FaEye className="pointer-events-none text-2xl text-default-400" />
+                  )}
+                </button>
+              }
+              type={isVisible ? "text" : "password"}
             />
-          </div>
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <Link href="#" className="ml-auto inline-block text-sm underline">
-                Forgot your password?
-              </Link>
-            </div>
-            <Input id="password" type="password" required />
-          </div>
-          <Button color="primary" type="submit" className="w-full">
-            Login
-          </Button>
-          <Button variant="shadow" color="warning" className="w-full">
-            Login with MyITS
-          </Button>
-        </div>
+
+            <Button color="primary" type="submit" className="w-full">
+              Login
+            </Button>
+            <Button variant="shadow" color="warning" className="w-full">
+              Login with MyITS
+            </Button>
+          </form>
+        </Form>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
           <Link href="#" className="underline">

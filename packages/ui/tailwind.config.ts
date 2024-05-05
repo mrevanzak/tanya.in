@@ -18,6 +18,9 @@ export default {
     },
     extend: {
       colors: {
+        "primary-its": "hsl(202, 100%, 38%)",
+        "secondary-its": "hsl(223, 56%, 32%);",
+        "accent-its": "hsl(44, 100%, 51%)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

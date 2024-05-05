@@ -18,20 +18,23 @@ export default {
     },
     extend: {
       colors: {
-        "primary-its": "hsl(202, 100%, 38%)",
-        "secondary-its": "hsl(223, 56%, 32%);",
-        "accent-its": "hsl(44, 100%, 51%)",
+        "primary-its": "hsl(var(--primary-its))",
+        "secondary-its": "hsl(var(--secondary-its))",
+        "accent-its": "hsl(var(--accent-its))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        warning: {
+          DEFAULT: "hsl(var(--accent-its))",
+        },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "hsl(var(--primary-its))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "hsl(var(--secondary-its))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {

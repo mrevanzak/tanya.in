@@ -45,7 +45,7 @@ export function SigninForm() {
           <Button color="primary" type="submit" className="w-full">
             Login
           </Button>
-          <Button variant="bordered" className="w-full">
+          <Button variant="shadow" color="warning" className="w-full">
             Login with MyITS
           </Button>
         </div>

@@ -24,6 +24,9 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.75rem;
+    --primary-its: 202 100% 38%;
+    --secondary-its: 223 56% 32%;
+    --accent-its: 44 100% 51%;
   }
 
   .dark {

@@ -1,21 +1,17 @@
-import Image from "next/image";
 import { SigninForm } from "@/components/signin-form";
+
+import ITS from "~/ITS.svg";
+import Logo from "~/logo.svg";
 
 export default function AuthenticationPage() {
   return (
     <div className="container grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="relative hidden h-full flex-col bg-muted p-10 dark:border-r lg:flex">
+      <div className="bg-secondary-its dark:bg-primary-its relative hidden h-full flex-col p-10 dark:border-r lg:flex">
         <div className="absolute inset-0" />
         <div className="relative z-20 flex items-center text-lg font-medium">
-          Tanya.in
+          <Logo className="h-9 text-white" />
         </div>
-        <Image
-          src="/ITS.png"
-          alt="Hero"
-          fill
-          className="object-cover"
-          priority
-        />
+        <ITS className="m-auto size-96 text-white" />
         {/* <div className='relative z-20 mt-auto'>
             <blockquote className='space-y-2'>
               <p className='text-lg'>

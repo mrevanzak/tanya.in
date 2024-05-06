@@ -1,5 +1,6 @@
 "use client";
 
+import type { InputProps } from "@nextui-org/input";
 import type {
   FieldPath,
   FieldValues,
@@ -9,7 +10,7 @@ import type {
 import type { ZodType, ZodTypeDef } from "zod";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input, InputProps } from "@nextui-org/input";
+import { Input } from "@nextui-org/input";
 import {
   useForm as __useForm,
   FormProvider,
@@ -50,7 +51,7 @@ const FormInput = <
         .replace(/([A-Z])/g, " $1")
         .replace(/^./, (str) => str.toUpperCase())}
       isInvalid={fieldState.invalid}
-      errorMessage={fieldState?.error?.message}
+      errorMessage={fieldState.error?.message}
       {...props}
     />
   );

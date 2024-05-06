@@ -6,7 +6,7 @@ import Logo from "~/logo.svg";
 export default function AuthenticationPage() {
   return (
     <div className="container grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="bg-secondary-its dark:bg-primary-its relative hidden h-full flex-col p-10 dark:border-r lg:flex">
+      <div className="relative hidden h-full flex-col bg-secondary-its p-10 dark:border-r dark:bg-primary-its lg:flex">
         <div className="absolute inset-0" />
         <div className="relative z-20 flex items-center text-lg font-medium">
           <Logo className="h-9 text-white" />

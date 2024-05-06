@@ -16,17 +16,31 @@
     "lint:ws": "bun x sherif@latest",
     "postinstall": "bun lint:ws",
     "typecheck": "turbo typecheck",
+    "prepare": "husky install",
     "ui-add:shadcn": "turbo shadcn:add",
     "ui-add:nextui": "turbo nextui:add"
   },
   "devDependencies": {
     "@tanya.in/prettier-config": "*",
     "@turbo/gen": "^1.13.3",
+    "@commitlint/cli": "^16.3.0",
+    "@commitlint/config-conventional": "^16.2.4",
+    "husky": "^7.0.4",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "turbo": "^1.13.3",
     "typescript": "^5.4.5"
   },
   "prettier": "@tanya.in/prettier-config",
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "bun format:fix",
+      "bun lint"
+    ],
+    "**/*.{json,css,scss,md,webmanifest}": [
+      "bun lint"
+    ]
+  },
   "packageManager": "bun@1.0.26",
   "workspaces": [
     "apps/*",

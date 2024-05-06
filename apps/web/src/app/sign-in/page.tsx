@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import { SigninForm } from "@/components/signin-form";
 
 import ITS from "~/ITS.svg";
 import Logo from "~/logo.svg";
+
+export const metadata: Metadata = {
+  title: "Authentication",
+  description: "Sign in for your account",
+};
 
 export default function AuthenticationPage() {
   return (

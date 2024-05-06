@@ -8,27 +8,44 @@ import { Toaster } from "@tanya.in/ui/toast";
 
 import "@/styles/globals.css";
 
-import { env } from "@/env";
+import { siteConfig } from "@/constant/config";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
-      : "http://localhost:3000",
-  ),
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.title,
+    template: `${siteConfig.title} - %s`,
+  },
+  description: siteConfig.description,
+  robots: { index: true, follow: true },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: `/site.webmanifest`,
   openGraph: {
-    title: "Create T3 Turbo",
-    description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://create-t3-turbo.vercel.app",
-    siteName: "Create T3 Turbo",
+    url: siteConfig.url,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    siteName: siteConfig.title,
+    images: [`${siteConfig.url}/images/og.jpg`],
+    type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@jullerino",
-    creator: "@jullerino",
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [`${siteConfig.url}/images/og.jpg`],
+    creator: "@th_clarence",
   },
+  authors: [
+    {
+      name: "Mochamad Revanza Kurniawan",
+      url: "https://rvnza.tech",
+    },
+  ],
 };
 
 export const viewport: Viewport = {

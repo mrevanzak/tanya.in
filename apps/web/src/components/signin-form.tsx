@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import useSignIn from "@/lib/api/auth/signin";
 import { signInFormSchema } from "@/lib/validation/sign-in";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -18,6 +19,7 @@ import { Form, FormInput, useForm } from "@tanya.in/ui/form";
 export function SigninForm() {
   const [isVisible, setIsVisible] = React.useState(false);
 
+  const { mutate, isPending } = useSignIn();
   const methods = useForm({
     schema: signInFormSchema,
     mode: "onTouched",
@@ -37,7 +39,7 @@ export function SigninForm() {
           <form
             className="space-y-4"
             onSubmit={handleSubmit((data) => {
-              console.log(data);
+              mutate(data);
             })}
           >
             <FormInput name="email" type="email" control={control} />
@@ -60,7 +62,12 @@ export function SigninForm() {
               type={isVisible ? "text" : "password"}
             />
 
-            <Button color="primary" type="submit" className="w-full">
+            <Button
+              color="primary"
+              type="submit"
+              className="w-full"
+              isLoading={isPending}
+            >
               Login
             </Button>
             <Button variant="shadow" color="warning" className="w-full">

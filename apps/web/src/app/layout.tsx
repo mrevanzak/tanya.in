@@ -2,12 +2,13 @@ import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
-import { cn, NextUIProvider } from "@tanya.in/ui";
-import { ThemeProvider, ThemeToggle } from "@tanya.in/ui/theme";
+import { cn } from "@tanya.in/ui";
+import { ThemeToggle } from "@tanya.in/ui/theme";
 import { Toaster } from "@tanya.in/ui/toast";
 
 import "@/styles/globals.css";
 
+import { Providers } from "@/components/providers";
 import { siteConfig } from "@/constant/config";
 
 export const metadata: Metadata = {
@@ -65,15 +66,13 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           GeistMono.variable,
         )}
       >
-        <NextUIProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {props.children}
-            <div className="absolute bottom-4 right-4">
-              <ThemeToggle />
-            </div>
-            <Toaster />
-          </ThemeProvider>
-        </NextUIProvider>
+        <Providers>
+          {props.children}
+          <div className="absolute bottom-4 right-4">
+            <ThemeToggle />
+          </div>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

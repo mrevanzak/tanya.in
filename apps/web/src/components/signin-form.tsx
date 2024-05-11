@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import useSignIn from "@/lib/api/auth/signin";
+import useSignIn from "@/lib/api/auth/sign-in";
 import { signInFormSchema } from "@/lib/validation/sign-in";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -16,7 +16,7 @@ import {
 } from "@tanya.in/ui/card";
 import { Form, FormInput, useForm } from "@tanya.in/ui/form";
 
-export function SigninForm() {
+export function SignInForm() {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const { mutate, isPending } = useSignIn();

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SigninForm } from "@/components/signin-form";
+import { SignInForm } from "@/components/signin-form";
 
 import ITS from "~/ITS.svg";
 import Logo from "~/logo.svg";
@@ -30,7 +30,7 @@ export default function AuthenticationPage() {
           </div> */}
       </div>
       <div className="lg:p-8">
-        <SigninForm />
+        <SignInForm />
       </div>
     </div>
   );

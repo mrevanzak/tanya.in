@@ -1,9 +1,21 @@
-export { auth as middleware } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
-// Or like this if you need to do something here.
-// export default auth((req) => {
-//   console.log(req.auth) //  { session: { user: { ... } } }
-// })
+const publicRoutes = [""];
+const authRoutes = ["/sign-in"];
+
+export default auth((req) => {
+  if (req.auth?.user && authRoutes.includes(req.nextUrl.pathname)) {
+    return Response.redirect(new URL("/", req.url));
+  }
+
+  if (
+    !req.auth?.user &&
+    !publicRoutes.includes(req.nextUrl.pathname) &&
+    !authRoutes.includes(req.nextUrl.pathname)
+  ) {
+    return Response.redirect(new URL("/sign-in", req.url));
+  }
+});
 
 // Read more: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 export const config = {

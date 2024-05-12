@@ -15,6 +15,10 @@ const config = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 
+  images: {
+    domains: ["portal.its.ac.id"],
+  },
+
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     // @ts-ignore

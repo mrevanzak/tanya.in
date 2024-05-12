@@ -6,7 +6,7 @@ export default {
   darkMode: ["class"],
   content: [
     "src/**/*.{ts,tsx}",
-    "../../node_modules/@nextui-org/theme/dist/components/(button|dropdown|input|spinner).js",
+    "../../node_modules/@nextui-org/theme/dist/components/(button|dropdown|input|spinner|avatar).js",
   ],
   theme: {
     container: {

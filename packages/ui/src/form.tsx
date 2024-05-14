@@ -1,6 +1,6 @@
 "use client";
 
-import type { InputProps } from "@nextui-org/input";
+import type { InputProps, TextAreaProps } from "@nextui-org/input";
 import type {
   FieldPath,
   FieldValues,
@@ -10,7 +10,7 @@ import type {
 import type { ZodType, ZodTypeDef } from "zod";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/input";
+import { Input, Textarea } from "@nextui-org/input";
 import {
   useForm as __useForm,
   FormProvider,
@@ -58,6 +58,31 @@ const FormInput = <
   );
 };
 
-export { useForm, Form, FormInput };
+const FormTextArea = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  ...props
+}: UseControllerProps<TFieldValues, TName> & TextAreaProps) => {
+  const { field, fieldState } = useController({
+    name: props.name,
+    control: props.control,
+  });
+
+  return (
+    <Textarea
+      {...field}
+      //automatically capitalize the first letter of the label and replace camel case with normal case
+      label={props.name
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (str) => str.toUpperCase())}
+      isInvalid={fieldState.invalid}
+      errorMessage={fieldState.error?.message}
+      {...props}
+    />
+  );
+};
+
+export { useForm, Form, FormInput, FormTextArea };
 
 export { useFieldArray } from "react-hook-form";

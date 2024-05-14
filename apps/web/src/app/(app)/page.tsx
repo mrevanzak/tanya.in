@@ -1,24 +1,35 @@
 import { auth } from "@/lib/auth";
 
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@tanya.in/ui/card";
+import { Chat } from "@tanya.in/ui/chat";
+
 export default async function HomePage() {
   const session = await auth();
   console.log(session);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-        Create <span className="text-primary">T3</span> Turbo
-      </h1>
-      <p className="text-center text-lg text-default-400">
-        {session?.user ? (
-          <span>Welcome back, {session.user.name}!</span>
-        ) : (
-          <span>
-            Welcome to <span className="font-semibold">T3 Turbo</span>, the best
-            place to create your own turbocharger
-          </span>
-        )}
-      </p>
+    <div className="flex flex-1 justify-center self-center">
+      <Card className="">
+        <CardHeader>
+          <CardTitle className="text-center">Tanya.in saja!</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Chat />
+        </CardContent>
+        <CardFooter>
+          <Card className="m-auto shadow-none">
+            <CardContent className="min-w-96 py-4 text-center">
+              /: To choose the topic
+            </CardContent>
+          </Card>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

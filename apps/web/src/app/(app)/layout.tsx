@@ -5,7 +5,7 @@ export default function AuthLayout(props: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
-      <main className="container min-h-[calc(100vh-8rem)]">
+      <main className="container flex min-h-[calc(100vh-8rem)]">
         {props.children}
       </main>
       <Footer />

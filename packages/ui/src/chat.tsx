@@ -16,6 +16,16 @@ import { cn } from ".";
 import { Card, CardDescription } from "./card";
 import { Form, FormTextArea, useForm } from "./form";
 
+const TOPICS = [
+  "template",
+  "MBKM",
+  "SKEM",
+  "UKT",
+  "tugas_akhir",
+  "wisuda",
+  "silabus",
+] as const;
+
 export function Chat() {
   const [chat, setChat] = React.useState<string[]>([]);
 
@@ -38,7 +48,7 @@ export function Chat() {
       const previousChats = chat;
 
       // Optimistically update to the new value
-      setChat((prev) => [...prev, newChat.prompt]);
+      // setChat((prev) => [...prev, newChat.prompt]);
 
       // Return a context object with the snapshotted value
       return { previousChats };
@@ -49,7 +59,7 @@ export function Chat() {
       if (context?.previousChats) setChat(context.previousChats);
     },
     onSuccess: (data) => {
-      setChat((prev) => [...prev, data.answer]);
+      // setChat((prev) => [...prev, data.answer]);
     },
   });
   //#region  //*=========== Form ===========
@@ -69,10 +79,6 @@ export function Chat() {
   });
 
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
-  const dropdownMenuRef = React.useRef<HTMLElement>();
-  console.log("chat", dropdownMenuRef);
-  console.log("prompt", watch("prompt"));
-  console.log("topic", watch("topic"));
 
   return (
     <div className="-z-10 flex flex-col space-y-2">
@@ -129,7 +135,19 @@ export function Chat() {
               )
                 setValue("topic", "");
 
-              if (e.key === "Tab") dropdownMenuRef.current?.focus();
+              // if (e.key === "ArrowDown") {
+              //   e.preventDefault();
+              //   setSelectedTopicIndex((prev) =>
+              //     prev + 1 < TOPICS.length ? prev + 1 : 0,
+              //   );
+              // }
+
+              // if (e.key === "ArrowUp") {
+              //   e.preventDefault();
+              //   setSelectedTopicIndex((prev) =>
+              //     prev - 1 >= 0 ? prev - 1 : TOPICS.length - 1,
+              //   );
+              // }
             }}
             onValueChange={(value) =>
               value.startsWith("/") && !watch("topic")
@@ -137,7 +155,11 @@ export function Chat() {
                 : setDropdownOpen(false)
             }
             startContent={
-              <Dropdown isOpen={dropdownOpen} placement="bottom-start">
+              <Dropdown
+                isOpen={dropdownOpen}
+                placement="bottom-start"
+                onClose={() => setDropdownOpen(false)}
+              >
                 {watch("topic") ? (
                   <Card className="my-auto ml-4 bg-primary">
                     <CardDescription className="p-2 text-primary-foreground">
@@ -154,7 +176,8 @@ export function Chat() {
                       className={cn(
                         "opacity-100 delay-100 duration-500 ease-soft-spring transition-transform-opacity",
                         {
-                          "-translate-x-4 opacity-0": watch("prompt"),
+                          "pointer-events-none -translate-x-4 opacity-0":
+                            watch("prompt"),
                         },
                       )}
                       onClick={() => setDropdownOpen((prev) => !prev)}
@@ -164,22 +187,24 @@ export function Chat() {
                   </DropdownTrigger>
                 )}
                 <DropdownMenu
-                  aria-label="Single selection example"
+                  aria-label="Select a topic"
                   variant="flat"
                   disallowEmptySelection
                   selectionMode="single"
                   selectedKeys={watch("topic")}
+                  shouldFocusWrap
                   onSelectionChange={(selected) => {
                     setDropdownOpen(false);
                     setValue("prompt", "");
                     setValue("topic", Array.from(selected).at(0)?.toString());
                   }}
                 >
-                  <DropdownItem key="text">Text</DropdownItem>
-                  <DropdownItem key="number">Number</DropdownItem>
-                  <DropdownItem key="date">Date</DropdownItem>
-                  <DropdownItem key="single_date">Single Date</DropdownItem>
-                  <DropdownItem key="iteration">Iteration</DropdownItem>
+                  {TOPICS.map((topic) => (
+                    <DropdownItem key={topic}>
+                      {topic.at(0)?.toUpperCase() +
+                        topic.slice(1).replace("_", " ")}
+                    </DropdownItem>
+                  ))}
                 </DropdownMenu>
               </Dropdown>
             }

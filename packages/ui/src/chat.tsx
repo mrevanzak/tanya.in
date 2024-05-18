@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
-import { useMutation } from "@tanstack/react-query";
+import { useChat } from "ai/react";
 import { IoMenu, IoSend } from "react-icons/io5";
 import { z } from "zod";
 
@@ -27,41 +27,27 @@ const TOPICS = [
 ] as const;
 
 export function Chat() {
-  const [chat, setChat] = React.useState<string[]>([]);
+  const {
+    messages,
+    isLoading,
+    append: mutate,
+  } = useChat({
+    api: "http://localhost:8000/generate_stream",
+    streamMode: "text",
+  });
 
   const chatContainerRef = React.useRef<HTMLDivElement>(null);
-  function scrollToBottom() {
+  const scrollToBottom = React.useCallback(() => {
     const lastBubbleChat = chatContainerRef.current?.lastElementChild;
     lastBubbleChat?.scrollIntoView({
       behavior: "smooth",
     });
-  }
+  }, []);
 
   React.useEffect(() => {
     scrollToBottom();
-  }, [chat]);
+  }, [messages, scrollToBottom]);
 
-  const { mutate, isPending } = useMutation({
-    onMutate: (newChat) => {
-      reset();
-      // Snapshot the previous value
-      const previousChats = chat;
-
-      // Optimistically update to the new value
-      // setChat((prev) => [...prev, newChat.prompt]);
-
-      // Return a context object with the snapshotted value
-      return { previousChats };
-    },
-    // If the mutation fails,
-    // use the context returned from onMutate to roll back
-    onError: (_err, _newChats, context) => {
-      if (context?.previousChats) setChat(context.previousChats);
-    },
-    onSuccess: (data) => {
-      // setChat((prev) => [...prev, data.answer]);
-    },
-  });
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: "onSubmit",
@@ -71,22 +57,22 @@ export function Chat() {
     }),
   });
   const { handleSubmit, reset, control, watch, setValue } = methods;
+  const onSubmit = handleSubmit(async (data) => {
+    reset();
+    await mutate(
+      { content: data.prompt, role: "user" },
+      { options: { body: { topic: data.topic } } },
+    );
+  });
   //#endregion  //*======== Form ===========
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    // mutate({ prompt: data.chat });
-  });
-
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const [filteredTopics, setFilteredTopics] = React.useState(TOPICS);
 
   return (
-    <div className="-z-10 flex flex-col space-y-2">
-      <div
-        className="max-h-unit-8xl space-y-3 overflow-y-auto"
-        ref={chatContainerRef}
-      >
-        {chat.map((item, index) => (
+    <div className="flex max-h-[60vh] flex-col space-y-4">
+      <div className="space-y-3 overflow-y-auto" ref={chatContainerRef}>
+        {messages.map((item, index) => (
           <div
             key={index}
             className={cn(
@@ -99,11 +85,11 @@ export function Chat() {
               className={cn(
                 "rounded-lg px-3 py-2 text-sm",
                 index % 2 === 0
-                  ? "bg-primary text-white"
-                  : "bg-secondary text-black",
+                  ? "ml-2 bg-primary text-white"
+                  : "mr-2 bg-content2",
               )}
             >
-              {item}
+              {item.content}
             </div>
           </div>
         ))}
@@ -118,22 +104,27 @@ export function Chat() {
             classNames={{
               inputWrapper: "p-0",
               input: cn(
-                "my-2 self-center !transition-all !duration-500 ease-soft-spring",
+                "my-2 self-center !transition-all !duration-500 ease-soft-spring disabled:cursor-not-allowed",
                 {
                   "-translate-x-6": watch("prompt") && !watch("topic"),
                 },
               ),
             }}
-            disabled={isPending}
+            disabled={isLoading}
             minRows={1}
             maxRows={3}
-            onKeyDown={(e) => {
+            onKeyDown={async (e) => {
               if (
                 (e.key === "Backspace" || e.key === "Delete") &&
                 !watch("prompt") &&
                 watch("topic")
               )
                 setValue("topic", "");
+
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                await onSubmit();
+              }
 
               // if (e.key === "ArrowDown") {
               //   e.preventDefault();
@@ -149,11 +140,19 @@ export function Chat() {
               //   );
               // }
             }}
-            onValueChange={(value) =>
-              value.startsWith("/") && !watch("topic")
-                ? setDropdownOpen(true)
-                : setDropdownOpen(false)
-            }
+            onValueChange={(value) => {
+              if (value.startsWith("/") && !watch("topic")) {
+                setFilteredTopics(
+                  TOPICS.filter((topic) =>
+                    topic.startsWith(value.slice(1).toLowerCase()),
+                  ),
+                );
+                setDropdownOpen(true);
+                return;
+              }
+
+              setDropdownOpen(false);
+            }}
             startContent={
               <Dropdown
                 isOpen={dropdownOpen}
@@ -199,7 +198,7 @@ export function Chat() {
                     setValue("topic", Array.from(selected).at(0)?.toString());
                   }}
                 >
-                  {TOPICS.map((topic) => (
+                  {filteredTopics.map((topic) => (
                     <DropdownItem key={topic}>
                       {topic.at(0)?.toUpperCase() +
                         topic.slice(1).replace("_", " ")}
@@ -215,10 +214,10 @@ export function Chat() {
                 radius="full"
                 type="submit"
                 isIconOnly
-                isLoading={isPending}
+                isLoading={isLoading}
                 className="my-auto"
               >
-                {!isPending && <IoSend size={20} />}
+                {!isLoading && <IoSend size={20} />}
               </Button>
             }
           />

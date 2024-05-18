@@ -1,5 +1,3 @@
-import { auth } from "@/lib/auth";
-
 import {
   Card,
   CardContent,
@@ -9,10 +7,7 @@ import {
 } from "@tanya.in/ui/card";
 import { Chat } from "@tanya.in/ui/chat";
 
-export default async function HomePage() {
-  const session = await auth();
-  console.log(session);
-
+export default function HomePage() {
   return (
     <div className="flex flex-1 justify-center self-center">
       <Card className="">

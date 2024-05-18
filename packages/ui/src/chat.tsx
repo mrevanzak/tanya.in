@@ -10,21 +10,14 @@ import {
 } from "@nextui-org/dropdown";
 import { useChat } from "ai/react";
 import { IoMenu, IoSend } from "react-icons/io5";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { cn } from ".";
 import { Card, CardDescription } from "./card";
 import { Form, FormTextArea, useForm } from "./form";
 
-const TOPICS = [
-  "template",
-  "MBKM",
-  "SKEM",
-  "UKT",
-  "tugas_akhir",
-  "wisuda",
-  "silabus",
-] as const;
+const TOPICS = ["template", "MBKM", "SKEM", "UKT", "TA", "wisuda", "silabus"];
 
 export function Chat() {
   const {
@@ -34,6 +27,7 @@ export function Chat() {
   } = useChat({
     api: "http://localhost:8000/generate_stream",
     streamMode: "text",
+    onError: (error) => toast.error(error.message),
   });
 
   const chatContainerRef = React.useRef<HTMLDivElement>(null);
@@ -144,7 +138,7 @@ export function Chat() {
               if (value.startsWith("/") && !watch("topic")) {
                 setFilteredTopics(
                   TOPICS.filter((topic) =>
-                    topic.startsWith(value.slice(1).toLowerCase()),
+                    topic.toLowerCase().includes(value.slice(1).toLowerCase()),
                   ),
                 );
                 setDropdownOpen(true);
@@ -161,7 +155,7 @@ export function Chat() {
               >
                 {watch("topic") ? (
                   <Card className="my-auto ml-4 bg-primary">
-                    <CardDescription className="p-2 text-primary-foreground">
+                    <CardDescription className="w-full p-2 capitalize text-primary-foreground">
                       /{watch("topic")}
                     </CardDescription>
                   </Card>
@@ -199,9 +193,8 @@ export function Chat() {
                   }}
                 >
                   {filteredTopics.map((topic) => (
-                    <DropdownItem key={topic}>
-                      {topic.at(0)?.toUpperCase() +
-                        topic.slice(1).replace("_", " ")}
+                    <DropdownItem key={topic} className="capitalize">
+                      {topic}
                     </DropdownItem>
                   ))}
                 </DropdownMenu>

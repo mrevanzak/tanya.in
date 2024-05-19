@@ -19,6 +19,16 @@ import { Form, FormTextArea, useForm } from "./form";
 
 const TOPICS = ["template", "MBKM", "SKEM", "UKT", "TA", "wisuda", "silabus"];
 
+function useChatScroll<T>(dep: T) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  }, [dep]);
+  return ref;
+}
+
 export function Chat() {
   const {
     messages,
@@ -29,20 +39,9 @@ export function Chat() {
     streamMode: "text",
     onError: (error) => toast.error(error.message),
   });
-
-  const chatContainerRef = React.useRef<HTMLDivElement>(null);
-  const scrollToBottom = React.useCallback(() => {
-    const lastBubbleChat = chatContainerRef.current?.lastElementChild;
-    lastBubbleChat?.scrollIntoView({
-      behavior: "smooth",
-    });
-  }, []);
-
-  React.useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
-
+  const chatContainerRef = useChatScroll(messages);
   const [isStarted, setIsStarted] = React.useState(false);
+
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: "onSubmit",

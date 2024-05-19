@@ -22,6 +22,7 @@ export function UserButton(props: { user?: Session["user"] }) {
           name={props.user?.name ?? ""}
           color="primary"
           as="button"
+          className="!size-8 sm:!size-10"
         />
       </DropdownTrigger>
       <DropdownMenu

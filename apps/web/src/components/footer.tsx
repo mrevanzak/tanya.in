@@ -8,8 +8,8 @@ export function Footer() {
   const { resolvedTheme } = useTheme();
 
   return (
-    <footer className="flex flex-wrap items-center justify-center border-t-2 px-4 py-4 sm:mx-16 sm:justify-between sm:py-0">
-      <p className="text-xs text-default-400">
+    <footer className="flex flex-wrap items-center justify-center border-t-2 p-4 sm:mx-16 sm:justify-between sm:py-0">
+      <p className="text-center text-xs text-default-400">
         Copyright © {new Date().getFullYear()} Institut Teknologi Sepuluh
         Nopember
       </p>

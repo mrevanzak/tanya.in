@@ -42,6 +42,7 @@ export function Chat() {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
+  const [isStarted, setIsStarted] = React.useState(false);
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: "onSubmit",
@@ -52,6 +53,7 @@ export function Chat() {
   });
   const { handleSubmit, reset, control, watch, setValue } = methods;
   const onSubmit = handleSubmit(async (data) => {
+    setIsStarted(true);
     reset();
     await mutate(
       { content: data.prompt, role: "user" },
@@ -64,7 +66,10 @@ export function Chat() {
   const [filteredTopics, setFilteredTopics] = React.useState(TOPICS);
 
   return (
-    <div className="flex max-h-[60vh] flex-col space-y-4">
+    <div
+      className="flex max-h-[60vh] flex-col space-y-4"
+      data-started={isStarted}
+    >
       <div className="space-y-3 overflow-y-auto" ref={chatContainerRef}>
         {messages.map((item, index) => (
           <div
@@ -75,16 +80,16 @@ export function Chat() {
               "space-x-2",
             )}
           >
-            <div
+            <p
               className={cn(
-                "rounded-lg px-3 py-2 text-sm",
+                "rounded-lg px-3 py-2",
                 index % 2 === 0
                   ? "ml-2 bg-primary text-white"
                   : "mr-2 bg-content2",
               )}
             >
               {item.content}
-            </div>
+            </p>
           </div>
         ))}
       </div>

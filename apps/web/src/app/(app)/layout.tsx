@@ -2,6 +2,7 @@ import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { SidebarWrapper } from "@/components/sidebar/sidebar";
 import { auth } from "@/lib/auth";
+import { get } from "@vercel/edge-config";
 
 export default async function AuthLayout(props: {
   user: React.ReactNode;
@@ -9,6 +10,13 @@ export default async function AuthLayout(props: {
 }) {
   const session = await auth();
   const isAdmin = session?.user.role === "admin";
+
+  const isMaintenance = await get("maintenance");
+
+  if (isMaintenance && !isAdmin)
+    throw new Error(
+      "Unfortunately, the site is under maintenance. We'll be back soon!",
+    );
 
   return (
     <div className="flex flex-row">

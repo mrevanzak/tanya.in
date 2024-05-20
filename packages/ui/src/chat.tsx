@@ -40,7 +40,6 @@ export function Chat() {
     onError: (error) => toast.error(error.message),
   });
   const chatContainerRef = useChatScroll(messages);
-  const [isStarted, setIsStarted] = React.useState(false);
 
   //#region  //*=========== Form ===========
   const methods = useForm({
@@ -52,7 +51,6 @@ export function Chat() {
   });
   const { handleSubmit, reset, control, watch, setValue } = methods;
   const onSubmit = handleSubmit(async (data) => {
-    setIsStarted(true);
     reset();
     await mutate(
       { content: data.prompt, role: "user" },
@@ -67,7 +65,7 @@ export function Chat() {
   return (
     <div
       className="flex max-h-[60vh] flex-col space-y-4"
-      data-started={isStarted}
+      data-started={messages.length > 0}
     >
       <div className="space-y-3 overflow-y-auto" ref={chatContainerRef}>
         {messages.map((item, index) => (

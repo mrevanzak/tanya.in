@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useLockedBody } from "@/lib/hooks/useBodyLock";
 import { NextUIProvider } from "@nextui-org/system";
 import {
   MutationCache,
@@ -13,7 +14,16 @@ import { ZodError } from "zod";
 
 import { ThemeProvider } from "@tanya.in/ui/theme";
 
+import { SidebarContext } from "./sidebar/sidebar-context";
+
 export function Providers({ children }: { children: React.ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [_, setLocked] = useLockedBody(false);
+  const handleToggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+    setLocked(!sidebarOpen);
+  };
+
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -43,11 +53,19 @@ export function Providers({ children }: { children: React.ReactNode }) {
         }),
       }),
   );
+
   return (
     <NextUIProvider>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <SidebarContext.Provider
+            value={{
+              collapsed: sidebarOpen,
+              setCollapsed: handleToggleSidebar,
+            }}
+          >
+            {children}
+          </SidebarContext.Provider>
         </QueryClientProvider>
       </ThemeProvider>
     </NextUIProvider>

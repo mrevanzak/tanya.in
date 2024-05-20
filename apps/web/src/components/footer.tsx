@@ -1,15 +1,30 @@
 "use client";
 
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
+import { cn } from "@tanya.in/ui";
 import { useTheme } from "@tanya.in/ui/theme";
+
+import { useSidebarContext } from "./sidebar/sidebar-context";
 
 export function Footer() {
   const { resolvedTheme } = useTheme();
+  const { collapsed } = useSidebarContext();
+  const { data: session } = useSession();
+  const isAdmin = session?.user.role === "admin";
 
   return (
-    <footer className="flex flex-wrap items-center justify-center border-t-2 p-4 sm:mx-16 sm:justify-between sm:py-0">
-      <p className="text-center text-xs text-default-400">
+    <footer
+      className={cn(
+        "flex flex-wrap items-center justify-center border-t-2 sm:mx-16 sm:px-4",
+        isAdmin && !collapsed ? "lg:justify-between" : "sm:justify-between",
+        {
+          "sm:justify-between": collapsed,
+        },
+      )}
+    >
+      <p className="py-2 text-center text-xs text-default-400">
         Copyright © {new Date().getFullYear()} Institut Teknologi Sepuluh
         Nopember
       </p>

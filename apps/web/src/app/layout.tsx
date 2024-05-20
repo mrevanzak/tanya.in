@@ -11,6 +11,8 @@ import "@/styles/globals.css";
 
 import { Providers } from "@/components/providers";
 import { siteConfig } from "@/constant/config";
+import { auth } from "@/lib/auth";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -57,7 +59,9 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default async function RootLayout(props: { children: React.ReactNode }) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -68,14 +72,16 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <Providers>
-          {props.children}
+          <SessionProvider session={session}>
+            {props.children}
 
-          <div className="fixed bottom-4 right-4">
-            <ThemeToggle />
-          </div>
+            <div className="fixed bottom-4 right-4">
+              <ThemeToggle />
+            </div>
 
-          <Toaster />
-          <Analytics />
+            <Toaster />
+            <Analytics />
+          </SessionProvider>
         </Providers>
       </body>
     </html>

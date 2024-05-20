@@ -10,7 +10,7 @@ import { Chat } from "@tanya.in/ui/chat";
 export default function HomePage() {
   return (
     <div className="flex-1 self-center">
-      <Card className="m-2 mx-auto w-full transition-size has-[[data-started=false]]:min-[450px]:w-96">
+      <Card className="m-2 mx-auto w-full duration-500 transition-size has-[[data-started=false]]:min-[450px]:w-96">
         <CardHeader>
           <CardTitle className="text-center">Tanya.in saja!</CardTitle>
         </CardHeader>

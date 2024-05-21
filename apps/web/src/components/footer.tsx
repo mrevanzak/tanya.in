@@ -12,7 +12,7 @@ export function Footer() {
   const { resolvedTheme } = useTheme();
   const { collapsed } = useSidebarContext();
   const { data: session } = useSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = session?.user.role === "ADMIN";
 
   return (
     <footer

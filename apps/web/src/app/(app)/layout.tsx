@@ -9,7 +9,7 @@ export default async function AuthLayout(props: {
   admin: React.ReactNode;
 }) {
   const session = await auth();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = session?.user.role === "ADMIN";
 
   const isMaintenance = await get("maintenance");
 
@@ -20,7 +20,7 @@ export default async function AuthLayout(props: {
 
   return (
     <div className="flex flex-row">
-      {session?.user.role === "admin" && <SidebarWrapper />}
+      {session?.user.role === "ADMIN" && <SidebarWrapper />}
       <div className="flex-1">
         <Navbar />
         <main className="container flex min-h-[calc(100vh-8rem)]">

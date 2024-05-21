@@ -1,7 +1,10 @@
-import { auth } from "@/lib/auth";
+import authConfig from "@/server/auth.config";
+import NextAuth from "next-auth";
 
 const publicRoutes = [""];
 const authRoutes = ["/sign-in"];
+
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   if (req.auth?.user && authRoutes.includes(req.nextUrl.pathname)) {

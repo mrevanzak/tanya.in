@@ -46,14 +46,6 @@
     "nextui:add": {
       "cache": false,
       "interactive": true
-    },
-    "db:push": {
-      "cache": false,
-      "interactive": true
-    },
-    "db:studio": {
-      "cache": false,
-      "interactive": true
     }
   },
   "globalEnv": ["AUTH_SECRET"]

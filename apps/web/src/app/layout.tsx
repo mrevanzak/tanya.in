@@ -11,7 +11,7 @@ import "@/styles/globals.css";
 
 import { Providers } from "@/components/providers";
 import { siteConfig } from "@/constant/config";
-import { auth } from "@/lib/auth";
+import { auth } from "@/server/auth";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {

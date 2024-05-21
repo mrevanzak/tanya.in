@@ -1,3 +1,3 @@
-export { GET, POST } from "@/lib/auth";
+export { GET, POST } from "@/server/auth";
 
 export const runtime = "edge";

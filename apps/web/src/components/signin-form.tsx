@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import useSignIn from "@/lib/api/auth/sign-in";
+import { signIn } from "@/lib/actions/auth";
 import { signInFormSchema } from "@/lib/validation/sign-in";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -15,11 +15,12 @@ import {
   CardTitle,
 } from "@tanya.in/ui/card";
 import { Form, FormInput, useForm } from "@tanya.in/ui/form";
+import { toast } from "@tanya.in/ui/toast";
 
 export function SignInForm() {
   const [isVisible, setIsVisible] = React.useState(false);
+  const [isPending, setIsPending] = React.useState(false);
 
-  const { mutate, isPending } = useSignIn();
   const methods = useForm({
     schema: signInFormSchema,
     mode: "onTouched",
@@ -38,8 +39,11 @@ export function SignInForm() {
         <Form {...methods}>
           <form
             className="space-y-4"
-            onSubmit={handleSubmit((data) => {
-              mutate(data);
+            onSubmit={handleSubmit(async (data) => {
+              setIsPending(true);
+              const res = await signIn(data.email, data.password);
+              if (res?.error) toast.error(res.error);
+              setIsPending(false);
             })}
           >
             <FormInput name="email" type="email" control={control} />

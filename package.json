@@ -10,7 +10,7 @@
     "clean:workspaces": "turbo clean",
     "dev": "turbo dev --filter=web",
     "db:push": "bun run workspace apps/web db:push",
-    "db:studio": "turbo db:studio",
+    "db:studio": "bun run workspace apps/web db:studio",
     "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",

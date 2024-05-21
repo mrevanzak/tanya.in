@@ -1,35 +1,38 @@
 import type { DefaultSession } from "next-auth";
-import { signInFormSchema } from "@/lib/validation/sign-in";
+import authConfig from "@/server/auth.config";
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 
 import "next-auth/jwt";
 
-type Role = "admin" | "user";
+import type { z } from "zod";
+import { env } from "@/env";
+import { users } from "@/server/db/schema";
+import { createSelectSchema } from "drizzle-zod";
+
+const user = createSelectSchema(users);
+type UserData = Omit<z.infer<typeof user>, "password">;
 
 declare module "next-auth" {
-  interface User {
-    role: Role;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface User extends UserData {}
   /**
    * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
-    user: {
-      role: Role;
+    user: UserData &
       /**
        * By default, TypeScript merges new interface properties and overwrites existing ones.
        * In this case, the default session user properties will be overwritten,
        * with the new ones defined above. To keep the default session user properties,
        * you need to add them back into the newly declared interface.
        */
-    } & DefaultSession["user"];
+      DefaultSession["user"];
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    role: Role;
+    role: UserData["role"];
   }
 }
 
@@ -39,29 +42,10 @@ export const {
   signOut,
   auth,
 } = NextAuth({
+  ...authConfig,
   session: {
     strategy: "jwt",
   },
-  providers: [
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "text",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-        },
-      },
-      async authorize(credentials) {
-        const { email } = await signInFormSchema.parseAsync(credentials);
-
-        return { name: "John Doe", email, role: "user" };
-      },
-    }),
-  ],
   callbacks: {
     jwt({ token, user }) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -73,4 +57,5 @@ export const {
       return session;
     },
   },
+  debug: env.NODE_ENV === "development",
 });

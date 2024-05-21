@@ -1,7 +1,7 @@
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { SidebarWrapper } from "@/components/sidebar/sidebar";
-import { auth } from "@/lib/auth";
+import { auth } from "@/server/auth";
 import { get } from "@vercel/edge-config";
 
 export default async function AuthLayout(props: {

@@ -19,6 +19,7 @@ export const env = createEnv({
     EDGE_CONFIG: z.string().optional(),
     POSTGRES_URL: z.string().min(1),
     PORT: z.string().default("3000"),
+    VERCEL_TOKEN: z.string().min(1),
   },
 
   /**

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { signIn } from "@/lib/actions/auth";
-import { signInFormSchema } from "@/lib/validation/sign-in";
+import { authSchema } from "@/server/api/routers/auth/auth.input";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { Button } from "@tanya.in/ui/button";
@@ -22,7 +22,7 @@ export function SignInForm() {
   const [isPending, setIsPending] = React.useState(false);
 
   const methods = useForm({
-    schema: signInFormSchema,
+    schema: authSchema,
     mode: "onTouched",
   });
   const { handleSubmit, control } = methods;

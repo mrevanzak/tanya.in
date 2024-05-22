@@ -1,5 +1,5 @@
 import type { NextAuthConfig } from "next-auth";
-import { signInFormSchema } from "@/lib/validation/sign-in";
+import { authSchema } from "@/server/api/routers/auth/auth.input";
 import { db } from "@/server/db";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -19,8 +19,7 @@ export default {
         },
       },
       async authorize(credentials) {
-        const { email, password } =
-          await signInFormSchema.parseAsync(credentials);
+        const { email, password } = await authSchema.parseAsync(credentials);
         const user = await db.query.users.findFirst({
           where: (user, { eq }) => eq(user.email, email),
         });
@@ -30,7 +29,11 @@ export default {
         if (!(await bcrypt.compare(password, user.password))) {
           throw new Error("Invalid credentials");
         }
-        return user;
+
+        return {
+          ...user,
+          password: undefined,
+        };
       },
     }),
   ],

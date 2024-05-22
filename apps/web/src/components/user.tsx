@@ -1,7 +1,7 @@
 "use client";
 
 import type { Session } from "next-auth";
-import { signOut } from "next-auth/react";
+import { signOut } from "@/lib/actions/auth";
 
 import { Avatar } from "@tanya.in/ui/avatar";
 import {
@@ -29,7 +29,7 @@ export function UserButton(props: { user?: Session["user"] }) {
         aria-label="Profile Actions"
         variant="flat"
         disabledKeys={["profile"]}
-        onAction={async () => signOut()}
+        onAction={async () => await signOut()}
       >
         <DropdownItem key="profile" className="h-14 gap-2">
           <p className="font-semibold">Signed in as</p>

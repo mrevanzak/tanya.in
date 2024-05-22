@@ -1,11 +1,11 @@
 "use server";
 
-import { signIn as attempt } from "@/server/auth";
+import { signInServer, signOutServer } from "@/server/auth";
 import { AuthError } from "next-auth";
 
 export async function signIn(email: string, password: string) {
   try {
-    await attempt("credentials", {
+    await signInServer("credentials", {
       email: email,
       password: password,
       redirectTo: "/",
@@ -18,4 +18,8 @@ export async function signIn(email: string, password: string) {
     }
     throw error;
   }
+}
+
+export async function signOut() {
+  await signOutServer();
 }

@@ -2,7 +2,7 @@
 
 // Error components must be Client Components
 import * as React from "react";
-import { signOut } from "next-auth/react";
+import { signOut } from "@/lib/actions/auth";
 import { RiAlarmWarningFill } from "react-icons/ri";
 
 import { Button } from "@tanya.in/ui/button";

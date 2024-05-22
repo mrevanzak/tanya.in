@@ -1,13 +1,10 @@
 import type { DefaultSession } from "next-auth";
-import authConfig from "@/server/auth.config";
-import NextAuth from "next-auth";
-
-import "next-auth/jwt";
-
 import type { z } from "zod";
 import { env } from "@/env";
+import authConfig from "@/server/auth.config";
 import { users } from "@/server/db/schema";
 import { createSelectSchema } from "drizzle-zod";
+import NextAuth from "next-auth";
 
 const user = createSelectSchema(users);
 type UserData = Omit<z.infer<typeof user>, "password">;
@@ -18,28 +15,15 @@ declare module "next-auth" {
   /**
    * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
-  interface Session {
-    user: UserData &
-      /**
-       * By default, TypeScript merges new interface properties and overwrites existing ones.
-       * In this case, the default session user properties will be overwritten,
-       * with the new ones defined above. To keep the default session user properties,
-       * you need to add them back into the newly declared interface.
-       */
-      DefaultSession["user"];
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    role: UserData["role"];
+  interface Session extends DefaultSession {
+    user: User;
   }
 }
 
 export const {
   handlers: { GET, POST },
-  signIn,
-  signOut,
+  signIn: signInServer,
+  signOut: signOutServer,
   auth,
 } = NextAuth({
   ...authConfig,
@@ -49,11 +33,12 @@ export const {
   callbacks: {
     jwt({ token, user }) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (user) token.role = user.role;
+      if (user) token.user = user;
       return token;
     },
     session({ session, token }) {
-      session.user.role = token.role;
+      //@ts-expect-error - next-auth type is pain in the ass
+      session.user = token.user;
       return session;
     },
   },

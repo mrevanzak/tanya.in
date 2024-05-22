@@ -8,7 +8,7 @@ export default async function DocumentsPage() {
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      <h3 className="text-xl font-semibold">All Files</h3>
+      <h3 className="font-semibold">All Files</h3>
       <DropzoneContainer initialData={documents} />
     </div>
   );

@@ -21,5 +21,5 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signOut() {
-  await signOutServer();
+  await signOutServer({ redirectTo: "/sign-in" });
 }

@@ -12,7 +12,7 @@ export const SidebarButton = () => {
   const { data: session } = useSession();
 
   return (
-    session?.user.role === "ADMIN" && (
+    session?.user.role === "admin" && (
       <Button
         isIconOnly
         variant="light"

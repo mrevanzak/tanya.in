@@ -8,7 +8,7 @@ import { UserButton } from "./user";
 
 export async function Navbar() {
   const session = await auth();
-  const isAdmin = session?.user.role === "ADMIN";
+  const isAdmin = session?.user.role === "admin";
 
   return (
     <header className="sticky top-0 z-10 bg-content1 px-4 sm:px-8">

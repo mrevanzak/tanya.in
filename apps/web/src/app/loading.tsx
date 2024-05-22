@@ -1,4 +1,4 @@
-import { Spinner } from "@tanya.in/ui/spinner";
+import { Spinner } from "@nextui-org/react";
 
 export default function Loading() {
   return (

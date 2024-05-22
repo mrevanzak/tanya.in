@@ -2,8 +2,8 @@
 
 import type { Session } from "next-auth";
 import { signOut } from "@/lib/actions/auth";
+import { Avatar } from "@nextui-org/react";
 
-import { Avatar } from "@tanya.in/ui/avatar";
 import {
   Dropdown,
   DropdownItem,

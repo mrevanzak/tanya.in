@@ -1,8 +1,7 @@
 "use client";
 
+import { Accordion, AccordionItem } from "@nextui-org/react";
 import { IoChevronUp } from "react-icons/io5";
-
-import { Accordion, AccordionItem } from "@tanya.in/ui/accordion";
 
 interface Props {
   icon: React.ReactNode;

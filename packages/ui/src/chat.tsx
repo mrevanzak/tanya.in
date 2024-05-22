@@ -1,20 +1,20 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@nextui-org/button";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/dropdown";
 import { useChat } from "ai/react";
 import { IoMenu, IoSend } from "react-icons/io5";
 import { toast } from "sonner";
 import { z } from "zod";
 
 import { cn } from ".";
+import { Button } from "./button";
 import { Card, CardDescription } from "./card";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "./dropdown";
 import { Form, FormTextArea, useForm } from "./form";
 
 const TOPICS = ["template", "MBKM", "SKEM", "UKT", "TA", "wisuda", "silabus"];

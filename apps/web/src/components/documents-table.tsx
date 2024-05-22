@@ -5,29 +5,27 @@ import React from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
-import moment from "moment";
-import { MdOutlineDownloadForOffline } from "react-icons/md";
-import { RiDeleteBin2Line } from "react-icons/ri";
-
-import { Button } from "@tanya.in/ui/button";
-import { Chip } from "@tanya.in/ui/chip";
 import {
+  Chip,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@tanya.in/ui/modal";
-import { Spinner } from "@tanya.in/ui/spinner";
-import {
+  Spinner,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
-} from "@tanya.in/ui/table";
-import { Tooltip } from "@tanya.in/ui/tooltip";
+  Tooltip,
+} from "@nextui-org/react";
+import moment from "moment";
+import { MdOutlineDownloadForOffline } from "react-icons/md";
+import { RiDeleteBin2Line } from "react-icons/ri";
+
+import { Button } from "@tanya.in/ui/button";
 
 const columns = [
   {

@@ -1,4 +1,6 @@
+import { analyticsRouter } from "@/server/api/routers/analytics/analytics.procedure";
 import { authRouter } from "@/server/api/routers/auth/auth.procedure";
+import { documentsRouter } from "@/server/api/routers/documents/documents.procedure";
 
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 
@@ -9,6 +11,8 @@ import { createCallerFactory, createTRPCRouter } from "./trpc";
  */
 export const appRouter = createTRPCRouter({
   auth: authRouter,
+  analytics: analyticsRouter,
+  documents: documentsRouter,
 });
 
 // export type definition of API

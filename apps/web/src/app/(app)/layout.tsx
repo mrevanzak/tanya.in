@@ -4,6 +4,8 @@ import { SidebarWrapper } from "@/components/sidebar/sidebar";
 import { auth } from "@/server/auth";
 import { get } from "@vercel/edge-config";
 
+import { cn } from "@tanya.in/ui";
+
 export default async function AuthLayout(props: {
   user: React.ReactNode;
   admin: React.ReactNode;
@@ -23,7 +25,11 @@ export default async function AuthLayout(props: {
       {session?.user.role === "admin" && <SidebarWrapper />}
       <div className="flex-1">
         <Navbar />
-        <main className="container flex min-h-[calc(100vh-8rem)]">
+        <main
+          className={cn("container flex min-h-[calc(100vh-8rem)]", {
+            "!px-4 pt-4 2xl:pt-8": isAdmin,
+          })}
+        >
           {isAdmin ? props.admin : props.user}
         </main>
         <Footer />

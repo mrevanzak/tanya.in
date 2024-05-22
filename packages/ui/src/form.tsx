@@ -83,6 +83,6 @@ const FormTextArea = <
   );
 };
 
-export { useForm, Form, FormInput, FormTextArea };
+export { useForm, Form, FormInput, FormTextArea, Input };
 
 export { useFieldArray } from "react-hook-form";

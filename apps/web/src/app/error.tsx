@@ -11,8 +11,8 @@ export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string };
-  reset: () => void;
+  error: (Error & { digest?: string }) | { message: string };
+  reset?: () => void;
 }) {
   const isUnauthorized = error.message.includes("Unauthorized");
   const isMaintenance = error.message.includes("maintenance");
@@ -28,7 +28,7 @@ export default function Error({
         className="!mt-12"
         onClick={async () => {
           if (isUnauthorized) return await signOut();
-          reset();
+          reset?.();
         }}
       >
         {isUnauthorized ? "Go to sign in page" : "Try again"}

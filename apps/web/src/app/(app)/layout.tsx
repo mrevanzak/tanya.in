@@ -1,3 +1,4 @@
+import { env } from "process";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { SidebarWrapper } from "@/components/sidebar/sidebar";
@@ -5,6 +6,8 @@ import { auth } from "@/server/auth";
 import { get } from "@vercel/edge-config";
 
 import { cn } from "@tanya.in/ui";
+
+import ErrorPage from "../error";
 
 export default async function AuthLayout(props: {
   user: React.ReactNode;
@@ -15,10 +18,19 @@ export default async function AuthLayout(props: {
 
   const isMaintenance = await get("maintenance");
 
-  if (isMaintenance && !isAdmin)
-    throw new Error(
-      "Unfortunately, the site is under maintenance. We'll be back soon!",
+  if (isMaintenance && !isAdmin) {
+    const message =
+      "Unfortunatly, we are under maintenance. We will be back soon!";
+    if (env.NODE_ENV === "development") throw new Error(message);
+
+    return (
+      <ErrorPage
+        error={{
+          message,
+        }}
+      />
     );
+  }
 
   return (
     <div className="flex flex-row">

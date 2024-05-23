@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+import NextTopLoader from "nextjs-toploader";
 
 import { cn } from "@tanya.in/ui";
 import { ThemeToggle } from "@tanya.in/ui/theme";
@@ -71,6 +72,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           GeistMono.variable,
         )}
       >
+        <NextTopLoader color="#FFBC05" showSpinner={false} />
         <Providers>
           <SessionProvider session={session}>
             {props.children}

@@ -1,7 +1,7 @@
-import { env } from "process";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { SidebarWrapper } from "@/components/sidebar/sidebar";
+import { env } from "@/env";
 import { auth } from "@/server/auth";
 import { get } from "@vercel/edge-config";
 
@@ -18,10 +18,9 @@ export default async function AuthLayout(props: {
 
   const isMaintenance = await get("maintenance");
 
-  if (isMaintenance && !isAdmin) {
+  if (isMaintenance && !isAdmin && env.NODE_ENV !== "development") {
     const message =
-      "Unfortunatly, we are under maintenance. We will be back soon!";
-    if (env.NODE_ENV === "development") throw new Error(message);
+      "Unfortunately, the site is currently under maintenance. We'll be back soon!";
 
     return (
       <ErrorPage

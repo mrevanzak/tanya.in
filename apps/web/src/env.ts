@@ -20,6 +20,7 @@ export const env = createEnv({
     POSTGRES_URL: z.string().min(1),
     PORT: z.string().default("3000"),
     VERCEL_TOKEN: z.string().min(1),
+    BACKEND_URL: z.string().url().min(1),
   },
 
   /**

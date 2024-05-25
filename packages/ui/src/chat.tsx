@@ -29,13 +29,26 @@ function useChatScroll<T>(dep: T) {
   return ref;
 }
 
+function getChatApi() {
+  if (process.env.CHAT_API) {
+    return process.env.CHAT_API;
+  }
+
+  if (process.env.NODE_ENV !== "development") {
+    return "https://tanya-in.vercel.app/api/chat";
+  }
+
+  // default to '/api/chat'
+  return undefined;
+}
+
 export function Chat() {
   const {
     messages,
     isLoading,
     append: mutate,
   } = useChat({
-    api: "http://localhost:8000/generate_stream",
+    api: getChatApi(),
     streamMode: "text",
     onError: (error) => toast.error(error.message),
   });

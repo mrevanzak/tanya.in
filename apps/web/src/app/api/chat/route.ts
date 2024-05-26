@@ -1,8 +1,17 @@
 import { env } from "@/env";
+import { auth } from "@/server/auth";
+import { get } from "@vercel/edge-config";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 
+export const runtime = "edge";
+
 export async function POST(req: Request) {
+  const session = await auth();
+  if (!session?.user) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const body = z
     .object({
       messages: z
@@ -19,16 +28,20 @@ export async function POST(req: Request) {
     return new Response(error, { status: 400 });
   }
 
-  const res = await fetch(env.BACKEND_URL + "/questions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const isTesting = await get("testing");
+  const res = await fetch(
+    env.BACKEND_URL + "/questions" + (isTesting && "/stream-generator"),
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: body.data.messages.pop()?.content,
+        isBahasa: true,
+      }),
     },
-    body: JSON.stringify({
-      question: body.data.messages.pop()?.content,
-      isBahasa: true,
-    }),
-  });
+  );
 
   if (!res.body) {
     return new Response("No response body", { status: 500 });

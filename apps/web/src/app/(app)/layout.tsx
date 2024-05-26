@@ -37,7 +37,7 @@ export default async function AuthLayout(props: {
       <div className="flex-1">
         <Navbar />
         <main
-          className={cn("container flex min-h-[calc(100vh-8rem)]", {
+          className={cn("container relative flex min-h-[calc(100vh-8rem)]", {
             "p-4 2xl:pt-8": isAdmin,
           })}
         >

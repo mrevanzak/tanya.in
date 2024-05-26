@@ -1,24 +1,20 @@
-import type { Document } from "@/server/api/routers/documents/documents.schema";
+import { env } from "@/env";
 import { adminProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { z } from "zod";
+
+import { documentSchema } from "./documents.schema";
 
 export const documentsRouter = createTRPCRouter({
-  get: adminProcedure.query(() => {
-    const documents: Document[] = [
-      {
-        id: "1",
-        name: "Document 1.pdf",
-        createdAt: new Date(),
-        uploadedBy: "3152ffe5-6496-4214-8fcd-b69fb4f70fd5",
-      },
+  get: adminProcedure.query(async () => {
+    const res = await fetch(env.BACKEND_URL + "/files");
 
-      {
-        id: "2",
-        name: "Document 2.pdf",
-        createdAt: new Date(),
-        uploadedBy: "3152ffe5-6496-4214-8fcd-b69fb4f70fd5",
-      },
-    ];
+    const validate = z
+      .object({
+        status: z.string(),
+        files: documentSchema.array(),
+      })
+      .parse(await res.json());
 
-    return documents;
+    return validate.files;
   }),
 });

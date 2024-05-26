@@ -1,6 +1,11 @@
-import type { z } from "zod";
-import { documents } from "@/server/db/schema";
-import { createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 
-export const documentSchema = createSelectSchema(documents);
+export const documentSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  filename: z.string(),
+  created: z.coerce.date(),
+  lastModified: z.coerce.date(),
+});
+
 export type Document = z.infer<typeof documentSchema>;

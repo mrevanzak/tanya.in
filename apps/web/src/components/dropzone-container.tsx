@@ -30,7 +30,7 @@ export function DropzoneContainer({
         />
         {/* //TODO: fix full reload when clicking this button */}
         <Button color="primary" onClick={() => openRef.current?.()}>
-          Upload New Files
+          Upload New Document
         </Button>
       </div>
       <div className="mx-auto w-full">

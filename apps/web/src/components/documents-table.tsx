@@ -26,6 +26,7 @@ import { MdOutlineDownloadForOffline } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 
 import { Button } from "@tanya.in/ui/button";
+import { toast } from "@tanya.in/ui/toast";
 
 const columns = [
   {
@@ -33,7 +34,7 @@ const columns = [
     label: "NAME",
   },
   {
-    key: "createdAt" as const,
+    key: "created" as const,
     label: "CREATED AT",
   },
   {
@@ -48,24 +49,18 @@ export function DocumentsTable() {
   const searchParams = useSearchParams();
   const showModal = searchParams.get("delete") === "true";
 
-  const [document, setDocument] = React.useState<Document>();
+  const [selectedDocument, setSelectedDocument] = React.useState<Document>();
 
   const { data, isLoading } = api.documents.get.useQuery();
 
   const renderCell = React.useCallback(
-    (document: Document, columnKey: ColumnKey) => {
+    (file: Document, columnKey: ColumnKey) => {
       switch (columnKey) {
-        case "createdAt":
+        case "created":
           return (
-            <Chip
-              size="sm"
-              variant="flat"
-              color={!document[columnKey] ? "default" : "success"}
-            >
+            <Chip size="sm" variant="flat" color="warning">
               <span className="text-xs capitalize">
-                {document[columnKey]
-                  ? moment(document[columnKey]).fromNow()
-                  : "Never"}
+                {moment(file[columnKey]).fromNow()}
               </span>
             </Chip>
           );
@@ -77,14 +72,37 @@ export function DocumentsTable() {
                 color="primary"
                 className="p-2"
               >
-                <button className="pointer-events-auto text-primary">
+                <button
+                  className="pointer-events-auto text-primary"
+                  onClick={() => {
+                    toast.promise(
+                      fetch(`/api/documents/${file.id}`)
+                        .then((res) => res.blob())
+                        .then((blob) => {
+                          const url = window.URL.createObjectURL(blob);
+                          const link = document.createElement("a");
+                          link.href = url;
+                          link.setAttribute("download", file.filename);
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                          window.URL.revokeObjectURL(url);
+                        }),
+                      {
+                        loading: "Downloading...",
+                        success: "Downloaded!",
+                        error: "Failed to download",
+                      },
+                    );
+                  }}
+                >
                   <MdOutlineDownloadForOffline size={20} />
                 </button>
               </Tooltip>
               <Tooltip content="Delete document" color="danger" className="p-2">
                 <Link
                   href="?delete=true"
-                  onClick={() => setDocument(document)}
+                  onClick={() => setSelectedDocument(file)}
                   className="pointer-events-auto"
                 >
                   <RiDeleteBin2Line size={20} color="#FF0080" />
@@ -93,7 +111,7 @@ export function DocumentsTable() {
             </div>
           );
         default:
-          return document[columnKey];
+          return file[columnKey];
       }
     },
     [],
@@ -123,7 +141,7 @@ export function DocumentsTable() {
           emptyContent={
             !isLoading && (
               <p>
-                No files found <br /> Drag and drop a file to upload
+                No documents found <br /> Drag and drop a document to upload
               </p>
             )
           }
@@ -148,7 +166,7 @@ export function DocumentsTable() {
             <>
               <ModalHeader>Delete Document</ModalHeader>
               <ModalBody>
-                <p>Are you sure you want to delete {document?.name}?</p>
+                <p>Are you sure you want to delete {selectedDocument?.name}?</p>
               </ModalBody>
               <ModalFooter>
                 <Button variant="light" onClick={onClose}>

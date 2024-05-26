@@ -4,7 +4,8 @@ import { get } from "@vercel/edge-config";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 
-export const runtime = "edge";
+// TODO: Remove this when backend has domain
+// export const runtime = "edge";
 
 export async function POST(req: Request) {
   const session = await auth();

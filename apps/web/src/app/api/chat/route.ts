@@ -1,5 +1,7 @@
 import { env } from "@/env";
 import { auth } from "@/server/auth";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 import { get } from "@vercel/edge-config";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
@@ -7,11 +9,21 @@ import { fromZodError } from "zod-validation-error";
 // TODO: Remove this when backend has domain
 // export const runtime = "edge";
 
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  // rate limit to 5 req/10s
+  limiter: Ratelimit.slidingWindow(5, "10 s"),
+  analytics: true,
+});
+
 export async function POST(req: Request) {
   const session = await auth();
-  if (!session?.user) {
+  if (!session?.user.id) {
     return new Response("Unauthorized", { status: 401 });
   }
+
+  const { success } = await ratelimit.limit(session.user.id);
+  if (!success) return new Response("Too many request", { status: 429 });
 
   const body = z
     .object({
@@ -43,6 +55,11 @@ export async function POST(req: Request) {
       }),
     },
   );
+
+  if (!res.ok) {
+    console.error("Failed to fetch from backend", await res.json());
+    return new Response("Internal server error", { status: 500 });
+  }
 
   if (!res.body) {
     return new Response("No response body", { status: 500 });

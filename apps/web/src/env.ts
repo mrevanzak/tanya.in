@@ -21,6 +21,8 @@ export const env = createEnv({
     PORT: z.string().default("3000"),
     VERCEL_TOKEN: z.string().min(1),
     BACKEND_URL: z.string().url().min(1),
+    UPSTASH_REDIS_REST_URL: z.string().url().min(1),
+    UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
   },
 
   /**

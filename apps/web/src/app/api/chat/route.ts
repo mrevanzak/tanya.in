@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
   const isTesting = await get("testing");
   const res = await fetch(
-    env.BACKEND_URL + "/questions" + (isTesting && "/stream-generator"),
+    env.BACKEND_URL + "/questions" + (isTesting ? "/stream-generator" : ""),
     {
       method: "POST",
       headers: {

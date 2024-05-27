@@ -62,9 +62,10 @@ export function Chat() {
       topic: z.string().optional(),
     }),
   });
-  const { handleSubmit, reset, control, watch, setValue } = methods;
+  const { handleSubmit, control, watch, setValue } = methods;
   const onSubmit = handleSubmit(async (data) => {
-    reset();
+    setValue("prompt", "");
+    setValue("topic", "");
     await mutate(
       { content: data.prompt, role: "user" },
       { options: { body: { topic: data.topic } } },

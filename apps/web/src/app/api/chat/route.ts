@@ -64,6 +64,7 @@ export async function POST(req: Request) {
   if (!res.body) {
     return new Response("No response body", { status: 500 });
   }
+
   const reader = res.body.getReader();
   const stream = new ReadableStream({
     async start(controller) {
@@ -73,11 +74,15 @@ export async function POST(req: Request) {
           controller.close();
           break;
         }
-        // Convert Uint8Array to string and remove "data: " prefix
-        const text = new TextDecoder().decode(value).replace(/^data:\s*/gm, "");
+        const text = new TextDecoder()
+          .decode(value, { stream: true })
+          // Convert Uint8Array to string and remove "data: " prefix
+          .replace(/^data: /gm, "")
+          // Remove all whitespaces except for space
+          .replace(/[\r\n\t\f\v]/g, "");
 
         // Enqueue the modified chunk back into the stream
-        controller.enqueue(new TextEncoder().encode(text));
+        controller.enqueue(text);
       }
     },
   });

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { useChat } from "ai/react";
 import { IoMenu, IoSend } from "react-icons/io5";
 import { toast } from "sonner";
@@ -81,29 +82,31 @@ export function Chat() {
       className="flex max-h-[60vh] flex-col space-y-4"
       data-started={messages.length > 0}
     >
-      <div className="space-y-3 overflow-y-auto" ref={chatContainerRef}>
-        {messages.map((item, index) => (
-          <div
-            key={index}
-            className={cn(
-              "flex justify-between",
-              index % 2 === 0 ? "flex-row-reverse" : "flex-row",
-              "space-x-2",
-            )}
-          >
-            <p
+      <ScrollShadow ref={chatContainerRef}>
+        <div className="mb-4 space-y-3">
+          {messages.map((item, index) => (
+            <div
+              key={index}
               className={cn(
-                "rounded-lg px-3 py-2",
-                index % 2 === 0
-                  ? "ml-2 bg-primary text-white"
-                  : "mr-2 bg-content2",
+                "flex justify-between",
+                index % 2 === 0 ? "flex-row-reverse" : "flex-row",
+                "space-x-2",
               )}
             >
-              {item.content}
-            </p>
-          </div>
-        ))}
-      </div>
+              <p
+                className={cn(
+                  "rounded-lg px-3 py-2",
+                  index % 2 === 0
+                    ? "ml-2 bg-primary text-white"
+                    : "mr-2 bg-content2",
+                )}
+              >
+                {item.content}
+              </p>
+            </div>
+          ))}
+        </div>
+      </ScrollShadow>
       <Form {...methods}>
         <form onSubmit={onSubmit}>
           <FormTextArea

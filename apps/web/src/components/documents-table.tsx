@@ -77,7 +77,10 @@ export function DocumentsTable() {
                   onClick={() => {
                     toast.promise(
                       fetch(`/api/documents/${file.id}`)
-                        .then((res) => res.blob())
+                        .then((res) => {
+                          if (!res.ok) throw new Error("Failed to download");
+                          return res.blob();
+                        })
                         .then((blob) => {
                           const url = window.URL.createObjectURL(blob);
                           const link = document.createElement("a");

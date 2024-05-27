@@ -1,6 +1,8 @@
 import { env } from "@/env";
 import { auth } from "@/server/auth";
 
+export const runtime = "edge";
+
 export async function GET(_: Request, context: { params: { fileId: string } }) {
   const session = await auth();
   if (session?.user.role !== "admin") {

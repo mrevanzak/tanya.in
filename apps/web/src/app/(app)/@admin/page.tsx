@@ -65,8 +65,8 @@ export default async function HomePage() {
               >
                 <Chip color="success" radius="sm" variant="flat">
                   {pageViews > pageViewsLastWeek
-                    ? "↑" + pageViews
-                    : "↓" + pageViews}
+                    ? "↑ " + Math.abs(pageViews - pageViewsLastWeek)
+                    : "↓ " + Math.abs(pageViews - pageViewsLastWeek)}
                 </Chip>
               </Tooltip>
             </div>
@@ -83,8 +83,8 @@ export default async function HomePage() {
               >
                 <Chip color="success" radius="sm" variant="flat">
                   {visitors > visitorsLastWeek
-                    ? "↑" + visitors
-                    : "↓" + visitors}
+                    ? "↑ " + Math.abs(visitors - visitorsLastWeek)
+                    : "↓ " + Math.abs(visitors - visitorsLastWeek)}
                 </Chip>
               </Tooltip>
             </div>

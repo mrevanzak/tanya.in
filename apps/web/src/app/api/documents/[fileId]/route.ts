@@ -1,7 +1,8 @@
 import { env } from "@/env";
 import { auth } from "@/server/auth";
 
-export const runtime = "edge";
+// TODO: Remove this when backend has domain
+// export const runtime = "edge";
 
 export async function GET(_: Request, context: { params: { fileId: string } }) {
   const session = await auth();

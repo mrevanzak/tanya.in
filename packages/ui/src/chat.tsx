@@ -101,7 +101,11 @@ export function Chat() {
                     : "mr-2 bg-content2",
                 )}
               >
-                {item.content}
+                {item.content.includes("</>") ? (
+                  <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                ) : (
+                  item.content
+                )}
               </p>
             </div>
           ))}

@@ -24,7 +24,7 @@ export function Footer() {
         },
       )}
     >
-      <p className="py-2 text-center text-xs text-default-400">
+      <p className="py-2 text-center text-xs text-default-500">
         Copyright © {new Date().getFullYear()} Institut Teknologi Sepuluh
         Nopember
       </p>

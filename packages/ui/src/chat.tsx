@@ -117,6 +117,7 @@ export function Chat() {
             control={control}
             name="prompt"
             label=""
+            aria-label="prompt"
             radius="full"
             classNames={{
               inputWrapper: "p-0",
@@ -185,6 +186,7 @@ export function Chat() {
                 ) : (
                   <DropdownTrigger>
                     <Button
+                      aria-label="Select a topic button"
                       color="default"
                       variant="light"
                       radius="full"
@@ -225,6 +227,7 @@ export function Chat() {
             }
             endContent={
               <Button
+                aria-label="Send message button"
                 color="primary"
                 variant="light"
                 radius="full"

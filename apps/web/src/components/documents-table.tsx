@@ -2,8 +2,6 @@
 
 import type { Document } from "@/server/api/routers/documents/documents.schema";
 import React from "react";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import {
   Chip,
@@ -20,6 +18,7 @@ import {
   TableHeader,
   TableRow,
   Tooltip,
+  useDisclosure,
 } from "@nextui-org/react";
 import moment from "moment";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
@@ -45,13 +44,12 @@ const columns = [
 type ColumnKey = (typeof columns)[number]["key"];
 
 export function DocumentsTable() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const showModal = searchParams.get("delete") === "true";
-
+  const { isOpen, onOpenChange, onOpen } = useDisclosure();
   const [selectedDocument, setSelectedDocument] = React.useState<Document>();
 
-  const { data, isLoading } = api.documents.get.useQuery();
+  const { data, isLoading, isFetching } = api.documents.get.useQuery();
+  const deleteDocument = api.documents.delete.useMutation();
+  const utils = api.useUtils();
 
   const renderCell = React.useCallback(
     (file: Document, columnKey: ColumnKey) => {
@@ -103,13 +101,15 @@ export function DocumentsTable() {
                 </button>
               </Tooltip>
               <Tooltip content="Delete document" color="danger" className="p-2">
-                <Link
-                  href="?delete=true"
-                  onClick={() => setSelectedDocument(file)}
-                  className="pointer-events-auto"
+                <button
+                  className="pointer-events-auto text-primary"
+                  onClick={() => {
+                    setSelectedDocument(file);
+                    onOpen();
+                  }}
                 >
                   <RiDeleteBin2Line size={20} color="#FF0080" />
-                </Link>
+                </button>
               </Tooltip>
             </div>
           );
@@ -117,7 +117,7 @@ export function DocumentsTable() {
           return file[columnKey];
       }
     },
-    [],
+    [onOpen],
   );
 
   return (
@@ -148,8 +148,10 @@ export function DocumentsTable() {
               </p>
             )
           }
-          // isLoading={isLoading || uploadDocument.isPending}
-          loadingContent={<Spinner />}
+          isLoading={isLoading || isFetching}
+          loadingContent={
+            <Spinner className="absolute inset-0 bg-overlay/20 dark:bg-overlay/70" />
+          }
         >
           {(item) => (
             <TableRow key={item.id}>
@@ -163,7 +165,7 @@ export function DocumentsTable() {
         </TableBody>
       </Table>
 
-      <Modal isOpen={showModal} onClose={() => router.back()}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -177,15 +179,22 @@ export function DocumentsTable() {
                 </Button>
                 <Button
                   color="danger"
-                  // onPress={() => {
-                  //   if (document)
-                  //     mutate(document._id, {
-                  //       onSuccess: () => {
-                  //         onClose();
-                  //       },
-                  //     });
-                  // }}
-                  // isLoading={isPending}
+                  onPress={() => {
+                    if (selectedDocument)
+                      deleteDocument.mutate(
+                        {
+                          id: selectedDocument.id,
+                          name: selectedDocument.name,
+                        },
+                        {
+                          onSuccess: () => {
+                            void utils.documents.get.invalidate();
+                            onClose();
+                          },
+                        },
+                      );
+                  }}
+                  isLoading={deleteDocument.isPending}
                 >
                   Delete
                 </Button>

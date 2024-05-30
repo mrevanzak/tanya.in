@@ -1,10 +1,11 @@
 "use client";
 
 import type { Document } from "@/server/api/routers/documents/documents.schema";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { DocumentsTable } from "@/components/documents-table";
 import { api } from "@/trpc/react";
 import { Dropzone, PDF_MIME_TYPE } from "@mantine/dropzone";
+import { Spinner } from "@nextui-org/react";
 import { FaUpload, FaXmark } from "react-icons/fa6";
 
 import { Button } from "@tanya.in/ui/button";
@@ -18,6 +19,7 @@ export function DropzoneContainer({
 }) {
   const openRef = useRef<() => void>(null);
 
+  const [loading, setLoading] = useState(false);
   api.documents.get.useQuery(undefined, { initialData });
   const utils = api.useUtils();
 
@@ -41,6 +43,7 @@ export function DropzoneContainer({
               formData.append("file", file[0]);
               formData.append("name", file[0].name.split(".")[0] ?? "file");
 
+              setLoading(true);
               toast.promise(
                 fetch("/api/documents/upload", {
                   method: "POST",
@@ -54,6 +57,7 @@ export function DropzoneContainer({
                   })
                   .finally(() => {
                     void utils.documents.get.invalidate();
+                    setLoading(false);
                   }),
                 {
                   loading: "Uploading document...",
@@ -63,14 +67,22 @@ export function DropzoneContainer({
               );
             }
           }}
+          onReject={(file) =>
+            file.forEach((f) => toast.error(f.errors[0]?.message))
+          }
+          disabled={loading}
           accept={PDF_MIME_TYPE}
           openRef={openRef}
+          multiple={false}
           //10MB
           maxSize={10 * 1024 ** 2}
           activateOnClick={false}
-          className="group"
+          className="group relative overflow-clip !rounded-xl !border-0 !bg-transparent"
         >
           <div className="pointer-events-none absolute inset-0 z-10 flex h-full w-full items-center justify-center group-data-[accept]:bg-success group-data-[reject]:bg-danger group-data-[accept]:bg-opacity-10 group-data-[reject]:bg-opacity-10">
+            {loading && (
+              <Spinner className="absolute inset-0 bg-overlay/20 dark:bg-overlay/70" />
+            )}
             <Dropzone.Accept>
               <FaUpload className="text-success" size={54} />
             </Dropzone.Accept>

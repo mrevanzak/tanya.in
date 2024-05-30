@@ -9,6 +9,7 @@ import { FaUpload, FaXmark } from "react-icons/fa6";
 
 import { Button } from "@tanya.in/ui/button";
 import { Input } from "@tanya.in/ui/form";
+import { toast } from "@tanya.in/ui/toast";
 
 export function DropzoneContainer({
   initialData,
@@ -18,7 +19,7 @@ export function DropzoneContainer({
   const openRef = useRef<() => void>(null);
 
   api.documents.get.useQuery(undefined, { initialData });
-  // const uploadDocument = useUploadDocument();
+  const utils = api.useUtils();
 
   return (
     <>
@@ -28,7 +29,6 @@ export function DropzoneContainer({
           placeholder="Search files"
           classNames={{ inputWrapper: "dark:bg-content2 bg-content1" }}
         />
-        {/* //TODO: fix full reload when clicking this button */}
         <Button color="primary" onClick={() => openRef.current?.()}>
           Upload New Document
         </Button>
@@ -37,7 +37,30 @@ export function DropzoneContainer({
         <Dropzone
           onDrop={(file) => {
             if (file[0]) {
-              // uploadDocument.mutate(file[0]);
+              const formData = new FormData();
+              formData.append("file", file[0]);
+              formData.append("name", file[0].name.split(".")[0] ?? "file");
+
+              toast.promise(
+                fetch("/api/documents/upload", {
+                  method: "POST",
+                  body: formData,
+                })
+                  .then((res) => {
+                    if (res.ok) {
+                      return res.json();
+                    }
+                    throw new Error("Failed to upload document");
+                  })
+                  .finally(() => {
+                    void utils.documents.get.invalidate();
+                  }),
+                {
+                  loading: "Uploading document...",
+                  success: "Document uploaded",
+                  error: "Failed to upload document",
+                },
+              );
             }
           }}
           accept={PDF_MIME_TYPE}

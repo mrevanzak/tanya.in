@@ -9,6 +9,14 @@ export const documentsRouter = createTRPCRouter({
   get: adminProcedure.query(async () => {
     const res = await fetch(env.BACKEND_URL + "/files");
 
+    if (!res.ok) {
+      console.error("Failed to fetch documents", await res.json());
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Failed to fetch documents",
+      });
+    }
+
     const validate = z
       .object({
         status: z.string(),

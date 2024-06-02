@@ -1,18 +1,17 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import type { Session } from "next-auth";
 import { IoMenu } from "react-icons/io5";
 
 import { Button } from "@tanya.in/ui/button";
 
 import { useSidebarContext } from "./sidebar-context";
 
-export const SidebarButton = () => {
+export function SidebarButton(props: { user?: Session["user"] }) {
   const { setCollapsed } = useSidebarContext();
-  const { data: session } = useSession();
 
   return (
-    session?.user.role === "admin" && (
+    props.user?.role === "admin" && (
       <Button
         isIconOnly
         variant="light"
@@ -24,4 +23,4 @@ export const SidebarButton = () => {
       </Button>
     )
   );
-};
+}

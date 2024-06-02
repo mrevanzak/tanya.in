@@ -1,18 +1,17 @@
 "use client";
 
+import type { Session } from "next-auth";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 
 import { cn } from "@tanya.in/ui";
 import { useTheme } from "@tanya.in/ui/theme";
 
 import { useSidebarContext } from "./sidebar/sidebar-context";
 
-export function Footer() {
+export function Footer(props: { user?: Session["user"] }) {
   const { resolvedTheme } = useTheme();
   const { collapsed } = useSidebarContext();
-  const { data: session } = useSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = props.user?.role === "admin";
 
   return (
     <footer

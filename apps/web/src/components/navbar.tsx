@@ -19,7 +19,7 @@ export async function Navbar() {
             block: !isAdmin,
           })}
         />
-        <SidebarButton />
+        <SidebarButton user={session?.user} />
 
         <nav>
           <UserButton user={session?.user} />

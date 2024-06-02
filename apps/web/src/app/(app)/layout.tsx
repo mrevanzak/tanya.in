@@ -43,7 +43,7 @@ export default async function AuthLayout(props: {
         >
           {isAdmin ? props.admin : props.user}
         </main>
-        <Footer />
+        <Footer user={session?.user} />
       </div>
     </div>
   );

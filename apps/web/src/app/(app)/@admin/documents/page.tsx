@@ -1,7 +1,8 @@
-import { DropzoneContainer } from "@/components/dropzone-container";
 import { api } from "@/trpc/server";
 
 import "@mantine/dropzone/styles.css";
+
+import { DropzoneContainer } from "./dropzone";
 
 export default async function DocumentsPage() {
   const documents = await api.documents.get();

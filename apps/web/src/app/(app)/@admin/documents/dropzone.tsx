@@ -2,7 +2,6 @@
 
 import type { Document } from "@/server/api/routers/documents/documents.schema";
 import { useRef, useState } from "react";
-import { DocumentsTable } from "@/components/documents-table";
 import { api } from "@/trpc/react";
 import { Dropzone, PDF_MIME_TYPE } from "@mantine/dropzone";
 import { Spinner } from "@nextui-org/react";
@@ -11,6 +10,8 @@ import { FaUpload, FaXmark } from "react-icons/fa6";
 import { Button } from "@tanya.in/ui/button";
 import { Input } from "@tanya.in/ui/form";
 import { toast } from "@tanya.in/ui/toast";
+
+import { DocumentsTable } from "./table";
 
 export function DropzoneContainer({
   initialData,

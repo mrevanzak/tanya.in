@@ -8,7 +8,7 @@ import moment from "moment";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@tanya.in/ui/card";
 
-export function StatisticsContainer(props: { initialData: Analytics[] }) {
+export function StatisticsCard(props: { initialData: Analytics[] }) {
   const { data } = api.analytics.get.useQuery(undefined, {
     initialData: props.initialData,
   });

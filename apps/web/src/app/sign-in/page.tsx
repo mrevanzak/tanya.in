@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { SignInForm } from "@/components/signin-form";
 
 import ITS from "~/ITS.svg";
 import Logo from "~/logo.svg";
+import { SignInForm } from "./form";
 
 export const metadata: Metadata = {
   title: "Authentication",

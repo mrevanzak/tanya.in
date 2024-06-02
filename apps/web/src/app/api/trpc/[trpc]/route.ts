@@ -4,7 +4,8 @@ import { appRouter } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-export const runtime = "edge";
+// TODO: Remove this when backend has domain
+// export const runtime = "edge";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when

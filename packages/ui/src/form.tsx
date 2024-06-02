@@ -17,6 +17,8 @@ import {
   useController,
 } from "react-hook-form";
 
+import { cn } from ".";
+
 const useForm = <TOut, TDef extends ZodTypeDef, TIn extends FieldValues>(
   props: Omit<UseFormProps<TIn>, "resolver"> & {
     schema: ZodType<TOut, TDef, TIn>;
@@ -54,6 +56,10 @@ const FormInput = <
       errorMessage={fieldState.error?.message}
       isClearable
       {...props}
+      classNames={{
+        ...props.classNames,
+        input: cn("text-base", props.classNames?.input),
+      }}
     />
   );
 };
@@ -79,6 +85,10 @@ const FormTextArea = <
       isInvalid={fieldState.invalid}
       errorMessage={fieldState.error?.message}
       {...props}
+      classNames={{
+        ...props.classNames,
+        input: cn("text-base", props.classNames?.input),
+      }}
     />
   );
 };

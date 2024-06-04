@@ -194,7 +194,7 @@ export function Chat() {
                       className={cn(
                         "opacity-100 delay-100 duration-500 ease-soft-spring transition-transform-opacity",
                         {
-                          "pointer-events-none -translate-x-4 opacity-0":
+                          "pointer-events-none -translate-x-4 !opacity-0":
                             watch("prompt"),
                         },
                       )}

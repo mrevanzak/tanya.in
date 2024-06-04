@@ -20,10 +20,7 @@ export async function Navbar() {
           })}
         />
         <SidebarButton user={session?.user} />
-
-        <nav>
-          <UserButton user={session?.user} />
-        </nav>
+        <UserButton user={session?.user} />
       </div>
     </header>
   );

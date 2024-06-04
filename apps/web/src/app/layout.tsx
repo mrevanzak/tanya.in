@@ -13,6 +13,7 @@ import "@/styles/globals.css";
 
 import { Providers } from "@/components/providers";
 import { siteConfig } from "@/constant/config";
+import { auth } from "@/server/auth";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -59,7 +60,9 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default async function RootLayout(props: { children: React.ReactNode }) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -70,7 +73,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <NextTopLoader color="#FFBC05" showSpinner={false} />
-        <Providers>
+        <Providers user={session?.user}>
           {props.children}
 
           <div className="fixed bottom-4 right-4">

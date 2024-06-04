@@ -1,6 +1,6 @@
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
-import { SidebarWrapper } from "@/components/sidebar/sidebar";
+import { Sidebar } from "@/components/sidebar/sidebar";
 import { env } from "@/env";
 import { auth } from "@/server/auth";
 import { get } from "@vercel/edge-config";
@@ -32,9 +32,9 @@ export default async function AuthLayout(props: {
   }
 
   return (
-    <div className="flex flex-row">
-      {session?.user.role === "admin" && <SidebarWrapper />}
-      <div className="flex-1">
+    <div className="flex min-h-screen w-full">
+      {isAdmin && <Sidebar />}
+      <div className="flex flex-1 flex-col">
         <Navbar />
         <main
           className={cn("container relative flex min-h-[calc(100vh-8rem)]", {

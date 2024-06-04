@@ -6,20 +6,17 @@ import Image from "next/image";
 import { cn } from "@tanya.in/ui";
 import { useTheme } from "@tanya.in/ui/theme";
 
-import { useSidebarContext } from "./sidebar/sidebar-context";
-
 export function Footer(props: { user?: Session["user"] }) {
   const { resolvedTheme } = useTheme();
-  const { collapsed } = useSidebarContext();
   const isAdmin = props.user?.role === "admin";
 
   return (
     <footer
       className={cn(
         "flex flex-wrap items-center justify-center border-t-2 py-2 sm:mx-16 sm:px-4 sm:py-0",
-        isAdmin && !collapsed ? "lg:justify-between" : "sm:justify-between",
+        // isAdmin && !collapsed ? "lg:justify-between" : "sm:justify-between",
         {
-          "sm:justify-between": collapsed,
+          // "sm:justify-between": collapsed,
         },
       )}
     >

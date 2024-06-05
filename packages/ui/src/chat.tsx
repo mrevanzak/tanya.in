@@ -44,6 +44,8 @@ function getChatApi() {
 }
 
 export function Chat() {
+  const chatId = React.useMemo(() => crypto.randomUUID(), []);
+
   const {
     messages,
     isLoading,
@@ -52,6 +54,7 @@ export function Chat() {
     api: getChatApi(),
     streamMode: "text",
     onError: (error) => toast.error(error.message),
+    sendExtraMessageFields: true,
   });
   const chatContainerRef = useChatScroll(messages);
 
@@ -69,7 +72,7 @@ export function Chat() {
     setValue("topic", "");
     await mutate(
       { content: data.prompt, role: "user" },
-      { options: { body: { topic: data.topic } } },
+      { options: { body: { topic: data.topic, chatId } } },
     );
   });
   //#endregion  //*======== Form ===========

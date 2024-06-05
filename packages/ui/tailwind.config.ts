@@ -31,6 +31,7 @@ export default {
         foreground: "hsl(var(--foreground))",
         warning: {
           DEFAULT: "hsl(var(--accent-its))",
+          foreground: "hsl(var(--secondary-its))",
         },
         primary: {
           DEFAULT: "hsl(var(--primary-its))",

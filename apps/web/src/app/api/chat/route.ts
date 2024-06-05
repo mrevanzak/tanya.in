@@ -1,5 +1,7 @@
 import { env } from "@/env";
 import { auth } from "@/server/auth";
+import { db } from "@/server/db";
+import { chats, messages } from "@/server/db/schema";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { get } from "@vercel/edge-config";
@@ -27,8 +29,10 @@ export async function POST(req: Request) {
 
   const body = z
     .object({
+      chatId: z.string(),
       messages: z
         .object({
+          id: z.string(),
           role: z.enum(["user", "assistant"] as const),
           content: z.string(),
         })
@@ -40,17 +44,19 @@ export async function POST(req: Request) {
     const error = fromZodError(body.error).toString();
     return new Response(error, { status: 400 });
   }
+  const lastMessage = body.data.messages.pop()?.content;
 
   const isTesting = await get("testing");
   const res = await fetch(
     env.BACKEND_URL + "/questions" + (isTesting ? "/stream-generator" : ""),
     {
+      signal: req.signal,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        question: body.data.messages.pop()?.content,
+        question: lastMessage,
         isBahasa: true,
       }),
     },
@@ -65,12 +71,31 @@ export async function POST(req: Request) {
     return new Response("No response body", { status: 500 });
   }
 
+  const chatId = await db
+    .insert(chats)
+    .values({
+      id: body.data.chatId,
+      createdBy: session.user.id,
+    })
+    .onConflictDoNothing({ target: chats.id })
+    .returning({ id: chats.id });
+
+  await db.insert(messages).values({
+    chatId: chatId[0]?.id ?? body.data.chatId,
+    content: lastMessage ?? "",
+  });
+
   const reader = res.body.getReader();
   const stream = new ReadableStream({
     async start(controller) {
+      let data = "";
       while (true) {
         const { done, value } = await reader.read();
         if (done) {
+          await db.insert(messages).values({
+            chatId: chatId[0]?.id ?? body.data.chatId,
+            content: data,
+          });
           controller.close();
           break;
         }
@@ -80,6 +105,7 @@ export async function POST(req: Request) {
           .replace(/^data: /gm, "")
           // Remove all whitespaces except for space
           .replace(/[\r\n\t\f\v]/g, "");
+        data += text;
 
         // Enqueue the modified chunk back into the stream
         controller.enqueue(text);

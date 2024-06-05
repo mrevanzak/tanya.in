@@ -34,10 +34,10 @@ export default async function AuthLayout(props: {
   return (
     <div className="flex min-h-screen w-full">
       {isAdmin && <Sidebar />}
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col overflow-x-hidden">
         <Navbar />
         <main
-          className={cn("container relative flex min-h-[calc(100vh-8rem)]", {
+          className={cn("relative flex min-h-[calc(100vh-8rem)]", {
             "p-4 2xl:pt-8": isAdmin,
           })}
         >

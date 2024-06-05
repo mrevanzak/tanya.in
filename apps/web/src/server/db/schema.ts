@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   pgEnum,
   pgTableCreator,
@@ -23,22 +23,29 @@ export const users = createTable("user", {
 });
 
 export const chats = createTable("chat", {
-  id: uuid("id")
-    .primaryKey()
-    .default(sql`gen_random_uuid()`),
+  id: uuid("id").primaryKey(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
   createdBy: uuid("created_by")
     .notNull()
     .references(() => users.id),
 });
+export const chatRelations = relations(chats, ({ many }) => ({
+  messages: many(messages),
+}));
 
 export const messages = createTable("message", {
-  id: uuid("id")
+  id: text("id")
     .primaryKey()
-    .default(sql`gen_random_uuid()`),
+    .$defaultFn(() => crypto.randomUUID()),
   content: text("content").notNull(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
   chatId: uuid("chat_id")
     .notNull()
     .references(() => chats.id),
 });
+export const messageRelations = relations(messages, ({ one }) => ({
+  chat: one(chats, {
+    fields: [messages.chatId],
+    references: [chats.id],
+  }),
+}));

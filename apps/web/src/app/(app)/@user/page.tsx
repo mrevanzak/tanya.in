@@ -1,4 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/alert";
+import { ChatHistory } from "@/components/chat-history";
 import { get } from "@vercel/edge-config";
 
 import {
@@ -25,7 +26,8 @@ export default async function HomePage() {
         </Alert>
       )}
 
-      <div className="flex-1 self-center">
+      <ChatHistory />
+      <div className="container flex-1 self-center">
         <Card className="m-2 mx-auto w-full duration-500 transition-size has-[[data-started=false]]:min-[450px]:w-96">
           <CardHeader>
             <CardTitle className="text-center">Tanya.in saja!</CardTitle>

@@ -7,4 +7,5 @@ export default {
   dbCredentials: {
     url: env.POSTGRES_URL,
   },
+  tablesFilter: ["tanyain_*"],
 } satisfies Config;

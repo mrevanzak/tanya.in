@@ -13,7 +13,10 @@ export function Footer(props: { user?: Session["user"] }) {
   return (
     <footer
       className={cn(
-        "flex flex-wrap items-center justify-center text-balance border-t-2 py-2 sm:mx-16 sm:justify-between sm:px-4 sm:py-0",
+        "flex flex-wrap items-center justify-center text-balance border-t-2 p-2 sm:mx-16 sm:justify-between sm:px-4 sm:py-0",
+        {
+          "md:justify-center lg:justify-between": isAdmin,
+        },
       )}
     >
       <p className="py-2 text-center text-xs text-default-500">

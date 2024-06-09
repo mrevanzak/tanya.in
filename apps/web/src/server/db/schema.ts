@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   pgEnum,
   pgTableCreator,
   text,
@@ -28,6 +29,7 @@ export const chats = createTable("chat", {
   createdBy: uuid("created_by")
     .notNull()
     .references(() => users.id),
+  unsolvable: boolean("unsolvable").notNull().default(false),
 });
 export const chatRelations = relations(chats, ({ many }) => ({
   messages: many(messages),

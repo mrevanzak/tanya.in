@@ -12,14 +12,15 @@ import { Button } from "@tanya.in/ui/button";
 import { Card, CardContent } from "@tanya.in/ui/card";
 
 function Content() {
-  const { data } = api.chat.get.useQuery();
+  const chatHistory = api.chat.get.useQuery({});
+  const unsolvable = api.chat.get.useQuery({ unsolvable: true });
 
   return (
     <Tabs color="warning" variant="bordered" fullWidth>
       <Tab title="History">
-        {data?.length ? (
+        {chatHistory.data?.length ? (
           <ul className="h-full space-y-6">
-            {data.map((chat) => (
+            {chatHistory.data.map((chat) => (
               <li
                 key={chat.id}
                 className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
@@ -34,7 +35,24 @@ function Content() {
           <p className="text-center">No chat history</p>
         )}
       </Tab>
-      <Tab title="Unsolvable" />
+      <Tab title="Unsolvable">
+        {unsolvable.data?.length ? (
+          <ul className="h-full space-y-6">
+            {unsolvable.data.map((chat) => (
+              <li
+                key={chat.id}
+                className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
+              >
+                <p className="overflow-hidden text-ellipsis">
+                  {chat.messages.at(0)?.content}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-center">No unsolvable chat</p>
+        )}
+      </Tab>
     </Tabs>
   );
 }

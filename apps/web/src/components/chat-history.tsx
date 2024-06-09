@@ -1,24 +1,45 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/drawer";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { api } from "@/trpc/react";
+import { Tab, Tabs } from "@nextui-org/react";
 import { FaChevronRight } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
 
 import { Button } from "@tanya.in/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@tanya.in/ui/card";
+import { Card, CardContent } from "@tanya.in/ui/card";
 
-export function ChatHistory() {
+function Content() {
   const { data } = api.chat.get.useQuery();
 
+  return (
+    <Tabs color="warning" variant="bordered" fullWidth>
+      <Tab title="History">
+        {data?.length ? (
+          <ul className="h-full space-y-6">
+            {data.map((chat) => (
+              <li
+                key={chat.id}
+                className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
+              >
+                <p className="overflow-hidden text-ellipsis">
+                  {chat.messages.at(0)?.content}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-center">No chat history</p>
+        )}
+      </Tab>
+      <Tab title="Unsolvable" />
+    </Tabs>
+  );
+}
+
+export function ChatHistory() {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -41,26 +62,8 @@ export function ChatHistory() {
           >
             <FaChevronRight className="size-6 transition-transform duration-500 group-data-[open=true]:rotate-180" />
           </Button>
-          <CardHeader className="relative overflow-hidden">
-            <CardTitle>Chat History</CardTitle>
-          </CardHeader>
-          <CardContent className="h-full">
-            {data?.length ? (
-              <ul className="h-full space-y-6">
-                {data.map((chat) => (
-                  <li
-                    key={chat.id}
-                    className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
-                  >
-                    <p className="overflow-hidden text-ellipsis">
-                      {chat.messages.at(0)?.content}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-center">No chat history</p>
-            )}
+          <CardContent className="h-full pt-6">
+            <Content />
           </CardContent>
         </Card>
       </div>
@@ -82,26 +85,8 @@ export function ChatHistory() {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="h-[40vh] max-h-dvh">
-        <DrawerHeader className="text-left">
-          <DrawerTitle>Chat History</DrawerTitle>
-        </DrawerHeader>
-        <div className="p-4">
-          {data?.length ? (
-            <ul className="h-full space-y-6">
-              {data.map((chat) => (
-                <li
-                  key={chat.id}
-                  className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
-                >
-                  <p className="overflow-hidden text-ellipsis">
-                    {chat.messages.at(0)?.content}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-center">No chat history</p>
-          )}
+        <div className="p-6">
+          <Content />
         </div>
       </DrawerContent>
     </Drawer>

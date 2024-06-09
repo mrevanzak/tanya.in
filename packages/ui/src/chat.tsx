@@ -43,7 +43,7 @@ function getChatApi() {
   return undefined;
 }
 
-export function Chat() {
+export function Chat(props: { onFinish?: () => void }) {
   const chatId = React.useMemo(() => crypto.randomUUID(), []);
 
   const {
@@ -55,6 +55,7 @@ export function Chat() {
     streamMode: "text",
     onError: (error) => toast.error(error.message),
     sendExtraMessageFields: true,
+    onFinish: props.onFinish,
   });
   const chatContainerRef = useChatScroll(messages);
 

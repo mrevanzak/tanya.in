@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { signIn } from "@/lib/actions/auth";
 import { authSchema } from "@/server/api/routers/auth/auth.input";
+import { useQueryClient } from "@tanstack/react-query";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { Button } from "@tanya.in/ui/button";
@@ -18,6 +19,8 @@ import { Form, FormInput, useForm } from "@tanya.in/ui/form";
 import { toast } from "@tanya.in/ui/toast";
 
 export function SignInForm() {
+  const queryClient = useQueryClient();
+
   const [isVisible, setIsVisible] = React.useState(false);
   const [isPending, setIsPending] = React.useState(false);
 
@@ -40,6 +43,7 @@ export function SignInForm() {
           <form
             className="space-y-4"
             onSubmit={handleSubmit(async (data) => {
+              await queryClient.invalidateQueries();
               setIsPending(true);
               const res = await signIn(data.email, data.password);
               if (res?.error) toast.error(res.error);

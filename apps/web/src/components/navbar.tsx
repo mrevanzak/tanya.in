@@ -15,7 +15,7 @@ export async function Navbar() {
 
   return (
     <header className="sticky top-0 z-10 bg-content1">
-      {isTesting && (
+      {!isAdmin && isTesting && (
         <Alert className="rounded-none bg-warning text-warning-foreground">
           <AlertTitle>Testing mode: ON</AlertTitle>
           <AlertDescription>

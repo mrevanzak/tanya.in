@@ -107,7 +107,7 @@ export function ChatHistory() {
           <IoMenu className="size-5" />
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="h-[40vh] max-h-dvh">
+      <DrawerContent className="h-[40vh] max-h-dvh bg-content1">
         <div className="overflow-auto p-6">
           <Content />
         </div>

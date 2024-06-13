@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { api } from "@/trpc/react";
-import { Tab, Tabs } from "@nextui-org/react";
+import { Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { FaChevronRight } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
 
@@ -21,14 +21,19 @@ function Content() {
         {chatHistory.data?.length ? (
           <ul className="h-full space-y-6">
             {chatHistory.data.map((chat) => (
-              <li
+              <Tooltip
                 key={chat.id}
-                className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
+                content={chat.messages.at(0)?.content}
+                placement="top-start"
+                delay={500}
+                closeDelay={0}
               >
-                <p className="overflow-hidden text-ellipsis">
-                  {chat.messages.at(0)?.content}
-                </p>
-              </li>
+                <li className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20">
+                  <p className="overflow-hidden text-ellipsis">
+                    {chat.messages.at(0)?.content}
+                  </p>
+                </li>
+              </Tooltip>
             ))}
           </ul>
         ) : (
@@ -78,7 +83,7 @@ export function ChatHistory() {
             color="warning"
             // onMouseEnter={() => setOpen(true)}
           >
-            <FaChevronRight className="size-6 transition-transform duration-500 group-data-[open=true]:rotate-180" />
+            <FaChevronRight className="size-5 transition-transform duration-500 group-data-[open=true]:rotate-180" />
           </Button>
           <CardContent className="h-full pt-6">
             <Content />
@@ -99,11 +104,11 @@ export function ChatHistory() {
           variant="solid"
           color="warning"
         >
-          <IoMenu className="size-6" />
+          <IoMenu className="size-5" />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="h-[40vh] max-h-dvh">
-        <div className="p-6">
+        <div className="overflow-auto p-6">
           <Content />
         </div>
       </DrawerContent>

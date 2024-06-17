@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
 import NextTopLoader from "nextjs-toploader";
 
 import { cn } from "@tanya.in/ui";
@@ -25,15 +24,18 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   robots: { index: true, follow: true },
   icons: {
-    icon: [{
-      url: "/favicon-16x16.png",
-      sizes: "16x16",
-      type: "image/png",
-    }, {
-      url: "/favicon-32x32.png",
-      sizes: "32x32",
-      type: "image/png",
-    }],
+    icon: [
+      {
+        url: "/favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      {
+        url: "/favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+    ],
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
@@ -68,6 +70,12 @@ export const viewport: Viewport = {
   ],
 };
 
+const BricolageGrotesque = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font",
+  display: "swap",
+});
+
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const session = await auth();
 
@@ -76,8 +84,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       <body
         className={cn(
           "min-h-screen bg-content2 font-sans text-foreground antialiased dark:bg-background",
-          GeistSans.variable,
-          GeistMono.variable,
+          BricolageGrotesque.variable,
         )}
       >
         <NextTopLoader color="#FFBC05" showSpinner={false} />

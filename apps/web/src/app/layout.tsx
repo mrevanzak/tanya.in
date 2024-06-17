@@ -11,6 +11,7 @@ import { Toaster } from "@tanya.in/ui/toast";
 
 import "@/styles/globals.css";
 
+import Script from "next/script";
 import { Providers } from "@/components/providers";
 import { siteConfig } from "@/constant/config";
 import { auth } from "@/server/auth";
@@ -84,6 +85,32 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           <Analytics />
           <SpeedInsights />
         </Providers>
+
+        <Script
+          id="maze"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function (m, a, z, e) {
+var s, t;
+try {
+t = m.sessionStorage.getItem('maze-us');
+} catch (err) {}
+
+if (!t) {
+t = new Date().getTime();
+try {
+m.sessionStorage.setItem('maze-us', t);
+} catch (err) {}
+}
+
+s = a.createElement('script');
+s.src = z + '?apiKey=' + e;
+s.async = true;
+a.getElementsByTagName('head')[0].appendChild(s);
+m.mazeUniversalSnippetApiKey = e;
+})(window, document, 'https://snippet.maze.co/maze-universal-loader.js', 'd048d29f-4d54-4c7f-a0b8-580b8b4e83e2');`,
+          }}
+        />
       </body>
     </html>
   );

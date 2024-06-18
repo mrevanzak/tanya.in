@@ -2,8 +2,9 @@
 
 import type { Session } from "next-auth";
 import { signOut } from "@/lib/actions/auth";
-import { Avatar } from "@nextui-org/react";
+import { Avatar, Switch } from "@nextui-org/react";
 
+import { cn } from "@tanya.in/ui";
 import {
   Dropdown,
   DropdownItem,
@@ -34,6 +35,26 @@ export function UserButton(props: { user?: Session["user"] }) {
         <DropdownItem key="profile" className="h-14 gap-2">
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{props.user?.email}</p>
+        </DropdownItem>
+        <DropdownItem key="language" isReadOnly>
+          <Switch
+            classNames={{
+              base: "flex-row-reverse gap-2 justify-between w-full max-w-none",
+              wrapper: "m-0",
+            }}
+            defaultSelected
+            size="sm"
+            color="primary"
+            thumbIcon={({ isSelected, className }) =>
+              isSelected ? (
+                <p className={cn(className, "text-[8px]")}>ID</p>
+              ) : (
+                <p className={cn(className, "text-[8px]")}>EN</p>
+              )
+            }
+          >
+            Language
+          </Switch>
         </DropdownItem>
         <DropdownItem key="logout" color="danger">
           Sign out

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { api } from "@/trpc/react";
@@ -15,45 +16,43 @@ function Content() {
   const chatHistory = api.chat.get.useQuery({});
   const unsolvable = api.chat.get.useQuery({ unsolvable: true });
 
+  function List(props: { data: NonNullable<typeof chatHistory.data> }) {
+    return (
+      <ul className="h-full space-y-4">
+        {props.data.map((chat) => (
+          <Tooltip
+            key={chat.id}
+            content={chat.messages.at(0)?.content}
+            placement="top-start"
+            delay={500}
+            closeDelay={0}
+          >
+            <Link
+              href={`?id=${chat.id}`}
+              className="flex rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
+            >
+              <p className="overflow-hidden text-ellipsis">
+                {chat.messages.at(0)?.content}
+              </p>
+            </Link>
+          </Tooltip>
+        ))}
+      </ul>
+    );
+  }
+
   return (
     <Tabs color="warning" variant="bordered" fullWidth>
       <Tab title="History">
         {chatHistory.data?.length ? (
-          <ul className="h-full space-y-6">
-            {chatHistory.data.map((chat) => (
-              <Tooltip
-                key={chat.id}
-                content={chat.messages.at(0)?.content}
-                placement="top-start"
-                delay={500}
-                closeDelay={0}
-              >
-                <li className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20">
-                  <p className="overflow-hidden text-ellipsis">
-                    {chat.messages.at(0)?.content}
-                  </p>
-                </li>
-              </Tooltip>
-            ))}
-          </ul>
+          <List data={chatHistory.data} />
         ) : (
           <p className="text-center">No chat history</p>
         )}
       </Tab>
       <Tab title="Unsolvable">
         {unsolvable.data?.length ? (
-          <ul className="h-full space-y-6">
-            {unsolvable.data.map((chat) => (
-              <li
-                key={chat.id}
-                className="rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
-              >
-                <p className="overflow-hidden text-ellipsis">
-                  {chat.messages.at(0)?.content}
-                </p>
-              </li>
-            ))}
-          </ul>
+          <List data={unsolvable.data} />
         ) : (
           <p className="text-center">No unsolvable question</p>
         )}

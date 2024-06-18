@@ -1,7 +1,9 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 
+import type { Message } from "@tanya.in/ui";
 import {
   Card,
   CardContent,
@@ -12,7 +14,11 @@ import {
 import { Chat } from "@tanya.in/ui/chat";
 
 export function ChatCard() {
+  const searchParams = useSearchParams();
   const utils = api.useUtils();
+
+  const { data } = api.chat.show.useQuery({ id: searchParams.get("id") });
+  const initialMessages = data?.messages as Message[] | undefined;
 
   return (
     <Card className="m-2 mx-auto w-full duration-500 transition-size has-[[data-started=false]]:min-[450px]:w-96">
@@ -20,7 +26,10 @@ export function ChatCard() {
         <CardTitle className="text-center">Tanya.in saja!</CardTitle>
       </CardHeader>
       <CardContent>
-        <Chat onFinish={() => utils.chat.get.invalidate()} />
+        <Chat
+          onFinish={() => utils.chat.get.invalidate()}
+          initialMessages={initialMessages}
+        />
       </CardContent>
       <CardFooter>
         <Card className="m-auto shadow-none">

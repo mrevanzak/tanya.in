@@ -1,5 +1,6 @@
 "use client";
 
+import type { UseChatOptions } from "ai/react";
 import * as React from "react";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { useChat } from "ai/react";
@@ -43,7 +44,7 @@ function getChatApi() {
   return undefined;
 }
 
-export function Chat(props: { onFinish?: () => void }) {
+export function Chat({ onFinish, initialMessages }: UseChatOptions) {
   const chatId = React.useMemo(() => crypto.randomUUID(), []);
 
   const {
@@ -55,7 +56,8 @@ export function Chat(props: { onFinish?: () => void }) {
     streamMode: "text",
     onError: (error) => toast.error(error.message),
     sendExtraMessageFields: true,
-    onFinish: props.onFinish,
+    onFinish,
+    initialMessages,
   });
   const chatContainerRef = useChatScroll(messages);
 

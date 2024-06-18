@@ -55,7 +55,7 @@ function Content() {
             ))}
           </ul>
         ) : (
-          <p className="text-center">No unsolvable chat</p>
+          <p className="text-center">No unsolvable question</p>
         )}
       </Tab>
     </Tabs>

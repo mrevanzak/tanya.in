@@ -4,9 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
 import { api } from "@/trpc/react";
-import { Tab, Tabs, Tooltip } from "@nextui-org/react";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Tab,
+  Tabs,
+  Tooltip,
+  useDisclosure,
+} from "@nextui-org/react";
 import { FaChevronRight } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
+import { RiDeleteBin2Line } from "react-icons/ri";
 import { useMediaQuery } from "usehooks-ts";
 
 import { Button } from "@tanya.in/ui/button";
@@ -16,28 +27,82 @@ function Content() {
   const chatHistory = api.chat.get.useQuery({});
   const unsolvable = api.chat.get.useQuery({ unsolvable: true });
 
-  function List(props: { data: NonNullable<typeof chatHistory.data> }) {
+  function List(props: { chat: NonNullable<typeof chatHistory.data>[0] }) {
+    const { isOpen, onOpenChange, onOpen } = useDisclosure();
+    const utils = api.useUtils();
+
+    const deleteChat = api.chat.delete.useMutation();
+
+    const title = props.chat.title ?? props.chat.messages.at(0)?.content;
+
     return (
-      <ul className="h-full space-y-4">
-        {props.data.map((chat) => (
-          <Tooltip
-            key={chat.id}
-            content={chat.messages.at(0)?.content}
-            placement="top-start"
-            delay={500}
-            closeDelay={0}
+      <>
+        <Tooltip
+          content={title}
+          placement="top-start"
+          delay={500}
+          closeDelay={0}
+        >
+          <Link
+            href={`?id=${props.chat.id}`}
+            className="flex items-center justify-between rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
           >
-            <Link
-              href={`?id=${chat.id}`}
-              className="flex rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
+            <p className="overflow-hidden text-ellipsis">{title}</p>
+            <Button
+              variant="light"
+              isIconOnly
+              color="danger"
+              size="sm"
+              onClick={(e) => {
+                e.preventDefault();
+                e.nativeEvent.stopImmediatePropagation();
+                onOpen();
+              }}
             >
-              <p className="overflow-hidden text-ellipsis">
-                {chat.messages.at(0)?.content}
-              </p>
-            </Link>
-          </Tooltip>
-        ))}
-      </ul>
+              <RiDeleteBin2Line />
+            </Button>
+          </Link>
+        </Tooltip>
+
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader>Delete</ModalHeader>
+                <ModalBody>
+                  <p>
+                    Are you sure you want to delete "<b>{title}</b>"?
+                  </p>
+                </ModalBody>
+                <ModalFooter>
+                  <Button variant="light" onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button
+                    color="danger"
+                    onPress={() => {
+                      deleteChat.mutate(
+                        {
+                          id: props.chat.id,
+                        },
+                        {
+                          onSuccess: () => {
+                            void utils.chat.invalidate();
+                            onClose();
+                          },
+                        },
+                      );
+                    }}
+                    isLoading={deleteChat.isPending}
+                  >
+                    Delete
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </>
     );
   }
 
@@ -45,14 +110,22 @@ function Content() {
     <Tabs color="warning" variant="bordered" fullWidth>
       <Tab title="History">
         {chatHistory.data?.length ? (
-          <List data={chatHistory.data} />
+          <ul className="h-full space-y-4">
+            {chatHistory.data.map((chat) => (
+              <List key={chat.id} chat={chat} />
+            ))}
+          </ul>
         ) : (
           <p className="text-center">No chat history</p>
         )}
       </Tab>
       <Tab title="Unsolvable">
         {unsolvable.data?.length ? (
-          <List data={unsolvable.data} />
+          <ul className="h-full space-y-4">
+            {unsolvable.data.map((chat) => (
+              <List key={chat.id} chat={chat} />
+            ))}
+          </ul>
         ) : (
           <p className="text-center">No unsolvable question</p>
         )}

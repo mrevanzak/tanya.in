@@ -26,6 +26,8 @@ export const users = createTable("user", {
 export const chats = createTable("chat", {
   id: uuid("id").primaryKey(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
+  title: text("title"),
+  deletedAt: timestamp("deleted_at", { mode: "date" }),
   createdBy: uuid("created_by")
     .notNull()
     .references(() => users.id),

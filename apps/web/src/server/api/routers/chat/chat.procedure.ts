@@ -26,13 +26,12 @@ export const chatRouter = createTRPCRouter({
   show: protectedProcedure
     .input(
       z.object({
-        id: z.string().nullable(),
+        id: z.string(),
       }),
     )
     .query(async ({ ctx, input }) => {
       return await ctx.db.query.chats.findFirst({
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        where: (chat, { eq }) => eq(chat.id, input.id!).if(input.id),
+        where: (chat, { eq }) => eq(chat.id, input.id),
         with: {
           messages: true,
         },

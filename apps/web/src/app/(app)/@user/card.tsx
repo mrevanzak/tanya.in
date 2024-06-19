@@ -17,7 +17,10 @@ export function ChatCard() {
   const searchParams = useSearchParams();
   const utils = api.useUtils();
 
-  const { data } = api.chat.show.useQuery({ id: searchParams.get("id") });
+  const { data } = api.chat.show.useQuery(
+    { id: searchParams.get("id") ?? "" },
+    { enabled: searchParams.has("id") },
+  );
   const initialMessages = data?.messages as Message[] | undefined;
 
   return (

@@ -57,8 +57,10 @@ export function UserButton(props: { user?: Session["user"] }) {
                 <p className={cn(className, "text-[8px]")}>EN</p>
               )
             }
-            onChange={(e) => {
-              e.target.checked ? changeLanguage("id") : changeLanguage("en");
+            onChange={async (e) => {
+              e.target.checked
+                ? await changeLanguage("id")
+                : await changeLanguage("en");
             }}
           >
             {t("language")}

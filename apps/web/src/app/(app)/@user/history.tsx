@@ -22,6 +22,7 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { Button } from "@tanya.in/ui/button";
 import { Card, CardContent } from "@tanya.in/ui/card";
+import { toast } from "@tanya.in/ui/toast";
 
 function Content() {
   const chatHistory = api.chat.get.useQuery({});
@@ -88,6 +89,7 @@ function Content() {
                         {
                           onSuccess: () => {
                             void utils.chat.invalidate();
+                            toast.success(`"${title}" has been deleted`);
                             onClose();
                           },
                         },

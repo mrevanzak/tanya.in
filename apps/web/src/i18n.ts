@@ -2,8 +2,9 @@ import { cookies } from "next/headers";
 import { getRequestConfig } from "next-intl/server";
 
 export default getRequestConfig(async () => {
-  cookies().has("NEXT_LOCALE") || cookies().set("NEXT_LOCALE", "id");
-  const locale = cookies().get("NEXT_LOCALE")?.value;
+  // Provide a static locale, fetch a user setting,
+  // read from `cookies()`, `headers()`, etc.
+  const locale = cookies().get("NEXT_LOCALE")?.value ?? "id";
   const messages = (await import(`../public/locales/${locale}.json`)) as {
     default: Record<string, string>;
   };

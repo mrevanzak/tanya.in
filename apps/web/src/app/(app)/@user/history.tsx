@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
-import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { api } from "@/trpc/react";
 import { Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { FaChevronRight } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
+import { useMediaQuery } from "usehooks-ts";
 
 import { Button } from "@tanya.in/ui/button";
 import { Card, CardContent } from "@tanya.in/ui/card";
@@ -63,54 +63,54 @@ function Content() {
 
 export function ChatHistory() {
   const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
-  if (isDesktop) {
+  if (isMobile) {
     return (
-      <div
-        className="group relative hidden h-5/6 w-80 self-center duration-500 transition-size data-[open=false]:w-0 sm:block"
-        data-open={open}
-        // onMouseLeave={() => setOpen(false)}
-      >
-        <Card className="h-full overflow-x-hidden whitespace-nowrap rounded-lg rounded-s-none">
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
           <Button
-            className="absolute -right-7 top-1/4"
+            className="absolute right-0 top-1/4"
             isIconOnly
             onClick={() => setOpen(!open)}
             radius="full"
             variant="solid"
             color="warning"
-            // onMouseEnter={() => setOpen(true)}
           >
-            <FaChevronRight className="size-5 transition-transform duration-500 group-data-[open=true]:rotate-180" />
+            <IoMenu className="size-5" />
           </Button>
-          <CardContent className="h-full pt-6">
+        </DrawerTrigger>
+        <DrawerContent className="h-[40vh] max-h-dvh bg-content1">
+          <div className="overflow-auto p-6">
             <Content />
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
     );
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+    <div
+      className="group relative hidden h-5/6 w-80 self-center duration-500 transition-size data-[open=false]:w-0 sm:block"
+      data-open={open}
+      // onMouseLeave={() => setOpen(false)}
+    >
+      <Card className="h-full overflow-x-hidden whitespace-nowrap rounded-lg rounded-s-none">
         <Button
-          className="absolute right-0 top-1/4"
+          className="absolute -right-7 top-1/4"
           isIconOnly
           onClick={() => setOpen(!open)}
           radius="full"
           variant="solid"
           color="warning"
+          // onMouseEnter={() => setOpen(true)}
         >
-          <IoMenu className="size-5" />
+          <FaChevronRight className="size-5 transition-transform duration-500 group-data-[open=true]:rotate-180" />
         </Button>
-      </DrawerTrigger>
-      <DrawerContent className="h-[40vh] max-h-dvh bg-content1">
-        <div className="overflow-auto p-6">
+        <CardContent className="h-full pt-6">
           <Content />
-        </div>
-      </DrawerContent>
-    </Drawer>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

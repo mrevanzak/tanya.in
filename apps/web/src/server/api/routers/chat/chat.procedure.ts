@@ -23,6 +23,7 @@ export const chatRouter = createTRPCRouter({
             limit: 1,
           },
         },
+        orderBy: (chat, { desc }) => [desc(chat.createdAt)],
       });
     }),
 
@@ -39,6 +40,22 @@ export const chatRouter = createTRPCRouter({
           messages: true,
         },
       });
+    }),
+
+  changeTitle: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db
+        .update(chats)
+        .set({
+          title: input.title,
+        })
+        .where(eq(chats.id, input.id));
     }),
 
   delete: protectedProcedure

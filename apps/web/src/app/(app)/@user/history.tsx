@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
 import { api } from "@/trpc/react";
@@ -17,11 +17,12 @@ import {
 } from "@nextui-org/react";
 import { FaChevronRight } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
-import { RiDeleteBin2Line } from "react-icons/ri";
+import { RiCheckFill, RiDeleteBin2Line, RiPencilLine } from "react-icons/ri";
 import { useMediaQuery } from "usehooks-ts";
 
 import { Button } from "@tanya.in/ui/button";
 import { Card, CardContent } from "@tanya.in/ui/card";
+import { Input } from "@tanya.in/ui/form";
 import { toast } from "@tanya.in/ui/toast";
 
 function Content() {
@@ -30,11 +31,19 @@ function Content() {
 
   function List(props: { chat: NonNullable<typeof chatHistory.data>[0] }) {
     const { isOpen, onOpenChange, onOpen } = useDisclosure();
+    const [edit, setEdit] = useState(false);
     const utils = api.useUtils();
 
     const deleteChat = api.chat.delete.useMutation();
+    const changeChatTitle = api.chat.changeTitle.useMutation();
 
     const title = props.chat.title ?? props.chat.messages.at(0)?.content;
+    const titleRef = useRef<HTMLInputElement>(null);
+
+    function preventDefault(e: React.MouseEvent) {
+      e.preventDefault();
+      e.nativeEvent.stopImmediatePropagation();
+    }
 
     return (
       <>
@@ -46,22 +55,80 @@ function Content() {
         >
           <Link
             href={`?id=${props.chat.id}`}
-            className="flex items-center justify-between rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
+            className="flex items-center justify-between gap-2 rounded-r-md border-s-3 border-primary-its p-2 hover:bg-primary-its/20"
           >
-            <p className="overflow-hidden text-ellipsis">{title}</p>
-            <Button
-              variant="light"
-              isIconOnly
-              color="danger"
-              size="sm"
-              onClick={(e) => {
-                e.preventDefault();
-                e.nativeEvent.stopImmediatePropagation();
-                onOpen();
-              }}
-            >
-              <RiDeleteBin2Line />
-            </Button>
+            {edit ? (
+              <Input
+                ref={titleRef}
+                defaultValue={title}
+                onClick={(e) => {
+                  preventDefault(e);
+                }}
+              />
+            ) : (
+              <p className="overflow-hidden text-ellipsis">{title}</p>
+            )}
+            <div className="">
+              {edit ? (
+                <Button
+                  variant="light"
+                  color="success"
+                  isIconOnly
+                  size="sm"
+                  isLoading={changeChatTitle.isPending}
+                  onClick={(e) => {
+                    preventDefault(e);
+                    if (!titleRef.current?.value) {
+                      return;
+                    }
+                    changeChatTitle.mutate(
+                      {
+                        id: props.chat.id,
+                        title: titleRef.current.value,
+                      },
+                      {
+                        onSuccess: () => {
+                          void utils.chat.get.invalidate();
+                          toast.success(
+                            `"${titleRef.current?.value}" has been updated`,
+                          );
+                          setEdit(false);
+                        },
+                      },
+                    );
+                  }}
+                >
+                  <RiCheckFill />
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="light"
+                    color="secondary"
+                    isIconOnly
+                    size="sm"
+                    onClick={(e) => {
+                      preventDefault(e);
+                      setEdit(!edit);
+                    }}
+                  >
+                    <RiPencilLine />
+                  </Button>
+                  <Button
+                    variant="light"
+                    isIconOnly
+                    color="danger"
+                    size="sm"
+                    onClick={(e) => {
+                      preventDefault(e);
+                      onOpen();
+                    }}
+                  >
+                    <RiDeleteBin2Line />
+                  </Button>
+                </>
+              )}
+            </div>
           </Link>
         </Tooltip>
 

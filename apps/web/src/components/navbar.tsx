@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/alert";
 import { SidebarButton } from "@/components/sidebar/sidebar-button";
 import { UserButton } from "@/components/user";
@@ -25,12 +26,14 @@ export async function Navbar() {
         </Alert>
       )}
       <div className="flex h-16 items-center justify-between px-4 sm:px-8">
-        <Logo
-          className={cn("hidden h-7 sm:h-9 md:block", {
-            invisible: isAdmin,
-            block: !isAdmin,
-          })}
-        />
+        <Link href="/">
+          <Logo
+            className={cn("hidden h-7 sm:h-9 md:block", {
+              invisible: isAdmin,
+              block: !isAdmin,
+            })}
+          />
+        </Link>
         <SidebarButton user={session?.user} />
         <UserButton user={session?.user} />
       </div>

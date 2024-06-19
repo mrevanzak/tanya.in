@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
+import { useTranslations } from "next-intl";
 
 import type { Message } from "@tanya.in/ui";
 import {
@@ -14,6 +15,7 @@ import {
 import { Chat } from "@tanya.in/ui/chat";
 
 export function ChatCard() {
+  const t = useTranslations("Home");
   const searchParams = useSearchParams();
   const utils = api.useUtils();
 
@@ -26,7 +28,7 @@ export function ChatCard() {
   return (
     <Card className="m-2 mx-auto w-full duration-500 transition-size has-[[data-started=false]]:min-[450px]:w-96">
       <CardHeader>
-        <CardTitle className="text-center">Tanya.in saja!</CardTitle>
+        <CardTitle className="text-center">{t("title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Chat
@@ -37,7 +39,7 @@ export function ChatCard() {
       <CardFooter>
         <Card className="m-auto shadow-none">
           <CardContent className="py-4 text-center">
-            /: To choose the topic
+            /: {t("chooseTopic")}
           </CardContent>
         </Card>
       </CardFooter>

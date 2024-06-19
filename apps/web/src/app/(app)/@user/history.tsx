@@ -15,6 +15,7 @@ import {
   Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
+import { useTranslations } from "next-intl";
 import { FaChevronRight } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
 import { RiCheckFill, RiDeleteBin2Line, RiPencilLine } from "react-icons/ri";
@@ -30,6 +31,8 @@ function Content() {
   const unsolvable = api.chat.get.useQuery({ unsolvable: true });
 
   function List(props: { chat: NonNullable<typeof chatHistory.data>[0] }) {
+    const t = useTranslations("Common");
+
     const { isOpen, onOpenChange, onOpen } = useDisclosure();
     const [edit, setEdit] = useState(false);
     const utils = api.useUtils();
@@ -136,15 +139,15 @@ function Content() {
           <ModalContent>
             {(onClose) => (
               <>
-                <ModalHeader>Delete</ModalHeader>
+                <ModalHeader>{t("delete")}</ModalHeader>
                 <ModalBody>
                   <p>
-                    Are you sure you want to delete "<b>{title}</b>"?
+                    {t("confirmation")} "<b>{title}</b>"?
                   </p>
                 </ModalBody>
                 <ModalFooter>
                   <Button variant="light" onClick={onClose}>
-                    Close
+                    {t("close")}
                   </Button>
                   <Button
                     color="danger"
@@ -164,7 +167,7 @@ function Content() {
                     }}
                     isLoading={deleteChat.isPending}
                   >
-                    Delete
+                    {t("delete")}
                   </Button>
                 </ModalFooter>
               </>
@@ -175,9 +178,11 @@ function Content() {
     );
   }
 
+  const t = useTranslations("Home");
+
   return (
     <Tabs color="warning" variant="bordered" fullWidth>
-      <Tab title="History">
+      <Tab title={t("history.title")}>
         {chatHistory.data?.length ? (
           <ul className="h-full space-y-4">
             {chatHistory.data.map((chat) => (
@@ -185,10 +190,10 @@ function Content() {
             ))}
           </ul>
         ) : (
-          <p className="text-center">No chat history</p>
+          <p className="text-center">{t("history.empty")}</p>
         )}
       </Tab>
-      <Tab title="Unsolvable">
+      <Tab title={t("unsolvable.title")}>
         {unsolvable.data?.length ? (
           <ul className="h-full space-y-4">
             {unsolvable.data.map((chat) => (
@@ -196,7 +201,7 @@ function Content() {
             ))}
           </ul>
         ) : (
-          <p className="text-center">No unsolvable question</p>
+          <p className="text-center">{t("unsolvable.empty")}</p>
         )}
       </Tab>
     </Tabs>

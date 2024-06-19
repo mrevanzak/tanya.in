@@ -2,11 +2,13 @@
 
 import type { Session } from "next-auth";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@tanya.in/ui";
 import { useTheme } from "@tanya.in/ui/theme";
 
 export function Footer(props: { user?: Session["user"] }) {
+  const t = useTranslations("Footer");
   const { resolvedTheme } = useTheme();
   const isAdmin = props.user?.role === "admin";
 
@@ -20,8 +22,8 @@ export function Footer(props: { user?: Session["user"] }) {
       )}
     >
       <p className="py-2 text-center text-xs text-default-500">
-        Copyright © {new Date().getFullYear()} Institut Teknologi Sepuluh
-        Nopember
+        {t("copyright")} © {new Date().getFullYear()} Institut Teknologi
+        Sepuluh Nopember
       </p>
       <Image
         src={`https://portal.its.ac.id/images/advhum-${resolvedTheme === "dark" ? "white" : "blue"}.png`}

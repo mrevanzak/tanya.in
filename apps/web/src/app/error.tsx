@@ -3,6 +3,7 @@
 // Error components must be Client Components
 import * as React from "react";
 import { signOut } from "@/lib/actions/auth";
+import { useTranslations } from "next-intl";
 import { RiAlarmWarningFill } from "react-icons/ri";
 
 import { Button } from "@tanya.in/ui/button";
@@ -14,6 +15,7 @@ export default function Error({
   error: (Error & { digest?: string }) | { message: string };
   reset?: () => void;
 }) {
+  const t = useTranslations("Error");
   const isUnauthorized = error.message.includes("Unauthorized");
   const isMaintenance = error.message.includes("maintenance");
 
@@ -39,7 +41,7 @@ export default function Error({
             await signOut();
           }}
         >
-          Sign in as admin
+          {t("signInAsAdmin")}
         </Button>
       )}
     </div>

@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import NextTopLoader from "nextjs-toploader";
 
 import { cn } from "@tanya.in/ui";
@@ -79,8 +81,11 @@ const BricolageGrotesque = Bricolage_Grotesque({
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const session = await auth();
 
+  const lang = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-content2 font-sans text-foreground antialiased dark:bg-background",
@@ -88,17 +93,19 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <NextTopLoader color="#FFBC05" showSpinner={false} />
-        <Providers user={session?.user}>
-          {props.children}
+        <NextIntlClientProvider messages={messages} locale={lang}>
+          <Providers user={session?.user}>
+            {props.children}
 
-          <div className="fixed bottom-4 right-4">
-            <ThemeToggle />
-          </div>
+            <div className="fixed bottom-4 right-4">
+              <ThemeToggle />
+            </div>
 
-          <Toaster />
-          <Analytics />
-          <SpeedInsights />
-        </Providers>
+            <Toaster />
+            <Analytics />
+            <SpeedInsights />
+          </Providers>
+        </NextIntlClientProvider>
 
         <Script
           id="maze"

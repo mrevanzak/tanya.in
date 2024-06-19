@@ -1,0 +1,30 @@
+{
+  "User": {
+    "signedInAs": "Masuk sebagai",
+    "language": "Bahasa",
+    "signOut": "Keluar"
+  },
+  "Common": {
+    "delete": "Hapus",
+    "close": "Tutup",
+    "confirmation": "Apakah Anda yakin untuk menghapus"
+  },
+  "Home": {
+    "title": "Tanya.in saja!",
+    "chooseTopic": "Untuk memilih topik",
+    "history": {
+      "title": "Riwayat",
+      "empty": "Tidak ada riwayat pertanyaan"
+    },
+    "unsolvable": {
+      "title": "Tak terjawab",
+      "empty": "Tidak ada"
+    }
+  },
+  "Error": {
+    "signInAsAdmin": "Masuk sebagai admin"
+  },
+  "Footer": {
+    "copyright": "Hak cipta"
+  }
+}

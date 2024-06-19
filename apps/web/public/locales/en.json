@@ -1,0 +1,30 @@
+{
+  "User": {
+    "signedInAs": "Signed in as",
+    "language": "Language",
+    "signOut": "Sign out"
+  },
+  "Common": {
+    "delete": "Delete",
+    "close": "Close",
+    "confirmation": "Are you sure you want to delete"
+  },
+  "Home": {
+    "title": "Tanya.in",
+    "chooseTopic": "To choose the topic",
+    "history": {
+      "title": "History",
+      "empty": "No history"
+    },
+    "unsolvable": {
+      "title": "Unsolvable",
+      "empty": "No unsolvable"
+    }
+  },
+  "Error": {
+    "signInAsAdmin": "Masuk sebagai admin"
+  },
+  "Footer": {
+    "copyright": "Copyright"
+  }
+}

@@ -5,6 +5,7 @@ import { chats, messages } from "@/server/db/schema";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { get } from "@vercel/edge-config";
+import { getLocale } from "next-intl/server";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 
@@ -57,7 +58,7 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         question: lastMessage,
-        isBahasa: true,
+        isBahasa: (await getLocale()) === "id",
       }),
     },
   );

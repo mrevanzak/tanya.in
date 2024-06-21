@@ -57,6 +57,7 @@ export async function POST(req: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        id: body.data.chatId,
         question: lastMessage,
         isBahasa: (await getLocale()) === "id",
       }),

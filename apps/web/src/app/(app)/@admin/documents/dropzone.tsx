@@ -2,10 +2,12 @@
 
 import type { Document } from "@/server/api/routers/documents/documents.schema";
 import { useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import { Dropzone, PDF_MIME_TYPE } from "@mantine/dropzone";
 import { Spinner } from "@nextui-org/react";
 import { FaUpload, FaXmark } from "react-icons/fa6";
+import { useDebounceCallback } from "usehooks-ts";
 
 import { Button } from "@tanya.in/ui/button";
 import { Input } from "@tanya.in/ui/form";
@@ -20,6 +22,16 @@ export function DropzoneContainer({
 }) {
   const openRef = useRef<() => void>(null);
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const searchHandler = useDebounceCallback((search: string) => {
+    const params = new URLSearchParams(searchParams);
+    search ? params.set("search", search) : params.delete("search");
+
+    router.replace(`${pathname}?${params.toString()}`);
+  }, 500);
+
   const [loading, setLoading] = useState(false);
   api.documents.get.useQuery(undefined, { initialData });
   const utils = api.useUtils();
@@ -29,8 +41,11 @@ export function DropzoneContainer({
       <div className="flex flex-wrap items-center justify-between gap-4">
         <Input
           className="max-w-sm"
-          placeholder="Search files"
-          classNames={{ inputWrapper: "dark:bg-content2 bg-content1" }}
+          placeholder="Search documents"
+          onChange={(e) => searchHandler(e.target.value)}
+          defaultValue={searchParams.get("search") ?? ""}
+          isClearable
+          onClear={() => searchHandler("")}
         />
         <Button color="primary" onClick={() => openRef.current?.()}>
           Upload New Document

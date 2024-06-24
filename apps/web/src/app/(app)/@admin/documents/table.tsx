@@ -2,6 +2,7 @@
 
 import type { Document } from "@/server/api/routers/documents/documents.schema";
 import React from "react";
+import { useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import {
   Chip,
@@ -47,9 +48,12 @@ export function DocumentsTable() {
   const { isOpen, onOpenChange, onOpen } = useDisclosure();
   const [selectedDocument, setSelectedDocument] = React.useState<Document>();
 
-  const { data, isLoading, isFetching } = api.documents.get.useQuery();
+  const { data, isFetching } = api.documents.get.useQuery();
   const deleteDocument = api.documents.delete.useMutation();
   const utils = api.useUtils();
+
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") ?? "";
 
   const renderCell = React.useCallback(
     (file: Document, columnKey: ColumnKey) => {
@@ -125,7 +129,7 @@ export function DocumentsTable() {
       <Table
         aria-label="Documents Table"
         classNames={{
-          wrapper: "min-h-[31rem] relative",
+          wrapper: "min-h-[31rem] relative p-0",
         }}
       >
         <TableHeader columns={columns}>
@@ -140,15 +144,18 @@ export function DocumentsTable() {
           )}
         </TableHeader>
         <TableBody
-          items={data ?? []}
+          items={data?.filter((item) =>
+            search
+              ? item.name.toLowerCase().includes(search.toLowerCase()) ||
+                item.filename.toLowerCase().includes(search.toLowerCase())
+              : true,
+          )}
           emptyContent={
-            !isLoading && (
-              <p>
-                No documents found <br /> Drag and drop a document to upload
-              </p>
-            )
+            <p>
+              No documents found <br /> Drag and drop a document to upload
+            </p>
           }
-          isLoading={isLoading || isFetching}
+          isLoading={isFetching}
           loadingContent={
             <Spinner className="absolute inset-0 bg-overlay/20 dark:bg-overlay/70" />
           }

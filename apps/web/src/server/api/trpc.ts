@@ -8,6 +8,7 @@
  */
 
 import { initTRPC, TRPCError } from "@trpc/server";
+import { getTranslations } from "next-intl/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -28,10 +29,12 @@ import { db } from "../db";
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth();
+  const t = await getTranslations("Server");
 
   return {
     db,
     session,
+    t,
     ...opts,
   };
 };

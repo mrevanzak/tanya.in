@@ -6,14 +6,14 @@ import { z } from "zod";
 import { documentSchema } from "./documents.schema";
 
 export const documentsRouter = createTRPCRouter({
-  get: adminProcedure.query(async () => {
+  get: adminProcedure.query(async ({ ctx }) => {
     const res = await fetch(env.BACKEND_URL + "/files");
 
     if (!res.ok) {
       console.error("Failed to fetch documents", await res.json());
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: "Failed to fetch documents",
+        message: ctx.t("documents.error"),
       });
     }
 
@@ -29,7 +29,7 @@ export const documentsRouter = createTRPCRouter({
 
   delete: adminProcedure
     .input(documentSchema.pick({ id: true, name: true }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const res = await fetch(env.BACKEND_URL + "/files/knowledge", {
         method: "DELETE",
         headers: {
@@ -42,7 +42,7 @@ export const documentsRouter = createTRPCRouter({
         console.error("Failed to delete document", await res.json());
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Failed to delete document",
+          message: ctx.t("documents.deleteError"),
         });
       }
 

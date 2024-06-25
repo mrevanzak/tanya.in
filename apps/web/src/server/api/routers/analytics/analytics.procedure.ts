@@ -6,7 +6,7 @@ import moment from "moment";
 import { analyticsSchema } from "./analytics.schema";
 
 export const analyticsRouter = createTRPCRouter({
-  get: adminProcedure.query(async () => {
+  get: adminProcedure.query(async ({ ctx }) => {
     const to = moment().toISOString();
     const from = moment().subtract(1, "month").toISOString();
     const teamId = "team_BdZXSB6dG1pgCBmmvGHKAS5h";
@@ -32,7 +32,7 @@ export const analyticsRouter = createTRPCRouter({
     if (response.status === 500) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Unkown Vercel server error occurred",
+        message: ctx.t("analytics.error"),
       });
     }
 

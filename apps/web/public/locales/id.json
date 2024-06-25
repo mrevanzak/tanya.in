@@ -8,7 +8,9 @@
     "changeLanguage": "Ubah bahasa",
     "delete": "Hapus",
     "close": "Tutup",
-    "confirmation": "Apakah Anda yakin untuk menghapus"
+    "confirmation": "Apakah Anda yakin untuk menghapus",
+    "changeTitleHistorySuccess": "Judul '{name}' berhasil diubah",
+    "deleteHistorySuccess": "Riwayat pertanyaan berhasil dihapus"
   },
   "Home": {
     "title": "Tanya.in saja!",
@@ -29,6 +31,12 @@
     "copyright": "Hak cipta"
   },
   "Server": {
-    "error": "Server error coy"
+    "analytics": {
+      "error": "Gagal mengambil data analitik"
+    },
+    "documents": {
+      "error": "Gagal mengambil data dokumen",
+      "deleteError": "Gagal menghapus dokumen"
+    }
   }
 }

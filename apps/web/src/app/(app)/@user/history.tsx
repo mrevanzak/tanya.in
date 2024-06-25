@@ -93,7 +93,9 @@ function Content() {
                         onSuccess: () => {
                           void utils.chat.get.invalidate();
                           toast.success(
-                            `"${titleRef.current?.value}" has been updated`,
+                            t("changeTitleHistorySuccess", {
+                              name: titleRef.current?.value,
+                            }),
                           );
                           setEdit(false);
                         },
@@ -159,7 +161,7 @@ function Content() {
                         {
                           onSuccess: () => {
                             void utils.chat.invalidate();
-                            toast.success(`"${title}" has been deleted`);
+                            toast.success(t("deleteHistorySuccess"));
                             onClose();
                           },
                         },

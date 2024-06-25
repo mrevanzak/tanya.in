@@ -5,6 +5,7 @@
     "signOut": "Keluar"
   },
   "Common": {
+    "changeLanguage": "Ubah bahasa",
     "delete": "Hapus",
     "close": "Tutup",
     "confirmation": "Apakah Anda yakin untuk menghapus"
@@ -26,5 +27,8 @@
   },
   "Footer": {
     "copyright": "Hak cipta"
+  },
+  "Server": {
+    "error": "Server error coy"
   }
 }

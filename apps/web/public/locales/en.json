@@ -5,6 +5,7 @@
     "signOut": "Sign out"
   },
   "Common": {
+    "changeLanguage": "Change language",
     "delete": "Delete",
     "close": "Close",
     "confirmation": "Are you sure you want to delete"
@@ -26,5 +27,8 @@
   },
   "Footer": {
     "copyright": "Copyright"
+  },
+  "Server": {
+    "error": "Server error"
   }
 }

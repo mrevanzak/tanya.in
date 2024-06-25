@@ -8,6 +8,7 @@ import { get } from "@vercel/edge-config";
 import { cn } from "@tanya.in/ui";
 
 import Logo from "~/logo.svg";
+import { LanguageDropdown } from "./language-dropdown";
 
 export async function Navbar() {
   const session = await auth();
@@ -35,7 +36,10 @@ export async function Navbar() {
           />
         </Link>
         <SidebarButton user={session?.user} />
-        <UserButton user={session?.user} />
+        <div className="flex gap-4">
+          <LanguageDropdown />
+          <UserButton user={session?.user} />
+        </div>
       </div>
     </header>
   );

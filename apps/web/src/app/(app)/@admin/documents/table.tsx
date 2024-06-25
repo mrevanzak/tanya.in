@@ -68,14 +68,17 @@ export function DocumentsTable() {
           );
         case "actions":
           return (
-            <div className="flex items-center gap-4 ">
+            <div className="flex items-center gap-2">
               <Tooltip
                 content="Download document"
                 color="primary"
                 className="p-2"
               >
-                <button
-                  className="pointer-events-auto text-primary"
+                <Button
+                  className="pointer-events-auto"
+                  isIconOnly
+                  variant="light"
+                  color="primary"
                   onClick={() => {
                     toast.promise(
                       fetch(`/api/documents/${file.id}`)
@@ -101,19 +104,22 @@ export function DocumentsTable() {
                     );
                   }}
                 >
-                  <MdOutlineDownloadForOffline size={20} />
-                </button>
+                  <MdOutlineDownloadForOffline />
+                </Button>
               </Tooltip>
               <Tooltip content="Delete document" color="danger" className="p-2">
-                <button
-                  className="pointer-events-auto text-primary"
+                <Button
+                  className="pointer-events-auto"
+                  isIconOnly
+                  variant="light"
+                  color="danger"
                   onClick={() => {
                     setSelectedDocument(file);
                     onOpen();
                   }}
                 >
-                  <RiDeleteBin2Line size={20} color="#FF0080" />
-                </button>
+                  <RiDeleteBin2Line />
+                </Button>
               </Tooltip>
             </div>
           );

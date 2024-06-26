@@ -8,6 +8,7 @@ import { get } from "@vercel/edge-config";
 import { cn } from "@tanya.in/ui";
 
 import ErrorPage from "../error";
+import { ChatHistory } from "./@user/history";
 
 export default async function AuthLayout(props: {
   user: React.ReactNode;
@@ -33,10 +34,10 @@ export default async function AuthLayout(props: {
 
   return (
     <div
-      className="flex min-h-screen w-full bg-content2 dark:bg-background"
+      className="relative flex min-h-screen w-full bg-content2 dark:bg-background"
       vaul-drawer-wrapper=""
     >
-      {isAdmin && <Sidebar />}
+      {isAdmin ? <Sidebar /> : <ChatHistory />}
       <div className="flex flex-1 flex-col overflow-x-hidden">
         <Navbar />
         <main

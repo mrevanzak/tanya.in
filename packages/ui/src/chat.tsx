@@ -44,7 +44,11 @@ function getChatApi() {
   return undefined;
 }
 
-export function Chat({ onFinish, initialMessages }: UseChatOptions) {
+export function Chat({
+  onFinish,
+  initialMessages,
+  placeholder,
+}: UseChatOptions & { placeholder?: string }) {
   const chatId = React.useMemo(() => crypto.randomUUID(), []);
 
   const {
@@ -120,6 +124,7 @@ export function Chat({ onFinish, initialMessages }: UseChatOptions) {
       <Form {...methods}>
         <form onSubmit={onSubmit}>
           <FormTextArea
+            placeholder={!watch("topic") ? placeholder : ""}
             control={control}
             name="prompt"
             label=""

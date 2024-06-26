@@ -34,12 +34,13 @@ export function ChatCard() {
         <Chat
           onFinish={() => utils.chat.get.invalidate()}
           initialMessages={initialMessages}
+          placeholder={"/ : " + t("chooseTopic")}
         />
       </CardContent>
       <CardFooter>
         <Card className="m-auto shadow-none">
-          <CardContent className="py-4 text-center">
-            /: {t("chooseTopic")}
+          <CardContent className="text-balance py-4 text-center text-sm">
+            {t("hint")}
           </CardContent>
         </Card>
       </CardFooter>

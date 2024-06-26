@@ -33,7 +33,7 @@ export default function Error({
           reset?.();
         }}
       >
-        {isUnauthorized ? "Go to sign in page" : "Try again"}
+        {isUnauthorized ? t("goToSignIn") : t("tryAgain")}
       </Button>
       {isMaintenance && (
         <Button

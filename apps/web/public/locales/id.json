@@ -15,6 +15,7 @@
   "Home": {
     "title": "Tanya.in saja!",
     "chooseTopic": "Untuk memilih topik",
+    "hint": "Tulis pertanyaan dengan bahasa Indonesia",
     "history": {
       "title": "Riwayat",
       "empty": "Tidak ada riwayat pertanyaan"
@@ -25,7 +26,9 @@
     }
   },
   "Error": {
-    "signInAsAdmin": "Masuk sebagai admin"
+    "signInAsAdmin": "Masuk sebagai admin",
+    "tryAgain": "Coba lagi",
+    "goToSignIn": "Pergi ke halaman masuk"
   },
   "Footer": {
     "copyright": "Hak cipta"

@@ -109,7 +109,7 @@ function Content() {
                 <>
                   <Button
                     variant="light"
-                    color="secondary"
+                    color="default"
                     isIconOnly
                     size="sm"
                     onClick={(e) => {
@@ -184,7 +184,7 @@ function Content() {
 
   return (
     <Tabs color="warning" variant="bordered" fullWidth>
-      <Tab title={t("history.title")}>
+      <Tab title={t("history.title")} className="px-0">
         {chatHistory.data?.length ? (
           <ul className="h-full space-y-4">
             {chatHistory.data.map((chat) => (
@@ -195,7 +195,7 @@ function Content() {
           <p className="text-center">{t("history.empty")}</p>
         )}
       </Tab>
-      <Tab title={t("unsolvable.title")}>
+      <Tab title={t("unsolvable.title")} className="px-0">
         {unsolvable.data?.length ? (
           <ul className="h-full space-y-4">
             {unsolvable.data.map((chat) => (
@@ -219,7 +219,7 @@ export function ChatHistory() {
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
           <Button
-            className="absolute right-0 top-1/4"
+            className="absolute right-0 top-1/4 z-10"
             isIconOnly
             onClick={() => setOpen(!open)}
             radius="full"
@@ -240,23 +240,24 @@ export function ChatHistory() {
 
   return (
     <div
-      className="group relative hidden h-5/6 w-80 self-center duration-500 transition-size data-[open=false]:w-0 sm:block"
+      className="group relative hidden h-dvh w-80 self-center duration-500 transition-size data-[open=false]:w-0 sm:block"
       data-open={open}
-      // onMouseLeave={() => setOpen(false)}
     >
-      <Card className="h-full overflow-x-hidden whitespace-nowrap rounded-lg rounded-s-none">
-        <Button
-          className="absolute -right-7 top-1/4"
-          isIconOnly
-          onClick={() => setOpen(!open)}
-          radius="full"
-          variant="solid"
-          color="warning"
-          // onMouseEnter={() => setOpen(true)}
-        >
-          <FaChevronRight className="size-5 transition-transform duration-500 group-data-[open=true]:rotate-180" />
-        </Button>
-        <CardContent className="h-full pt-6">
+      <Card className="h-full overflow-x-hidden whitespace-nowrap rounded-lg rounded-s-none rounded-t-none">
+        <Tooltip content="Show Chat History" placement="bottom-end">
+          <Button
+            className="absolute -right-7 top-1/4 z-10"
+            isIconOnly
+            onClick={() => setOpen(!open)}
+            radius="full"
+            variant="solid"
+            color="warning"
+          >
+            <FaChevronRight className="size-5 transition-transform duration-500 group-data-[open=true]:rotate-180" />
+          </Button>
+        </Tooltip>
+
+        <CardContent className="h-full p-4 pt-2">
           <Content />
         </CardContent>
       </Card>

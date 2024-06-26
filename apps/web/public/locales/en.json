@@ -15,6 +15,7 @@
   "Home": {
     "title": "Tanya.in",
     "chooseTopic": "To choose the topic",
+    "hint": "Ask a question with english",
     "history": {
       "title": "History",
       "empty": "No history"
@@ -25,7 +26,9 @@
     }
   },
   "Error": {
-    "signInAsAdmin": "Masuk sebagai admin"
+    "signInAsAdmin": "Sign in as admin",
+    "tryAgain": "Try again",
+    "goToSignIn": "Go to sign in page"
   },
   "Footer": {
     "copyright": "Copyright"

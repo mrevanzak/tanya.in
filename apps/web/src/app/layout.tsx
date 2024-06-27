@@ -7,7 +7,6 @@ import { getLocale, getMessages } from "next-intl/server";
 import NextTopLoader from "nextjs-toploader";
 
 import { cn } from "@tanya.in/ui";
-import { ThemeToggle } from "@tanya.in/ui/theme";
 import { Toaster } from "@tanya.in/ui/toast";
 
 import "@/styles/globals.css";
@@ -96,10 +95,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <NextIntlClientProvider messages={messages} locale={lang}>
           <Providers user={session?.user}>
             {props.children}
-
-            <div className="fixed bottom-4 right-4">
-              <ThemeToggle />
-            </div>
 
             <Toaster />
             <Analytics />

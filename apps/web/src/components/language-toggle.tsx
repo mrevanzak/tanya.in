@@ -13,7 +13,7 @@ import {
   DropdownTrigger,
 } from "@tanya.in/ui/dropdown";
 
-export function LanguageDropdown() {
+export function LanguageToggle() {
   const t = useTranslations("Common");
   const locale = useLocale();
 

@@ -10,15 +10,23 @@
     "close": "Close",
     "confirmation": "Are you sure you want to delete",
     "changeTitleHistorySuccess": "Title '{name}' has been changed",
-    "deleteHistorySuccess": "History has been deleted"
+    "deleteHistorySuccess": "History has been deleted",
+    "theme": {
+      "toggle": "Toggle theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "Sistem"
+    }
   },
   "Home": {
     "title": "Tanya.in",
     "chooseTopic": "To choose the topic",
     "hint": "Ask a question with english",
     "history": {
+      "show": "Show history",
       "title": "History",
-      "empty": "No history"
+      "empty": "No history",
+      "new": "New chat"
     },
     "unsolvable": {
       "title": "Unsolvable",

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/alert";
+import { LanguageToggle } from "@/components/language-toggle";
 import { SidebarButton } from "@/components/sidebar/sidebar-button";
 import { UserButton } from "@/components/user";
 import { auth } from "@/server/auth";
@@ -8,7 +9,6 @@ import { get } from "@vercel/edge-config";
 import { cn } from "@tanya.in/ui";
 
 import Logo from "~/logo.svg";
-import { LanguageDropdown } from "./language-dropdown";
 
 export async function Navbar() {
   const session = await auth();
@@ -37,7 +37,7 @@ export async function Navbar() {
         </Link>
         <SidebarButton user={session?.user} />
         <div className="flex gap-4">
-          <LanguageDropdown />
+          <LanguageToggle />
           <UserButton user={session?.user} />
         </div>
       </div>

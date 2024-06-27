@@ -10,15 +10,23 @@
     "close": "Tutup",
     "confirmation": "Apakah Anda yakin untuk menghapus",
     "changeTitleHistorySuccess": "Judul '{name}' berhasil diubah",
-    "deleteHistorySuccess": "Riwayat pertanyaan berhasil dihapus"
+    "deleteHistorySuccess": "Riwayat pertanyaan berhasil dihapus",
+    "theme": {
+      "toggle": "Ubah tema",
+      "light": "Terang",
+      "dark": "Gelap",
+      "system": "Sistem"
+    }
   },
   "Home": {
     "title": "Tanya.in saja!",
     "chooseTopic": "Untuk memilih topik",
     "hint": "Tulis pertanyaan dengan bahasa Indonesia",
     "history": {
+      "show": "Tampilkan riwayat",
       "title": "Riwayat",
-      "empty": "Tidak ada riwayat pertanyaan"
+      "empty": "Tidak ada riwayat pertanyaan",
+      "new": "Chat baru"
     },
     "unsolvable": {
       "title": "Tak terjawab",

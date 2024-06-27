@@ -5,7 +5,10 @@ import Link from "next/link";
 import { signIn } from "@/lib/actions/auth";
 import { authSchema } from "@/server/api/routers/auth/auth.input";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { z } from "zod";
+import { makeZodI18nMap } from "zod-i18n-map";
 
 import { Button } from "@tanya.in/ui/button";
 import {
@@ -30,13 +33,16 @@ export function SignInForm() {
   });
   const { handleSubmit, control } = methods;
 
+  const t = useTranslations("Signin");
+  const zodi18n = useTranslations("Zod");
+  // @ts-ignore - lib doesn't support next-intl types
+  z.setErrorMap(makeZodI18nMap({ t: zodi18n }));
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>
-          Enter your email below to login to your account
-        </CardDescription>
+        <CardTitle className="text-2xl">{t("title")}</CardTitle>
+        <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...methods}>
@@ -76,17 +82,17 @@ export function SignInForm() {
               className="w-full"
               isLoading={isPending}
             >
-              Login
+              {t("title")}
             </Button>
             <Button variant="shadow" color="warning" className="w-full">
-              Login with MyITS
+              {t("cta")}
             </Button>
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
+          {t("noAccount")}{" "}
           <Link href="#" className="underline">
-            Sign up
+            {t("signUp")}
           </Link>
         </div>
       </CardContent>

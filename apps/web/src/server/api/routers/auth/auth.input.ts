@@ -4,9 +4,7 @@ import { z } from "zod";
 
 export const authSchema = createInsertSchema(users, {
   email: z.string().email(),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
+  password: z.string().min(8),
 }).pick({
   email: true,
   password: true,

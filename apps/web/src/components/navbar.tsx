@@ -28,13 +28,11 @@ export async function Navbar() {
         </Alert>
       )}
       <div className="flex h-16 items-center justify-between px-4 sm:px-8">
-        <Link href="/">
-          <Logo
-            className={cn("hidden h-7 sm:h-9 md:block", {
-              invisible: isAdmin,
-              block: !isAdmin,
-            })}
-          />
+        <Link
+          href="/"
+          className={cn("md:block", { "invisible hidden": isAdmin })}
+        >
+          <Logo className="h-7 sm:h-9" />
         </Link>
         <SidebarButton user={session?.user} />
         <div className="flex gap-3">

@@ -35,7 +35,7 @@ export function SignInForm() {
 
   const t = useTranslations("Signin");
   const zodi18n = useTranslations("Zod");
-  // @ts-ignore - lib doesn't support next-intl types
+  // @ts-expect-error - lib doesn't support next-intl types
   z.setErrorMap(makeZodI18nMap({ t: zodi18n }));
 
   return (

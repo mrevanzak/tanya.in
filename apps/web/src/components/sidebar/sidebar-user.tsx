@@ -8,8 +8,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { api } from "@/trpc/react";
 import { Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { useTranslations } from "next-intl";
-import { FaChevronRight, FaPlus } from "react-icons/fa6";
-import { IoMenu } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
+import { MdHistory } from "react-icons/md";
 import { useMediaQuery } from "usehooks-ts";
 
 import { Button } from "@tanya.in/ui/button";
@@ -57,7 +57,7 @@ function Content() {
   );
 }
 
-export function ChatHistory() {
+export function SidebarUser() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -76,7 +76,7 @@ export function ChatHistory() {
             variant="solid"
             color="warning"
           >
-            <IoMenu className="size-5" />
+            <MdHistory className="size-7" />
           </Button>
         </DrawerTrigger>
         <DrawerContent className="min-h-[60vh] bg-content1">
@@ -125,14 +125,14 @@ export function ChatHistory() {
 
         <Tooltip content={t("show")} placement="bottom-end">
           <Button
-            className="absolute -right-7 top-1/4 z-10"
+            className="absolute -right-5 top-1/4 z-10"
             isIconOnly
             onClick={() => setOpen(!open)}
             radius="full"
             variant="solid"
             color="warning"
           >
-            <FaChevronRight className="size-5 transition-transform duration-500 group-data-[open=true]:rotate-180" />
+            <MdHistory className="size-7 transition-transform duration-500 group-data-[open=true]:rotate-180" />
           </Button>
         </Tooltip>
 

@@ -124,7 +124,7 @@ s.src = z + '?apiKey=' + e;
 s.async = true;
 a.getElementsByTagName('head')[0].appendChild(s);
 m.mazeUniversalSnippetApiKey = e;
-})(window, document, 'https://snippet.maze.co/maze-universal-loader.js', 'd048d29f-4d54-4c7f-a0b8-580b8b4e83e2');`,
+})(window, document, 'https://snippet.maze.co/maze-universal-loader.js', 'fa61352d-7ca2-4c5e-84f8-bb5a93043aba');`,
           }}
         />
       </body>

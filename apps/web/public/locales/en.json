@@ -1,4 +1,31 @@
 {
+  "Admin": {
+    "sidebar": {
+      "home": "Home",
+      "documents": "Documents"
+    },
+    "statistics": {
+      "title": "Statistics",
+      "pageViews": "Page views",
+      "visitors": "Visitors",
+      "morePageViews": "{number} {data, select, more {more} other {less}} page views than last week",
+      "moreVisitors": "{number} {data, select, more {more} other {less}} visitors than last week"
+    },
+    "documents": {
+      "title": "Documents",
+      "upload": "Upload New Document",
+      "search": "Search document...",
+      "empty": "No documents found",
+      "hint": "Drag and drop a document to upload",
+      "delete": "Delete document",
+      "download": "Download document",
+      "columns": {
+        "name": "Name",
+        "created": "Uploaded at",
+        "actions": "Actions"
+      }
+    }
+  },
   "Signin": {
     "title": "Sign in",
     "description": "Enter your email below to login to your account",

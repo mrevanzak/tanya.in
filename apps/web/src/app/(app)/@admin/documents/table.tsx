@@ -22,6 +22,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import moment from "moment";
+import { useTranslations } from "next-intl";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 
@@ -31,20 +32,19 @@ import { toast } from "@tanya.in/ui/toast";
 const columns = [
   {
     key: "name" as const,
-    label: "NAME",
   },
   {
     key: "created" as const,
-    label: "CREATED AT",
   },
   {
     key: "actions" as const,
-    label: "ACTIONS",
   },
 ];
 type ColumnKey = (typeof columns)[number]["key"];
 
 export function DocumentsTable() {
+  const t = useTranslations("Admin.documents");
+
   const { isOpen, onOpenChange, onOpen } = useDisclosure();
   const [selectedDocument, setSelectedDocument] = React.useState<Document>();
 
@@ -69,11 +69,7 @@ export function DocumentsTable() {
         case "actions":
           return (
             <div className="flex items-center gap-2">
-              <Tooltip
-                content="Download document"
-                color="primary"
-                className="p-2"
-              >
+              <Tooltip content={t("download")} color="primary" className="p-2">
                 <Button
                   className="pointer-events-auto"
                   isIconOnly
@@ -107,7 +103,7 @@ export function DocumentsTable() {
                   <MdOutlineDownloadForOffline />
                 </Button>
               </Tooltip>
-              <Tooltip content="Delete document" color="danger" className="p-2">
+              <Tooltip content={t("delete")} color="danger" className="p-2">
                 <Button
                   className="pointer-events-auto"
                   isIconOnly
@@ -127,7 +123,7 @@ export function DocumentsTable() {
           return file[columnKey];
       }
     },
-    [onOpen],
+    [onOpen, t],
   );
 
   return (
@@ -145,7 +141,7 @@ export function DocumentsTable() {
               hideHeader={column.key === "actions"}
               width={column.key === "actions" ? 80 : undefined}
             >
-              {column.label}
+              {t(`columns.${column.key}`)}
             </TableColumn>
           )}
         </TableHeader>
@@ -158,7 +154,7 @@ export function DocumentsTable() {
           )}
           emptyContent={
             <p>
-              No documents found <br /> Drag and drop a document to upload
+              {t("empty")} <br /> {t("hint")}
             </p>
           }
           isLoading={isFetching}
@@ -182,7 +178,7 @@ export function DocumentsTable() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Delete Document</ModalHeader>
+              <ModalHeader>{t("delete")}</ModalHeader>
               <ModalBody>
                 <p>Are you sure you want to delete {selectedDocument?.name}?</p>
               </ModalBody>

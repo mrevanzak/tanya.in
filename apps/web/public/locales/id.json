@@ -1,4 +1,31 @@
 {
+  "Admin": {
+    "sidebar": {
+      "home": "Beranda",
+      "documents": "Dokumen"
+    },
+    "statistics": {
+      "title": "Statistik",
+      "pageViews": "Kunjungan halaman",
+      "visitors": "Pengunjung",
+      "morePageViews": "{number} kunjungan halaman {data, select, more {lebih} other {kurang}} dari minggu lalu",
+      "moreVisitors": "{number} pengunjung {data, select, more {lebih} other {kurang}} dari minggu lalu"
+    },
+    "documents": {
+      "title": "Dokumen",
+      "upload": "Unggah dokumen baru",
+      "search": "Cari dokumen...",
+      "empty": "Tidak ada dokumen",
+      "hint": "Seret dan lepas dokumen di sini untuk mengunggah",
+      "delete": "Hapus dokumen",
+      "download": "Unduh dokumen",
+      "columns": {
+        "name": "Nama",
+        "created": "Diunggah pada",
+        "actions": "Aksi"
+      }
+    }
+  },
   "Signin": {
     "title": "Masuk",
     "description": "Masukkan email Anda di bawah ini untuk masuk ke akun Anda",

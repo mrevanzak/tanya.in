@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
 import { HistoryList } from "@/components/history-list";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { api } from "@/trpc/react";
 import { Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { useTranslations } from "next-intl";
@@ -13,7 +12,7 @@ import { MdHistory } from "react-icons/md";
 import { useMediaQuery } from "usehooks-ts";
 
 import { Button } from "@tanya.in/ui/button";
-import { Card, CardContent, CardFooter } from "@tanya.in/ui/card";
+import { Card, CardContent } from "@tanya.in/ui/card";
 
 function Content() {
   const chatHistory = api.chat.get.useQuery({});

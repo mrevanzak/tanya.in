@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import { Dropzone, PDF_MIME_TYPE } from "@mantine/dropzone";
 import { Spinner } from "@nextui-org/react";
+import { useTranslations } from "next-intl";
 import { FaUpload, FaXmark } from "react-icons/fa6";
 import { useDebounceCallback } from "usehooks-ts";
 
@@ -20,6 +21,8 @@ export function DropzoneContainer({
 }: {
   initialData: Document[];
 }) {
+  const t = useTranslations("Admin.documents");
+
   const openRef = useRef<() => void>(null);
 
   const router = useRouter();
@@ -41,14 +44,14 @@ export function DropzoneContainer({
       <div className="flex flex-wrap items-center justify-between gap-4">
         <Input
           className="max-w-sm"
-          placeholder="Search documents"
+          placeholder={t("search")}
           onChange={(e) => searchHandler(e.target.value)}
           defaultValue={searchParams.get("search") ?? ""}
           isClearable
           onClear={() => searchHandler("")}
         />
         <Button color="primary" onClick={() => openRef.current?.()}>
-          Upload New Document
+          {t("upload")}
         </Button>
       </div>
       <div className="mx-auto w-full">

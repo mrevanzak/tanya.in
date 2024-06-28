@@ -5,10 +5,13 @@ import { AreaChart } from "@/components/area-chart";
 import { api } from "@/trpc/react";
 import { Chip, Divider, Tooltip } from "@nextui-org/react";
 import moment from "moment";
+import { useTranslations } from "next-intl";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@tanya.in/ui/card";
 
 export function StatisticsCard(props: { initialData: Analytics[] }) {
+  const t = useTranslations("Admin.statistics");
+
   const { data } = api.analytics.get.useQuery(undefined, {
     initialData: props.initialData,
   });
@@ -46,7 +49,7 @@ export function StatisticsCard(props: { initialData: Analytics[] }) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Statistics</CardTitle>
+        <CardTitle>{t("title")}</CardTitle>
       </CardHeader>
       <AreaChart
         data={mappedData}
@@ -64,8 +67,10 @@ export function StatisticsCard(props: { initialData: Analytics[] }) {
             <div className="h-0.5 w-8 bg-primary-its" />
             <p>{pageViews}</p>
             <Tooltip
-              content={`${Math.abs(pageViews - pageViewsLastWeek)} ${pageViews > pageViewsLastWeek ? "more" : "less"} page views than last week`}
-              color="foreground"
+              content={t("morePageViews", {
+                number: Math.abs(pageViews - pageViewsLastWeek),
+                data: pageViews > pageViewsLastWeek ? "more" : "less",
+              })}
             >
               <Chip color="success" radius="sm" variant="flat">
                 {pageViews > pageViewsLastWeek
@@ -74,7 +79,7 @@ export function StatisticsCard(props: { initialData: Analytics[] }) {
               </Chip>
             </Tooltip>
           </div>
-          <p>Page Views</p>
+          <p>{t("pageViews")}</p>
         </div>
         <Divider />
         <div className="flex flex-row items-center justify-between">
@@ -82,8 +87,10 @@ export function StatisticsCard(props: { initialData: Analytics[] }) {
             <div className="h-0.5 w-8 bg-accent-its" />
             <p>{visitors}</p>
             <Tooltip
-              content={`${Math.abs(visitors - visitorsLastWeek)} ${visitors > visitorsLastWeek ? "more" : "less"} visitors than last week`}
-              color="foreground"
+              content={t("moreVisitors", {
+                number: Math.abs(visitors - visitorsLastWeek),
+                data: visitors > visitorsLastWeek ? "more" : "less",
+              })}
             >
               <Chip color="success" radius="sm" variant="flat">
                 {visitors > visitorsLastWeek
@@ -92,7 +99,7 @@ export function StatisticsCard(props: { initialData: Analytics[] }) {
               </Chip>
             </Tooltip>
           </div>
-          <p>Visitors</p>
+          <p>{t("visitors")}</p>
         </div>
       </CardContent>
     </Card>

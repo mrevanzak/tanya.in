@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { IoDocumentText, IoHome } from "react-icons/io5";
 
 import Logo from "~/logo.svg";
@@ -9,6 +10,7 @@ import { SidebarMenu } from "./sidebar-menu";
 
 export function SidebarContent(props: { onMenuClick?: () => void }) {
   const pathname = usePathname();
+  const t = useTranslations("Admin.sidebar");
 
   return (
     <div className="flex h-full max-h-screen flex-col gap-2">
@@ -17,7 +19,7 @@ export function SidebarContent(props: { onMenuClick?: () => void }) {
       <div className="flex-1 ">
         <nav className="grid items-start gap-6 px-4 font-medium">
           <SidebarItem
-            title="Home"
+            title={t("home")}
             icon={<IoHome size={24} />}
             isActive={pathname === "/"}
             href="/"
@@ -25,7 +27,7 @@ export function SidebarContent(props: { onMenuClick?: () => void }) {
           />
           <SidebarMenu title="Main Menu">
             <SidebarItem
-              title="Documents"
+              title={t("documents")}
               icon={<IoDocumentText size={24} />}
               isActive={pathname === "/documents"}
               href="/documents"

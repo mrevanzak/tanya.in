@@ -136,13 +136,9 @@ export function SidebarUser() {
           </Button>
         </Tooltip>
 
-        <CardContent className="h-full flex-1 overflow-y-scroll p-4 pt-2 opacity-100 transition-opacity group-data-[open=false]:pointer-events-none group-data-[open=false]:opacity-0">
+        <CardContent className="h-full overflow-y-scroll p-4 pt-2 opacity-100 transition-opacity group-data-[open=false]:pointer-events-none group-data-[open=false]:opacity-0">
           <Content />
         </CardContent>
-
-        <CardFooter className="h-1/6 p-1 transition-transform group-data-[open=true]:translate-x-4">
-          <ThemeToggle />
-        </CardFooter>
       </Card>
     </div>
   );

@@ -9,6 +9,7 @@ import { get } from "@vercel/edge-config";
 import { cn } from "@tanya.in/ui";
 
 import Logo from "~/logo.svg";
+import { ThemeToggle } from "./theme-toggle";
 
 export async function Navbar() {
   const session = await auth();
@@ -36,7 +37,8 @@ export async function Navbar() {
           />
         </Link>
         <SidebarButton user={session?.user} />
-        <div className="flex gap-4">
+        <div className="flex gap-3">
+          <ThemeToggle />
           <LanguageToggle />
           <UserButton user={session?.user} />
         </div>

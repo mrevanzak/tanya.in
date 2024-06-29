@@ -13,5 +13,19 @@ export async function GET(_: Request, context: { params: { fileId: string } }) {
   const res = await fetch(
     env.BACKEND_URL + "/files/download/" + context.params.fileId,
   );
-  return res;
+
+  if (!res.ok) {
+    return await res.json();
+  }
+
+  return new Response(await res.arrayBuffer(), {
+    headers: {
+      "Content-Type": "application/pdf",
+      "Content-Disposition":
+        res.headers
+          .get("Content-Disposition")
+          ?.replace("attachment", "inline") ??
+        'inline; filename="document.pdf"',
+    },
+  });
 }

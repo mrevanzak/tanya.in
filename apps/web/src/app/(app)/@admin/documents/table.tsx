@@ -2,6 +2,7 @@
 
 import type { Document } from "@/server/api/routers/documents/documents.schema";
 import React, { useMemo } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import {
@@ -25,6 +26,7 @@ import {
 } from "@nextui-org/react";
 import moment from "moment";
 import { useTranslations } from "next-intl";
+import { IoOpenOutline } from "react-icons/io5";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 
@@ -110,6 +112,18 @@ export function DocumentsTable() {
         case "actions":
           return (
             <div className="flex items-center gap-2">
+              <Tooltip content={t("view")} color="default" className="p-2">
+                <Link href={`/api/documents/${file.id}`} target="_blank">
+                  <Button
+                    className="pointer-events-auto"
+                    isIconOnly
+                    variant="light"
+                    color="default"
+                  >
+                    <IoOpenOutline />
+                  </Button>
+                </Link>
+              </Tooltip>
               <Tooltip content={t("download")} color="primary" className="p-2">
                 <Button
                   className="pointer-events-auto"

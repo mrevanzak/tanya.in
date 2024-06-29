@@ -17,6 +17,7 @@
       "search": "Search document...",
       "empty": "No documents found",
       "hint": "Drag and drop a document to upload",
+      "view": "View document",
       "delete": "Delete document",
       "download": "Download document",
       "columns": {

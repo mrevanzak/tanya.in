@@ -1,7 +1,7 @@
 "use client";
 
 import type { Document } from "@/server/api/routers/documents/documents.schema";
-import React from "react";
+import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import {
@@ -11,6 +11,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Pagination,
+  SortDescriptor,
   Spinner,
   Table,
   TableBody,
@@ -54,6 +56,45 @@ export function DocumentsTable() {
 
   const searchParams = useSearchParams();
   const search = searchParams.get("search") ?? "";
+
+  const [page, setPage] = React.useState(1);
+  const rowsPerPage = 9;
+  const pages = useMemo(
+    () => Math.ceil((data?.length ?? 1) / rowsPerPage),
+    [data],
+  );
+  const [sort, setSort] = React.useState<SortDescriptor>({
+    column: "created",
+    direction: "descending",
+  });
+
+  const filteredData = useMemo(() => {
+    if (sort) {
+      const { column, direction } = sort;
+      data?.sort((a, b) => {
+        switch (column) {
+          case "name":
+            return direction === "ascending"
+              ? a.name.localeCompare(b.name)
+              : b.name.localeCompare(a.name);
+          case "created":
+            return direction === "ascending"
+              ? moment(a.created).diff(b.created)
+              : moment(b.created).diff(a.created);
+          default:
+            return 0;
+        }
+      });
+    }
+
+    return data
+      ?.filter(
+        (file) =>
+          file.name.toLowerCase().includes(search.toLowerCase()) ||
+          file.filename.toLowerCase().includes(search.toLowerCase()),
+      )
+      .slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  }, [data, search, page, sort]);
 
   const renderCell = React.useCallback(
     (file: Document, columnKey: ColumnKey) => {
@@ -133,6 +174,22 @@ export function DocumentsTable() {
         classNames={{
           wrapper: "min-h-[31rem] relative p-0",
         }}
+        sortDescriptor={sort}
+        onSortChange={setSort}
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="primary"
+              page={page}
+              total={pages}
+              onChange={setPage}
+              className="pointer-events-auto"
+            />
+          </div>
+        }
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -140,18 +197,15 @@ export function DocumentsTable() {
               key={column.key}
               hideHeader={column.key === "actions"}
               width={column.key === "actions" ? 80 : undefined}
+              allowsSorting={column.key !== "actions"}
+              className="pointer-events-auto"
             >
               {t(`columns.${column.key}`)}
             </TableColumn>
           )}
         </TableHeader>
         <TableBody
-          items={data?.filter((item) =>
-            search
-              ? item.name.toLowerCase().includes(search.toLowerCase()) ||
-                item.filename.toLowerCase().includes(search.toLowerCase())
-              : true,
-          )}
+          items={filteredData}
           emptyContent={
             <p>
               {t("empty")} <br /> {t("hint")}

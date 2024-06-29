@@ -23,7 +23,7 @@ export function LanguageToggle() {
         <div>
           <DropdownTrigger as="span">
             <Button isIconOnly variant="light">
-              <IoLanguage />
+              <IoLanguage className="size-5" />
             </Button>
           </DropdownTrigger>
         </div>

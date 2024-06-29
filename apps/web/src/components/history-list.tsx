@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { api } from "@/trpc/react";
 import {
@@ -21,17 +21,40 @@ export function HistoryList(props: { id: string; title: string }) {
   const t = useTranslations("Common");
 
   const { isOpen, onOpenChange, onOpen } = useDisclosure();
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = React.useState(false);
   const utils = api.useUtils();
 
   const deleteChat = api.chat.delete.useMutation();
   const changeChatTitle = api.chat.changeTitle.useMutation();
 
-  const titleRef = useRef<HTMLInputElement>(null);
+  const titleRef = React.useRef<HTMLInputElement>(null);
 
   function preventDefault(e: React.MouseEvent) {
     e.preventDefault();
     e.nativeEvent.stopImmediatePropagation();
+  }
+
+  function onUpdateTitle() {
+    if (!titleRef.current?.value) {
+      return;
+    }
+    changeChatTitle.mutate(
+      {
+        id: props.id,
+        title: titleRef.current.value,
+      },
+      {
+        onSuccess: (_, input) => {
+          void utils.chat.get.invalidate();
+          toast.success(
+            t("changeTitleHistorySuccess", {
+              name: input.title,
+            }),
+          );
+          setEdit(false);
+        },
+      },
+    );
   }
 
   return (
@@ -53,6 +76,11 @@ export function HistoryList(props: { id: string; title: string }) {
               onClick={(e) => {
                 preventDefault(e);
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  onUpdateTitle();
+                }
+              }}
             />
           ) : (
             <p className="overflow-hidden text-ellipsis">{props.title}</p>
@@ -67,26 +95,7 @@ export function HistoryList(props: { id: string; title: string }) {
                 isLoading={changeChatTitle.isPending}
                 onClick={(e) => {
                   preventDefault(e);
-                  if (!titleRef.current?.value) {
-                    return;
-                  }
-                  changeChatTitle.mutate(
-                    {
-                      id: props.id,
-                      title: titleRef.current.value,
-                    },
-                    {
-                      onSuccess: () => {
-                        void utils.chat.get.invalidate();
-                        toast.success(
-                          t("changeTitleHistorySuccess", {
-                            name: titleRef.current?.value,
-                          }),
-                        );
-                        setEdit(false);
-                      },
-                    },
-                  );
+                  onUpdateTitle();
                 }}
               >
                 <RiCheckFill />

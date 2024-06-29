@@ -35,6 +35,7 @@ export function ChatCard() {
           onFinish={() => utils.chat.get.invalidate()}
           initialMessages={initialMessages}
           placeholder={"/ : " + t("chooseTopic")}
+          id={data?.id}
         />
       </CardContent>
       <CardFooter>

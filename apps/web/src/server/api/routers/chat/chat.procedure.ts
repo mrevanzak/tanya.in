@@ -37,7 +37,11 @@ export const chatRouter = createTRPCRouter({
       return await ctx.db.query.chats.findFirst({
         where: (chat, { eq }) => eq(chat.id, input.id),
         with: {
-          messages: true,
+          messages: {
+            columns: {
+              chatId: false,
+            },
+          },
         },
       });
     }),

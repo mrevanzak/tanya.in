@@ -38,9 +38,7 @@ export const chatRelations = relations(chats, ({ many }) => ({
 }));
 
 export const messages = createTable("message", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+  id: text("id").primaryKey(),
   content: text("content").notNull(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
   chatId: uuid("chat_id")

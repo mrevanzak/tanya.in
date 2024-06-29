@@ -9,6 +9,8 @@ import { getLocale } from "next-intl/server";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 
+import { generateId } from "@tanya.in/ui";
+
 // TODO: Remove this when backend has domain
 // export const runtime = "edge";
 
@@ -25,8 +27,9 @@ export async function POST(req: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { success } = await ratelimit.limit(session.user.id);
-  if (!success) return new Response("Too many request", { status: 429 });
+  const limiter = await ratelimit.limit(session.user.id);
+  if (!limiter.success)
+    return new Response("Too many request", { status: 429 });
 
   const body = z
     .object({
@@ -34,7 +37,6 @@ export async function POST(req: Request) {
       messages: z
         .object({
           id: z.string(),
-          role: z.enum(["user", "assistant"] as const),
           content: z.string(),
         })
         .array(),
@@ -45,7 +47,11 @@ export async function POST(req: Request) {
     const error = fromZodError(body.error).toString();
     return new Response(error, { status: 400 });
   }
-  const lastMessage = body.data.messages.pop()?.content;
+  const lastMessage = body.data.messages.pop();
+
+  if (!lastMessage) {
+    return new Response("No message", { status: 400 });
+  }
 
   const isTesting = await get("testing");
   const res = await fetch(
@@ -58,7 +64,7 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         id: body.data.chatId,
-        question: lastMessage,
+        question: lastMessage.content,
         isBahasa: (await getLocale()) === "id",
       }),
     },
@@ -83,8 +89,9 @@ export async function POST(req: Request) {
     .returning({ id: chats.id });
 
   await db.insert(messages).values({
+    id: lastMessage.id,
     chatId: chatId[0]?.id ?? body.data.chatId,
-    content: lastMessage ?? "",
+    content: lastMessage.content,
   });
 
   const reader = res.body.getReader();
@@ -95,6 +102,7 @@ export async function POST(req: Request) {
         const { done, value } = await reader.read();
         if (done) {
           await db.insert(messages).values({
+            id: generateId(),
             chatId: chatId[0]?.id ?? body.data.chatId,
             content: data,
           });

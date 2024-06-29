@@ -48,8 +48,9 @@ export function Chat({
   onFinish,
   initialMessages,
   placeholder,
+  id,
 }: UseChatOptions & { placeholder?: string }) {
-  const chatId = React.useMemo(() => crypto.randomUUID(), []);
+  const chatId = React.useMemo(() => (id ? id : crypto.randomUUID()), [id]);
 
   const {
     messages,
@@ -62,6 +63,7 @@ export function Chat({
     sendExtraMessageFields: true,
     onFinish,
     initialMessages,
+    id,
   });
   const chatContainerRef = useChatScroll(messages);
 

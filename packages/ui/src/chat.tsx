@@ -115,7 +115,7 @@ export function Chat({
               >
                 {item.content.includes("</") && item.content.includes(">") ? (
                   <div
-                    className="prose"
+                    className="prose dark:prose-invert"
                     dangerouslySetInnerHTML={{ __html: item.content }}
                   />
                 ) : (

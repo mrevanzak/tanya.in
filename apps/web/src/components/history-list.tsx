@@ -85,7 +85,7 @@ export function HistoryList(props: { id: string; title: string }) {
           ) : (
             <p className="overflow-hidden text-ellipsis">{props.title}</p>
           )}
-          <div>
+          <div className="min-w-fit">
             {edit ? (
               <Button
                 variant="light"

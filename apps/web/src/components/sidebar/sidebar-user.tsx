@@ -68,7 +68,7 @@ export function SidebarUser() {
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
           <Button
-            className="absolute right-0 top-1/4 z-10"
+            className="fixed right-0 top-1/4 z-10"
             isIconOnly
             onClick={() => setOpen(!open)}
             radius="full"

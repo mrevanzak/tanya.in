@@ -44,7 +44,7 @@
     "delete": "Delete",
     "close": "Close",
     "confirmation": "Are you sure you want to delete",
-    "changeTitleHistorySuccess": "Title '{name}' has been changed",
+    "changeTitleHistorySuccess": "Title \"{name}\" has been changed",
     "deleteHistorySuccess": "History has been deleted",
     "theme": {
       "toggle": "Toggle theme",

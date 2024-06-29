@@ -44,7 +44,7 @@
     "delete": "Hapus",
     "close": "Tutup",
     "confirmation": "Apakah Anda yakin untuk menghapus",
-    "changeTitleHistorySuccess": "Judul '{name}' berhasil diubah",
+    "changeTitleHistorySuccess": "Judul \"{name}\" berhasil diubah",
     "deleteHistorySuccess": "Riwayat pertanyaan berhasil dihapus",
     "theme": {
       "toggle": "Ubah tema",

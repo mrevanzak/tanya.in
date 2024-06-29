@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/theme";
+import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
 export default {
@@ -86,5 +87,5 @@ export default {
       },
     },
   },
-  plugins: [animate, nextui()],
+  plugins: [animate, nextui(), typography()],
 } satisfies Config;

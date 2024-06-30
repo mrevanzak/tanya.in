@@ -60,6 +60,7 @@ export function SignInForm() {
             <FormInput
               name="password"
               control={control}
+              onClear={undefined}
               endContent={
                 <button
                   className="focus:outline-none"
@@ -67,9 +68,9 @@ export function SignInForm() {
                   onClick={() => setIsVisible(!isVisible)}
                 >
                   {isVisible ? (
-                    <FaEyeSlash className="pointer-events-none text-2xl text-default-400" />
+                    <FaEyeSlash className="pointer-events-none size-4 text-foreground" />
                   ) : (
-                    <FaEye className="pointer-events-none text-2xl text-default-400" />
+                    <FaEye className="pointer-events-none size-4 text-foreground" />
                   )}
                 </button>
               }

@@ -51,17 +51,17 @@ export function StatisticsCard(props: { initialData: Analytics[] }) {
       <CardHeader>
         <CardTitle>{t("title")}</CardTitle>
       </CardHeader>
-      <AreaChart
-        data={mappedData}
-        index="date"
-        categories={["Page Views", "Visitors"]}
-        colors={["blue", "yellow"]}
-        showLegend={false}
-        showYAxis={false}
-        startEndOnly={true}
-        className="h-[calc(100vh-28rem)]"
-      />
-      <CardContent className="space-y-4 p-6">
+      <CardContent className="space-y-4">
+        <AreaChart
+          data={mappedData}
+          index="date"
+          categories={["Page Views", "Visitors"]}
+          colors={["blue", "yellow"]}
+          showLegend={false}
+          showYAxis={false}
+          startEndOnly={true}
+          className="h-[calc(100vh-28rem)]"
+        />
         <div className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="h-0.5 w-8 bg-primary-its" />

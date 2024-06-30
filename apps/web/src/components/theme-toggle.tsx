@@ -37,7 +37,7 @@ export function ThemeToggle() {
         disallowEmptySelection
         selectionMode="single"
         selectedKeys={[theme ?? "system"]}
-        onSelectionChange={async (keys) => {
+        onSelectionChange={(keys) => {
           setTheme(Array.from(keys).at(0)?.toString() ?? "system");
         }}
       >

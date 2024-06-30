@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
 import { HistoryList } from "@/components/history-list";
 import { api } from "@/trpc/react";

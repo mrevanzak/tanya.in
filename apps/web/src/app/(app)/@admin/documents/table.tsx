@@ -1,6 +1,7 @@
 "use client";
 
 import type { Document } from "@/server/api/routers/documents/documents.schema";
+import type { SortDescriptor } from "@nextui-org/react";
 import React, { useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -13,7 +14,6 @@ import {
   ModalFooter,
   ModalHeader,
   Pagination,
-  SortDescriptor,
   Spinner,
   Table,
   TableBody,
@@ -71,9 +71,10 @@ export function DocumentsTable() {
   });
 
   const filteredData = useMemo(() => {
-    if (sort) {
-      const { column, direction } = sort;
-      data?.sort((a, b) => {
+    const { column, direction } = sort;
+
+    return data
+      ?.sort((a, b) => {
         switch (column) {
           case "name":
             return direction === "ascending"
@@ -86,11 +87,8 @@ export function DocumentsTable() {
           default:
             return 0;
         }
-      });
-    }
-
-    return data
-      ?.filter(
+      })
+      .filter(
         (file) =>
           file.name.toLowerCase().includes(search.toLowerCase()) ||
           file.filename.toLowerCase().includes(search.toLowerCase()),

@@ -15,7 +15,7 @@ export async function GET(_: Request, context: { params: { fileId: string } }) {
   );
 
   if (!res.ok) {
-    return await res.json();
+    return res;
   }
 
   return new Response(await res.arrayBuffer(), {

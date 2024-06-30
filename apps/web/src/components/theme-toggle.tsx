@@ -16,7 +16,7 @@ import { useTheme } from "@tanya.in/ui/theme";
 
 export function ThemeToggle() {
   const t = useTranslations("Common.theme");
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   return (
     <Dropdown classNames={{ content: "min-w-32 bg-default-50" }}>
@@ -31,16 +31,19 @@ export function ThemeToggle() {
           </DropdownTrigger>
         </div>
       </Tooltip>
-      <DropdownMenu aria-label="Theme Toggle" variant="flat">
-        <DropdownItem key="light" onClick={() => setTheme("light")}>
-          {t("light")}
-        </DropdownItem>
-        <DropdownItem key="dark" onClick={() => setTheme("dark")}>
-          {t("dark")}
-        </DropdownItem>
-        <DropdownItem key="system" onClick={() => setTheme("system")}>
-          {t("system")}
-        </DropdownItem>
+      <DropdownMenu
+        aria-label="Theme Toggle"
+        variant="flat"
+        disallowEmptySelection
+        selectionMode="single"
+        selectedKeys={[theme ?? "system"]}
+        onSelectionChange={async (keys) => {
+          setTheme(Array.from(keys).at(0)?.toString() ?? "system");
+        }}
+      >
+        <DropdownItem key="light">{t("light")}</DropdownItem>
+        <DropdownItem key="dark">{t("dark")}</DropdownItem>
+        <DropdownItem key="system">{t("system")}</DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

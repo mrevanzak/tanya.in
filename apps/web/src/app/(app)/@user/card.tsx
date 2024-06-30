@@ -21,7 +21,7 @@ export function ChatCard() {
 
   const { data } = api.chat.show.useQuery(
     { id: searchParams.get("id") ?? "" },
-    { enabled: searchParams.has("id") },
+    { enabled: searchParams.has("id") && !searchParams.has("new") },
   );
   const initialMessages = data?.messages as Message[] | undefined;
 
@@ -35,7 +35,7 @@ export function ChatCard() {
           onFinish={() => utils.chat.get.invalidate()}
           initialMessages={initialMessages}
           placeholder={"/ : " + t("chooseTopic")}
-          id={data?.id}
+          id={searchParams.get("id") ?? undefined}
         />
       </CardContent>
       <CardFooter>

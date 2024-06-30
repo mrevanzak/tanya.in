@@ -63,7 +63,7 @@ export function Chat({
     sendExtraMessageFields: true,
     onFinish,
     initialMessages,
-    id,
+    id: chatId,
   });
   const chatContainerRef = useChatScroll(messages);
 

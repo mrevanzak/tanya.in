@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/drawer";
 import { HistoryList } from "@/components/history-list";
 import { api } from "@/trpc/react";
@@ -59,6 +59,7 @@ function Content() {
 export function SidebarUser() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const t = useTranslations("Home.history");
@@ -114,7 +115,9 @@ export function SidebarUser() {
             className="relative min-w-10 justify-start overflow-clip px-0 transition-all group-data-[open=true]:min-w-20 group-data-[open=false]:-translate-x-3.5"
             onClick={() => {
               setOpen(false);
-              router.push("/");
+              searchParams.has("id")
+                ? router.push("/")
+                : router.push(`/?id=${crypto.randomUUID()}&new`);
             }}
           >
             <FaPlus className="translate-x-3/4 transition-all" />

@@ -54,7 +54,7 @@ const FormInput = <
         .replace(/^./, (str) => str.toUpperCase())}
       isInvalid={fieldState.invalid}
       errorMessage={fieldState.error?.message}
-      isClearable
+      onClear={() => field.onChange("")}
       {...props}
       classNames={{
         ...props.classNames,

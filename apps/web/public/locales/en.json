@@ -14,6 +14,7 @@
     "documents": {
       "title": "Documents",
       "upload": "Upload New Document",
+      "uploadHint": "Only .pdf files are allowed",
       "search": "Search document...",
       "empty": "No documents found",
       "hint": "Drag and drop a document to upload",

@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import { Dropzone, PDF_MIME_TYPE } from "@mantine/dropzone";
-import { Spinner } from "@nextui-org/react";
+import { Spinner, Tooltip } from "@nextui-org/react";
 import { useTranslations } from "next-intl";
 import { FaUpload, FaXmark } from "react-icons/fa6";
 import { useDebounceCallback } from "usehooks-ts";
@@ -50,9 +50,11 @@ export function DropzoneContainer({
           isClearable
           onClear={() => searchHandler("")}
         />
-        <Button color="primary" onClick={() => openRef.current?.()}>
-          {t("upload")}
-        </Button>
+        <Tooltip content={t("uploadHint")} placement="top">
+          <Button color="primary" onClick={() => openRef.current?.()}>
+            {t("upload")}
+          </Button>
+        </Tooltip>
       </div>
       <div className="mx-auto w-full">
         <Dropzone

@@ -14,6 +14,7 @@
     "documents": {
       "title": "Dokumen",
       "upload": "Unggah dokumen baru",
+      "uploadHint": "Hanya menerima file PDF",
       "search": "Cari dokumen...",
       "empty": "Tidak ada dokumen",
       "hint": "Seret dan lepas dokumen di sini untuk mengunggah",

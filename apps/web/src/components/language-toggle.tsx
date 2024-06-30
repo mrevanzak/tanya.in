@@ -35,7 +35,7 @@ export function LanguageToggle() {
         selectedKeys={[locale]}
         onSelectionChange={async (keys) => {
           if (keys === "all") return;
-          await changeLanguage(Array.from(keys).at(0) as "en" | "id");
+          await changeLanguage(Array.from(keys).at(0)?.toString() ?? "en");
         }}
       >
         <DropdownItem key="en">English</DropdownItem>

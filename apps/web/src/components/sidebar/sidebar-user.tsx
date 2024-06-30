@@ -117,7 +117,7 @@ export function SidebarUser() {
             variant="ghost"
             color="default"
             fullWidth
-            className="relative min-w-10 justify-start overflow-clip px-0 transition-all group-data-[open=true]:min-w-20 group-data-[open=false]:-translate-x-3.5"
+            className="relative min-w-10 justify-start overflow-clip px-0 transition-all group-data-[open=true]:min-w-20 group-data-[open=false]:-translate-x-[13px]"
             onClick={() => {
               setOpen(false);
               searchParams.has("id")
@@ -126,7 +126,7 @@ export function SidebarUser() {
             }}
           >
             <FaPlus className="translate-x-3/4 transition-all" />
-            <span className="absolute left-9">{t("new")}</span>
+            <span className="absolute left-10">{t("new")}</span>
           </Button>
         </div>
 

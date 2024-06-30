@@ -55,7 +55,7 @@
   },
   "Home": {
     "title": "Tanya.in saja!",
-    "chooseTopic": "Untuk memilih topik",
+    "chooseTopic": "Ketik '/' untuk memilih topik",
     "hint": "Tulis pertanyaan dengan bahasa Indonesia",
     "history": {
       "show": "Tampilkan riwayat",

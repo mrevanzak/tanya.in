@@ -21,7 +21,12 @@ function Content() {
   const t = useTranslations("Home");
 
   return (
-    <Tabs color="warning" variant="solid" fullWidth>
+    <Tabs
+      color="warning"
+      variant="solid"
+      fullWidth
+      classNames={{ panel: "h-full overflow-y-scroll" }}
+    >
       <Tab title={t("history.title")} className="px-0">
         {chatHistory.data?.length ? (
           <ul className="h-full space-y-4">
@@ -106,7 +111,7 @@ export function SidebarUser() {
       className="group relative hidden h-dvh w-80 self-center duration-500 transition-size data-[open=false]:w-12 sm:block"
       data-open={open}
     >
-      <Card className="flex h-full flex-col overflow-x-hidden whitespace-nowrap rounded-lg rounded-s-none rounded-t-none">
+      <Card className="flex h-full flex-col overflow-hidden whitespace-nowrap rounded-lg rounded-s-none rounded-t-none">
         <div className="w-full self-center px-4 pt-3">
           <Button
             variant="ghost"
@@ -138,7 +143,7 @@ export function SidebarUser() {
           </Button>
         </Tooltip>
 
-        <CardContent className="h-full overflow-y-scroll p-4 pt-2 opacity-100 transition-opacity group-data-[open=false]:pointer-events-none group-data-[open=false]:opacity-0">
+        <CardContent className="h-full p-4 pt-2 opacity-100 transition-opacity group-data-[open=false]:pointer-events-none group-data-[open=false]:opacity-0">
           <Content />
         </CardContent>
       </Card>

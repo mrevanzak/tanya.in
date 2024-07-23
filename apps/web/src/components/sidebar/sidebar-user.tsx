@@ -7,12 +7,13 @@ import { HistoryList } from "@/components/history-list";
 import { api } from "@/trpc/react";
 import { Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { useTranslations } from "next-intl";
-import { FaPlus } from "react-icons/fa6";
 import { MdHistory } from "react-icons/md";
 import { useMediaQuery } from "usehooks-ts";
 
 import { Button } from "@tanya.in/ui/button";
 import { Card, CardContent } from "@tanya.in/ui/card";
+
+import NewChat from "~/new-chat.svg";
 
 function Content() {
   const chatHistory = api.chat.get.useQuery({});
@@ -95,7 +96,7 @@ export function SidebarUser() {
                 router.push("/");
               }}
             >
-              <FaPlus />
+              <NewChat className="size-5" />
               {t("new")}
             </Button>
 
@@ -113,21 +114,23 @@ export function SidebarUser() {
     >
       <Card className="flex h-full flex-col overflow-hidden whitespace-nowrap rounded-lg rounded-s-none rounded-t-none">
         <div className="w-full self-center px-4 pt-3">
-          <Button
-            variant="ghost"
-            color="default"
-            fullWidth
-            className="relative min-w-10 justify-start overflow-clip px-0 transition-all group-data-[open=true]:min-w-20 group-data-[open=false]:-translate-x-[13px]"
-            onClick={() => {
-              setOpen(false);
-              searchParams.has("id")
-                ? router.push("/")
-                : router.push(`/?id=${crypto.randomUUID()}&new`);
-            }}
-          >
-            <FaPlus className="translate-x-3/4 transition-all" />
-            <span className="absolute left-10">{t("new")}</span>
-          </Button>
+          <Tooltip content={t("new")} placement="bottom-end">
+            <Button
+              variant="ghost"
+              color="default"
+              fullWidth
+              className="relative min-w-10 justify-start overflow-clip px-0 transition-all group-data-[open=true]:min-w-20 group-data-[open=false]:-translate-x-[13px]"
+              onClick={() => {
+                setOpen(false);
+                searchParams.has("id")
+                  ? router.push("/")
+                  : router.push(`/?id=${crypto.randomUUID()}&new`);
+              }}
+            >
+              <NewChat className="size-5 translate-x-2 transition-all" />
+              <span className="absolute left-10">{t("new")}</span>
+            </Button>
+          </Tooltip>
         </div>
 
         <Tooltip content={t("show")} placement="bottom-end">

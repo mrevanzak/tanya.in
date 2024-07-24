@@ -13,7 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@tanya.in/ui/card";
-import { Chat } from "@tanya.in/ui/chat";
+
+import { Chat } from "./chat";
 
 export function ChatCard(props: { className?: string }) {
   const t = useTranslations("Home");

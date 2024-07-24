@@ -184,7 +184,7 @@ export function DocumentsTable() {
       <Table
         aria-label="Documents Table"
         classNames={{
-          wrapper: "min-h-[31rem] relative p-0",
+          wrapper: "min-h-[31rem] relative p-0 overflow-hidden",
         }}
         sortDescriptor={sort}
         onSortChange={setSort}

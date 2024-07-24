@@ -1,8 +1,41 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { db } from "@/server/db";
 import { chats, messages } from "@/server/db/schema";
 import { and, desc, eq, ilike, notExists, or } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import { z } from "zod";
+
+function getQuestion(input?: string) {
+  const m = alias(messages, "m");
+  return db
+    .select()
+    .from(m)
+    .where(
+      and(
+        eq(m.role, "user"),
+        ilike(m.content, `%${input}%`).if(input && input.length > 0),
+        notExists(
+          db
+            .select()
+            .from(messages)
+            .where(
+              and(
+                eq(messages.chatId, m.chatId),
+                eq(messages.role, "assistant"),
+                or(
+                  ilike(messages.content, "%saya tidak tahu%"),
+                  ilike(messages.content, "%hi %"),
+                  ilike(messages.content, "%halo%"),
+                ),
+              ),
+            )
+            .orderBy(desc(messages.createdAt)),
+        ),
+      ),
+    )
+    .orderBy(desc(m.createdAt))
+    .limit(3);
+}
 
 export const chatRouter = createTRPCRouter({
   get: protectedProcedure
@@ -29,35 +62,14 @@ export const chatRouter = createTRPCRouter({
       });
     }),
 
-  getRecentQuestion: protectedProcedure.query(async ({ ctx }) => {
-    const m = alias(messages, "m");
-    return await ctx.db
-      .select()
-      .from(m)
-      .where(
-        and(
-          eq(m.role, "user"),
-          notExists(
-            ctx.db
-              .select()
-              .from(messages)
-              .where(
-                and(
-                  eq(messages.chatId, m.chatId),
-                  eq(messages.role, "assistant"),
-                  or(
-                    ilike(messages.content, "%saya tidak tahu%"),
-                    ilike(messages.content, "%hi %"),
-                    ilike(messages.content, "%halo%"),
-                  ),
-                ),
-              )
-              .orderBy(desc(messages.createdAt)),
-          ),
-        ),
-      )
-      .orderBy(desc(m.createdAt))
-      .limit(3);
+  getSuggestion: protectedProcedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      return await getQuestion(input);
+    }),
+
+  getRecentQuestion: protectedProcedure.query(async () => {
+    return await getQuestion();
   }),
 
   show: protectedProcedure

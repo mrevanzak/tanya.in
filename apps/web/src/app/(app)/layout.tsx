@@ -42,7 +42,7 @@ export default async function AuthLayout(props: {
         <Navbar />
         <main
           className={cn("relative flex min-h-[calc(100vh-8rem)]", {
-            "p-4 2xl:pt-8": isAdmin,
+            "p-4": isAdmin,
           })}
         >
           {isAdmin ? props.admin : props.user}

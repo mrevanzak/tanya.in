@@ -44,12 +44,18 @@ function getChatApi() {
   return undefined;
 }
 
+interface ChatProps extends UseChatOptions {
+  placeholder?: string;
+  value?: string;
+}
+
 export function Chat({
   onFinish,
   initialMessages,
   placeholder,
   id,
-}: UseChatOptions & { placeholder?: string }) {
+  value = "",
+}: ChatProps) {
   const chatId = React.useMemo(() => (id ? id : crypto.randomUUID()), [id]);
 
   const {
@@ -70,6 +76,7 @@ export function Chat({
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: "onSubmit",
+    values: { prompt: value },
     schema: z.object({
       prompt: z.string().min(1, { message: "Please enter a message" }),
       topic: z.string().optional(),
@@ -96,19 +103,19 @@ export function Chat({
     >
       <ScrollShadow ref={chatContainerRef}>
         <div className="mb-4 space-y-3">
-          {messages.map((item, index) => (
+          {messages.map((item) => (
             <div
-              key={index}
+              key={item.id}
               className={cn(
                 "flex justify-between",
-                index % 2 === 0 ? "flex-row-reverse" : "flex-row",
+                item.role === "user" ? "flex-row-reverse" : "flex-row",
                 "space-x-2",
               )}
             >
-              <p
+              <div
                 className={cn(
                   "rounded-lg px-3 py-2",
-                  index % 2 === 0
+                  item.role === "user"
                     ? "ml-2 bg-primary text-white"
                     : "mr-2 bg-content2",
                 )}
@@ -121,7 +128,7 @@ export function Chat({
                 ) : (
                   item.content
                 )}
-              </p>
+              </div>
             </div>
           ))}
         </div>
@@ -159,20 +166,6 @@ export function Chat({
                 e.preventDefault();
                 await onSubmit();
               }
-
-              // if (e.key === "ArrowDown") {
-              //   e.preventDefault();
-              //   setSelectedTopicIndex((prev) =>
-              //     prev + 1 < TOPICS.length ? prev + 1 : 0,
-              //   );
-              // }
-
-              // if (e.key === "ArrowUp") {
-              //   e.preventDefault();
-              //   setSelectedTopicIndex((prev) =>
-              //     prev - 1 >= 0 ? prev - 1 : TOPICS.length - 1,
-              //   );
-              // }
             }}
             onValueChange={(value) => {
               if (value.startsWith("/") && !watch("topic")) {

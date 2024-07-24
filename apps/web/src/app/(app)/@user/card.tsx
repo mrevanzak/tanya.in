@@ -5,6 +5,7 @@ import { api } from "@/trpc/react";
 import { useTranslations } from "next-intl";
 
 import type { Message } from "@tanya.in/ui";
+import { cn } from "@tanya.in/ui";
 import {
   Card,
   CardContent,
@@ -14,7 +15,7 @@ import {
 } from "@tanya.in/ui/card";
 import { Chat } from "@tanya.in/ui/chat";
 
-export function ChatCard() {
+export function ChatCard(props: { className?: string }) {
   const t = useTranslations("Home");
   const searchParams = useSearchParams();
   const utils = api.useUtils();
@@ -26,7 +27,12 @@ export function ChatCard() {
   const initialMessages = data?.messages as Message[] | undefined;
 
   return (
-    <Card className="m-2 mx-auto w-full duration-500 transition-size has-[[data-started=false]]:min-[450px]:w-96">
+    <Card
+      className={cn(
+        "m-2 mx-auto w-full duration-500 transition-size has-[[data-started=false]]:min-[450px]:w-[28rem]",
+        props.className,
+      )}
+    >
       <CardHeader>
         <CardTitle className="text-center">{t("title")}</CardTitle>
       </CardHeader>
@@ -35,6 +41,7 @@ export function ChatCard() {
           onFinish={() => utils.chat.get.invalidate()}
           initialMessages={initialMessages}
           placeholder={t("chooseTopic")}
+          value={searchParams.get("ask") ?? ""}
           id={searchParams.get("id") ?? undefined}
         />
       </CardContent>

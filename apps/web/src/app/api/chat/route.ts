@@ -1,7 +1,7 @@
 import { env } from "@/env";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
-import { chats, messages } from "@/server/db/schema";
+import { chats, insertMessageSchema, messages } from "@/server/db/schema";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { get } from "@vercel/edge-config";
@@ -34,11 +34,8 @@ export async function POST(req: Request) {
   const body = z
     .object({
       chatId: z.string(),
-      messages: z
-        .object({
-          id: z.string(),
-          content: z.string(),
-        })
+      messages: insertMessageSchema
+        .pick({ id: true, content: true, role: true })
         .array(),
     })
     .safeParse(await req.json());
@@ -92,6 +89,7 @@ export async function POST(req: Request) {
     id: lastMessage.id,
     chatId: chatId[0]?.id ?? body.data.chatId,
     content: lastMessage.content,
+    role: lastMessage.role,
   });
 
   const reader = res.body.getReader();

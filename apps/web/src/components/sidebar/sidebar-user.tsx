@@ -127,7 +127,7 @@ export function SidebarUser() {
                   : router.push(`/?id=${crypto.randomUUID()}&new`);
               }}
             >
-              <NewChat className="size-5 translate-x-2 transition-all" />
+              <NewChat className="size-5 translate-x-2 transition-transform" />
               <span className="absolute left-10">{t("new")}</span>
             </Button>
           </Tooltip>

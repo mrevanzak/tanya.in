@@ -58,6 +58,7 @@
     "title": "Tanya.in",
     "chooseTopic": "Type '/' to choose the topic",
     "hint": "Ask a question with english",
+    "examples": "Get started with an example below",
     "history": {
       "show": "Show history",
       "title": "History",

@@ -1,7 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { db } from "@/server/db";
 import { chats, messages } from "@/server/db/schema";
-import { and, desc, eq, ilike, notExists, or } from "drizzle-orm";
+import { and, desc, eq, ilike, notExists, notLike, or } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import { z } from "zod";
 
@@ -14,6 +14,7 @@ function getQuestion(input?: string) {
       and(
         eq(m.role, "user"),
         ilike(m.content, `%${input}%`).if(input && input.length > 0),
+        notLike(m.content, "%</%>%"),
         notExists(
           db
             .select()

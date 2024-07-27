@@ -167,7 +167,6 @@ export function Chat({
                 return;
               }
 
-              console.log("value", value);
               if (isAnySuggestion && value.length > 0) {
                 setSuggestionsOpen(true);
                 return;
@@ -180,7 +179,7 @@ export function Chat({
               <>
                 <Dropdown
                   placement="bottom-start"
-                  isOpen={suggestionsOpen}
+                  isOpen={suggestionsOpen && isAnySuggestion}
                   onClose={() => setSuggestionsOpen(false)}
                   classNames={{ content: "min-w-[24.8rem]" }}
                 >
